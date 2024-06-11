@@ -1,5 +1,11 @@
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Router as RouterComponent } from './routes/index.tsx';
 function App() {
-  return <h1 className="text-red-400 text-3xl">Hola mundo</h1>;
+  return (
+    <Router>
+      <RouterComponent />
+    </Router>
+  );
 }
 
 export default App;
