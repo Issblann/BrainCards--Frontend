@@ -1,9 +1,7 @@
+import { FormAuth } from '../components';
+
 const Login = () => {
-  return (
-    <div>
-      <h1>Login</h1>
-    </div>
-  );
+  return <FormAuth />;
 };
 
 export default Login;
