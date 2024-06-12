@@ -3,7 +3,7 @@ import { Router as RouterComponent } from './routes/index.tsx';
 import Header from './components/Header.tsx';
 function App() {
   return (
-    <div className="mx-auto flex h-screen flex-col justify-center items-center">
+    <div className="mx-auto max-w-7xl flex bg-primary h-screen flex-col justify-center items-center">
       <Header />
       <Router>
         <RouterComponent />

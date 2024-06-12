@@ -1,9 +1,7 @@
+import { FormAuth } from '../components';
+
 const Register = () => {
-  return (
-    <div>
-      <h1>Register</h1>
-    </div>
-  );
+  return <FormAuth isRegister />;
 };
 
 export default Register;
