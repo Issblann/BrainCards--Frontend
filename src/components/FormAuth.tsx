@@ -8,7 +8,19 @@ import {
 import { FC } from 'react';
 import authFormVector from '../assets/authform-vector.png';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppStore } from '../redux/store';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { PublicRoutes } from '../models';
+import { loginUser, registerUser } from '../services';
+import { loginUserAction } from '../redux/states';
+
+type Inputs = {
+  email: string;
+  password: string;
+  username: string;
+  confirmPassword: string;
+};
 interface FormAuthProps {
   isRegister?: boolean;
 }
@@ -16,6 +28,37 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
   const title = isRegister ? 'Sign Up for' : 'Sign In for';
   const buttonTitle = isRegister ? 'Register' : 'Login';
 
+  const userState = useSelector((store: AppStore) => store.user);
+  const dispatch = useDispatch();
+
+  console.log('userState', userState);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      if (isRegister) {
+        const response = await registerUser(
+          data.email,
+          data.username,
+          data.password
+        );
+        console.log('User registered', response);
+      } else {
+        const response = await loginUser(data.email, data.password);
+        dispatch(loginUserAction(response));
+        console.log('User logged in', response);
+      }
+    } catch (error) {
+      console.error('Error on onSubmit form', error);
+    }
+  };
+
+  console.log('errors', errors);
   return (
     <div className="flex w-full ">
       <div className="bg-primary lg:w-5/12 w-full flex justify-center p-5">
@@ -49,7 +92,10 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
               <span className="w-1/5 bg-[#D9D9D9] block h-[1px] mt-3"></span>
             </div>
 
-            <form className="mt-8 mx-auto mb-2 px-4 max-w-screen-lg sm:w-96">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="mt-8 mx-auto mb-2 px-4 max-w-screen-lg w-full sm:w-96"
+            >
               <div className="mb-1 flex flex-col gap-4">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Email
@@ -61,7 +107,11 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                   labelProps={{
                     className: 'before:content-none after:content-none',
                   }}
+                  {...register('email', { required: true })}
                 />
+                {errors.email && (
+                  <p className="text-red-500">{errors.email.message}</p>
+                )}
                 {isRegister && (
                   <>
                     <Typography
@@ -73,12 +123,14 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                     </Typography>
                     <Input
                       size="lg"
-                      placeholder="name@mail.com"
+                      placeholder="John Doe"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
                         className: 'before:content-none after:content-none',
                       }}
+                      {...register('username', { required: true })}
                     />
+                    {errors.username && <p>{errors.username.message}</p>}
                   </>
                 )}
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
@@ -86,13 +138,14 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                 </Typography>
                 <Input
                   size="lg"
-                  placeholder="name@mail.com"
+                  placeholder="********"
                   className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                   labelProps={{
                     className: 'before:content-none after:content-none',
                   }}
+                  {...register('password', { required: true })}
                 />
-
+                {errors.password && <p>{errors.password.message}</p>}
                 {isRegister && (
                   <>
                     <Typography
@@ -104,12 +157,16 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                     </Typography>
                     <Input
                       size="lg"
-                      placeholder="name@mail.com"
+                      placeholder="********"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
                         className: 'before:content-none after:content-none',
                       }}
+                      {...register('confirmPassword', { required: true })}
                     />
+                    {errors.confirmPassword && (
+                      <p>{errors.confirmPassword.message}</p>
+                    )}
                   </>
                 )}
               </div>
@@ -125,7 +182,7 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
               }
               containerProps={{ className: '-ml-2.5' }}
             /> */}
-              <Button className="mt-6" fullWidth>
+              <Button type="submit" className="mt-6" fullWidth>
                 {buttonTitle}
               </Button>
               <Typography
