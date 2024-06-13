@@ -14,8 +14,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { PublicRoutes } from '../models';
 import { loginUser, registerUser } from '../services';
 import { loginUserAction } from '../redux/states';
+import { ErrorMessage } from '@hookform/error-message';
 
-type Inputs = {
+type FormValues = {
   email: string;
   password: string;
   username: string;
@@ -31,15 +32,16 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
   const userState = useSelector((store: AppStore) => store.user);
   const dispatch = useDispatch();
 
-  console.log('userState', userState);
   const {
     register,
     handleSubmit,
     watch,
+    setError,
+    reset,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<FormValues>({ criteriaMode: 'all' });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       if (isRegister) {
         const response = await registerUser(
@@ -53,8 +55,14 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
         dispatch(loginUserAction(response));
         console.log('User logged in', response);
       }
+      reset();
     } catch (error) {
       console.error('Error on onSubmit form', error);
+      setError('root', {
+        type: 'serverError',
+        message:
+          error instanceof Error ? error.message : 'Error on form submit',
+      });
     }
   };
 
@@ -74,9 +82,8 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
 
             <div className="w-full flex justify-center mt-5">
               <Button
-                size="md"
                 variant="outlined"
-                className="flex items-center justify-center w-10/12 gap-2 p-3 rounded-md shadow-sm"
+                className="flex items-center justify-center normal-case w-10/12 gap-2 p-3 rounded-md shadow-sm"
               >
                 <img
                   src="https://docs.material-tailwind.com/icons/google.svg"
@@ -107,11 +114,21 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                   labelProps={{
                     className: 'before:content-none after:content-none',
                   }}
-                  {...register('email', { required: true })}
+                  {...register('email', {
+                    required: {
+                      value: true,
+                      message: 'This field is required',
+                    },
+                    pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' },
+                  })}
                 />
-                {errors.email && (
-                  <p className="text-red-500">{errors.email.message}</p>
-                )}
+                <ErrorMessage
+                  errors={errors}
+                  name="email"
+                  render={({ message }) => (
+                    <p className="text-red-300 text-xs">{message}</p>
+                  )}
+                />
                 {isRegister && (
                   <>
                     <Typography
@@ -128,24 +145,45 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                       labelProps={{
                         className: 'before:content-none after:content-none',
                       }}
-                      {...register('username', { required: true })}
+                      {...register('username', {
+                        required: {
+                          value: true,
+                          message: 'This field is required',
+                        },
+                      })}
                     />
-                    {errors.username && <p>{errors.username.message}</p>}
+                    <ErrorMessage
+                      errors={errors}
+                      name="username"
+                      render={({ message }) => (
+                        <p className="text-red-300 text-xs">{message}</p>
+                      )}
+                    />
                   </>
                 )}
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Password
                 </Typography>
                 <Input
+                  type="password"
                   size="lg"
                   placeholder="********"
                   className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                   labelProps={{
                     className: 'before:content-none after:content-none',
                   }}
-                  {...register('password', { required: true })}
+                  {...register('password', {
+                    required: 'This field is required',
+                  })}
                 />
-                {errors.password && <p>{errors.password.message}</p>}
+                <ErrorMessage
+                  errors={errors}
+                  name="password"
+                  render={({ message }) => (
+                    <p className="text-red-300 text-xs">{message}</p>
+                  )}
+                />
+
                 {isRegister && (
                   <>
                     <Typography
@@ -156,18 +194,35 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                       Confirm Password
                     </Typography>
                     <Input
+                      type="password"
                       size="lg"
                       placeholder="********"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
                         className: 'before:content-none after:content-none',
                       }}
-                      {...register('confirmPassword', { required: true })}
+                      {...register('confirmPassword', {
+                        required: {
+                          value: true,
+                          message: 'This field is required',
+                        },
+                        validate: (value) =>
+                          value === watch('password') ||
+                          'Passwords do not match',
+                      })}
                     />
-                    {errors.confirmPassword && (
-                      <p>{errors.confirmPassword.message}</p>
-                    )}
+                    <ErrorMessage
+                      name="confirmPassword"
+                      errors={errors}
+                      render={({ message }) => (
+                        <p className="text-red-300 text-xs">{message}</p>
+                      )}
+                    />
                   </>
+                )}
+
+                {errors.root && (
+                  <p className="text-xs">{errors.root.message}</p>
                 )}
               </div>
               {/* <Checkbox

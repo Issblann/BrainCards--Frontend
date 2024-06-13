@@ -20,12 +20,15 @@ export const loginUser: LoginUser = async (
     });
 
     console.log('User logged in', response.data);
+
     return response.data;
-  } catch (error) {
-    console.error('Error logging in user', error);
-    throw new Error(
-      'Error logging in user. Verify your credentials and try again.' + error
-    );
+  } catch (error: any) {
+    if (error.response.status === 400) {
+      throw new Error('Invalid credentials. Try again.');
+    } else if (error.response.status === 401) {
+      throw new Error('User not found. Try again.');
+    }
+    throw new Error('Error logging in user. Try again.' + error);
   }
 };
 
@@ -42,7 +45,10 @@ export const registerUser: RegisterUser = async (
     });
     console.log('User registered', response.data);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.response.status === 400) {
+      throw new Error('User already exist. Try again.');
+    }
     throw new Error('Error registering user. Try again.' + error);
   }
 };
