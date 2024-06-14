@@ -7,7 +7,7 @@ import {
 } from '@material-tailwind/react';
 import { FC, useState } from 'react';
 import authFormVector from '../assets/authform-vector.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppStore } from '../redux/store';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -31,6 +31,7 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   useSelector((store: AppStore) => store.user);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, callEndpoint } = useFetchAndLoad();
   const {
@@ -58,17 +59,18 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
           data.username,
           data.password
         );
-        const response = await callEndpoint(axiosCall);
-        return response;
+        await callEndpoint(axiosCall);
+        navigate(`/${PublicRoutes.LOGIN}`);
       } else {
         const axiosCall = loginUser(data.email, data.password);
         const response = await callEndpoint(axiosCall);
         dispatch(loginUserAction(response?.data));
+        navigate(`${PublicRoutes.HOME}`);
       }
       reset();
     } catch (error: any) {
       // console.error('Error on onSubmit form', error);
-      if (error.response.status === 400) {
+      if (error?.response?.status === 400) {
         setError(
           'root',
           {

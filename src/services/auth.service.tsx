@@ -10,6 +10,9 @@ interface LoginUser {
 interface RegisterUser {
   (email: string, username: string, password: string): AxiosCall<User>;
 }
+
+const BASE_URL = 'http://localhost:3000/auth';
+
 export const loginUser: LoginUser = (
   email,
   password
@@ -17,7 +20,7 @@ export const loginUser: LoginUser = (
   const controller = loadAbort();
   return {
     call: axios.post(
-      'http://localhost:3000/auth/login',
+      `${BASE_URL}/login`,
       { email, password },
       { signal: controller.signal }
     ),
@@ -33,7 +36,7 @@ export const registerUser: RegisterUser = (
   const controller = loadAbort();
   return {
     call: axios.post(
-      'http://localhost:3000/auth/register',
+      `${BASE_URL}/register`,
       {
         email,
         username,
