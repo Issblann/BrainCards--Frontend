@@ -1,4 +1,4 @@
-import { FormAuth } from '../components';
+import FormAuth from '../components/FormAuth';
 
 const Login = () => {
   return <FormAuth />;

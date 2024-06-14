@@ -1,2 +1,3 @@
-export { default as FormAuth } from './FormAuth';
-export { default as Header } from './Header';
+export * from './FormAuth';
+export * from './Header';
+export * from './PasswordToggleIcon';

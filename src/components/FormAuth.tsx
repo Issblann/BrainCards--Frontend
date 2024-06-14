@@ -1,12 +1,11 @@
 import {
   Card,
   Input,
-  Checkbox,
   Button,
   Typography,
   Spinner,
 } from '@material-tailwind/react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import authFormVector from '../assets/authform-vector.png';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +16,7 @@ import { loginUser, registerUser } from '../services';
 import { loginUserAction } from '../redux/states';
 import { ErrorMessage } from '@hookform/error-message';
 import useFetchAndLoad from '../hooks/useFetchAndLoad';
+import PasswordToggleIcon from './PasswordToggleIcon';
 
 type FormValues = {
   email: string;
@@ -28,10 +28,9 @@ interface FormAuthProps {
   isRegister?: boolean;
 }
 const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
-  const title = isRegister ? 'Sign Up for' : 'Sign In for';
-  const buttonTitle = isRegister ? 'Register' : 'Login';
-
-  const userState = useSelector((store: AppStore) => store.user);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  useSelector((store: AppStore) => store.user);
   const dispatch = useDispatch();
   const { loading, callEndpoint } = useFetchAndLoad();
   const {
@@ -42,6 +41,14 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
     reset,
     formState: { errors },
   } = useForm<FormValues>();
+
+  const title = isRegister ? 'Sign Up for' : 'Sign In for';
+  const buttonTitle = isRegister ? 'Register' : 'Login';
+
+  const togglePasswordVisibility = () =>
+    setShowPassword((prevState) => !prevState);
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword((prevState) => !prevState);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
@@ -179,7 +186,7 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                   Password
                 </Typography>
                 <Input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   size="lg"
                   placeholder="********"
                   className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -189,6 +196,12 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                   {...register('password', {
                     required: 'This field is required',
                   })}
+                  icon={
+                    <PasswordToggleIcon
+                      showPassword={showPassword}
+                      togglePasswordVisibility={togglePasswordVisibility}
+                    />
+                  }
                 />
                 <ErrorMessage
                   errors={errors}
@@ -208,7 +221,7 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                       Confirm Password
                     </Typography>
                     <Input
-                      type="password"
+                      type={showConfirmPassword ? 'text' : 'password'}
                       size="lg"
                       placeholder="********"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -224,6 +237,14 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                           value === watch('password') ||
                           'Passwords do not match',
                       })}
+                      icon={
+                        <PasswordToggleIcon
+                          showPassword={showConfirmPassword}
+                          togglePasswordVisibility={
+                            toggleConfirmPasswordVisibility
+                          }
+                        />
+                      }
                     />
                     <ErrorMessage
                       name="confirmPassword"
