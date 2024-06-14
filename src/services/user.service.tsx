@@ -18,9 +18,6 @@ export const loginUser: LoginUser = async (
       email,
       password,
     });
-
-    console.log('User logged in', response.data);
-
     return response.data;
   } catch (error: any) {
     if (error.response.status === 400) {
@@ -43,7 +40,6 @@ export const registerUser: RegisterUser = async (
       username,
       password,
     });
-    console.log('User registered', response.data);
     return response.data;
   } catch (error: any) {
     if (error.response.status === 400) {

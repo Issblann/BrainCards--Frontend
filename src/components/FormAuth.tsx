@@ -39,21 +39,15 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
     setError,
     reset,
     formState: { errors },
-  } = useForm<FormValues>({ criteriaMode: 'all' });
+  } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       if (isRegister) {
-        const response = await registerUser(
-          data.email,
-          data.username,
-          data.password
-        );
-        console.log('User registered', response);
+        await registerUser(data.email, data.username, data.password);
       } else {
         const response = await loginUser(data.email, data.password);
         dispatch(loginUserAction(response));
-        console.log('User logged in', response);
       }
       reset();
     } catch (error) {
@@ -66,7 +60,6 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
     }
   };
 
-  console.log('errors', errors);
   return (
     <div className="flex w-full ">
       <div className="bg-primary lg:w-5/12 w-full flex justify-center p-5">
