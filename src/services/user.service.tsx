@@ -1,50 +1,46 @@
 import axios from 'axios';
-import { UserLogged } from '../models';
+import { AxiosCall, UserLogged } from '../models';
 import User from '../models/User';
+import { loadAbort } from '../utilities';
 
 interface LoginUser {
-  (email: string, password: string): Promise<UserLogged>;
+  (email: string, password: string): AxiosCall<UserLogged>;
 }
 
 interface RegisterUser {
-  (email: string, username: string, password: string): Promise<User>;
+  (email: string, username: string, password: string): AxiosCall<User>;
 }
-export const loginUser: LoginUser = async (
+export const loginUser: LoginUser = (
   email,
   password
-): Promise<UserLogged> => {
-  try {
-    const response = await axios.post('http://localhost:3000/auth/login', {
-      email,
-      password,
-    });
-    return response.data;
-  } catch (error: any) {
-    if (error.response.status === 400) {
-      throw new Error('Invalid credentials. Try again.');
-    } else if (error.response.status === 401) {
-      throw new Error('User not found. Try again.');
-    }
-    throw new Error('Error logging in user. Try again.' + error);
-  }
+): AxiosCall<UserLogged> => {
+  const controller = loadAbort();
+  return {
+    call: axios.post(
+      'http://localhost:3000/auth/login',
+      { email, password },
+      { signal: controller.signal }
+    ),
+    controller,
+  };
 };
 
-export const registerUser: RegisterUser = async (
+export const registerUser: RegisterUser = (
   email,
   username,
   password
-): Promise<User> => {
-  try {
-    const response = await axios.post('http://localhost:3000/auth/register', {
-      email,
-      username,
-      password,
-    });
-    return response.data;
-  } catch (error: any) {
-    if (error.response.status === 400) {
-      throw new Error('User already exist. Try again.');
-    }
-    throw new Error('Error registering user. Try again.' + error);
-  }
+): AxiosCall<User> => {
+  const controller = loadAbort();
+  return {
+    call: axios.post(
+      'http://localhost:3000/auth/register',
+      {
+        email,
+        username,
+        password,
+      },
+      { signal: controller.signal }
+    ),
+    controller,
+  };
 };
