@@ -4,6 +4,7 @@ import {
   Checkbox,
   Button,
   Typography,
+  Spinner,
 } from '@material-tailwind/react';
 import { FC } from 'react';
 import authFormVector from '../assets/authform-vector.png';
@@ -15,6 +16,7 @@ import { PublicRoutes } from '../models';
 import { loginUser, registerUser } from '../services';
 import { loginUserAction } from '../redux/states';
 import { ErrorMessage } from '@hookform/error-message';
+import useFetchAndLoad from '../hooks/useFetchAndLoad';
 
 type FormValues = {
   email: string;
@@ -31,7 +33,7 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
 
   const userState = useSelector((store: AppStore) => store.user);
   const dispatch = useDispatch();
-
+  const { loading, callEndpoint } = useFetchAndLoad();
   const {
     register,
     handleSubmit,
@@ -44,19 +46,38 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       if (isRegister) {
-        await registerUser(data.email, data.username, data.password);
+        const axiosCall = registerUser(
+          data.email,
+          data.username,
+          data.password
+        );
+        const response = await callEndpoint(axiosCall);
+        return response;
       } else {
-        const response = await loginUser(data.email, data.password);
-        dispatch(loginUserAction(response));
+        const axiosCall = loginUser(data.email, data.password);
+        const response = await callEndpoint(axiosCall);
+        dispatch(loginUserAction(response?.data));
       }
       reset();
-    } catch (error) {
-      console.error('Error on onSubmit form', error);
-      setError('root', {
-        type: 'serverError',
-        message:
-          error instanceof Error ? error.message : 'Error on form submit',
-      });
+    } catch (error: any) {
+      // console.error('Error on onSubmit form', error);
+      if (error.response.status === 400) {
+        setError(
+          'root',
+          {
+            type: 'serverError',
+            message: isRegister
+              ? 'User already exist. Try again'
+              : 'Invalid credentials. Try again.',
+          } || 'Error on form submit'
+        );
+      } else {
+        setError('root', {
+          type: 'serverError',
+          message:
+            error instanceof Error ? error.message : 'Error on form submit',
+        });
+      }
     }
   };
 
@@ -218,20 +239,12 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                   <p className="text-xs">{errors.root.message}</p>
                 )}
               </div>
-              {/* <Checkbox
-              label={
-                <Typography
-                  variant="small"
-                  color="gray"
-                  className="flex items-center font-normal"
-                >
-                  Remember me
-                </Typography>
-              }
-              containerProps={{ className: '-ml-2.5' }}
-            /> */}
-              <Button type="submit" className="mt-6" fullWidth>
-                {buttonTitle}
+              <Button
+                type="submit"
+                className="mt-6 flex justify-center items-center"
+                fullWidth
+              >
+                {loading ? <Spinner className="h-4 w-4" /> : buttonTitle}
               </Button>
               <Typography
                 variant="small"
