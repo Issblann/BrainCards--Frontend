@@ -4,8 +4,8 @@ import Header from './components/Header.tsx';
 function App() {
   return (
     <div className="mx-auto max-w-7xl flex bg-primary h-screen flex-col justify-center items-center">
-      <Header />
       <Router>
+        <Header />
         <RouterComponent />
       </Router>
     </div>
