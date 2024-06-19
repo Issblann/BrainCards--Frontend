@@ -3,13 +3,8 @@ import { Link } from 'react-router-dom';
 import { PublicRoutes } from '../models';
 import { isAuth } from '../guards';
 import { Profile } from './Profile';
-import { useEffect } from 'react';
-import { AppStore } from '../redux/store';
-import { useDispatch, useSelector } from 'react-redux';
 
 export const Header = () => {
-  const user = useSelector((store: AppStore) => store.user);
-  useEffect(() => {}, [user]);
   return (
     <div className="w-full flex justify-between items-center fixed top-0 h-[80px] bg-primary max-w-7xl p-4">
       <h1 className="text-black font-medium">BRAIN CARDS</h1>

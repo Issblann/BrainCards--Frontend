@@ -5,7 +5,7 @@ import {
   Typography,
   Spinner,
 } from '@material-tailwind/react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import authFormVector from '../assets/authform-vector.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
