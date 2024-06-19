@@ -1,9 +1,9 @@
 import { Button } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { PublicRoutes } from '../models';
-import { Profile } from './Profile';
+// import { Profile } from './Profile';
 
-const Header = () => {
+export const Header = () => {
   return (
     <div className="w-full flex justify-between items-center fixed top-0 h-[80px] bg-primary max-w-7xl p-4">
       <h1 className="text-black font-medium">BRAIN CARDS</h1>
@@ -23,5 +23,3 @@ const Header = () => {
     </div>
   );
 };
-
-export default Header;

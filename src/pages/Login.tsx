@@ -1,7 +1,5 @@
-import FormAuth from '../components/FormAuth';
+import { FormAuth } from '../components';
 
-const Login = () => {
+export const Login = () => {
   return <FormAuth />;
 };
-
-export default Login;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AxiosCall } from '../models';
 
-const useFetchAndLoad = () => {
+export const useFetchAndLoad = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [controller, setController] = useState<AbortController | null>(null);
@@ -38,5 +38,3 @@ const useFetchAndLoad = () => {
 
   return { loading, data, callEndpoint };
 };
-
-export default useFetchAndLoad;

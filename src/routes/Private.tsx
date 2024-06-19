@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom';
 import { PrivateRoutes } from '../models';
-import RoutesWithNoFound from '../utilities/RoutesWithNoFound.utility';
+import { RoutesWithNoFound } from '../utilities';
 import { Profile } from '../pages';
 
 export const Private = () => {

@@ -5,7 +5,7 @@ interface Props {
   showPassword: boolean;
   togglePasswordVisibility: () => void;
 }
-const PasswordToggleIcon: FC<Props> = ({
+export const PasswordToggleIcon: FC<Props> = ({
   showPassword,
   togglePasswordVisibility,
 }) => {
@@ -15,5 +15,3 @@ const PasswordToggleIcon: FC<Props> = ({
     </button>
   );
 };
-
-export default PasswordToggleIcon;

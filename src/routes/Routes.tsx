@@ -1,9 +1,9 @@
 import { Route } from 'react-router-dom';
 
 import { PrivateRoutes, PublicRoutes } from '../models';
-import AuthGuard from '../guards/auth.guards';
+import { AuthGuard } from '../guards';
 import { Suspense, lazy } from 'react';
-import RoutesWithNoFound from '../utilities/RoutesWithNoFound.utility';
+import { RoutesWithNoFound } from '../utilities';
 import { Home, Login, Register } from '../pages/';
 
 const Private = lazy(() => import('./Private'));

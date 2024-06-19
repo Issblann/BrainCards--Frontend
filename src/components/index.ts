@@ -1,3 +1,4 @@
-export * from './FormAuth';
-export * from './Header';
-export * from './PasswordToggleIcon';
+export { formAuth as FormAuth } from './FormAuth';
+export { Header } from './Header';
+export { PasswordToggleIcon } from './PasswordToggleIcon';
+export { Profile } from './Profile';

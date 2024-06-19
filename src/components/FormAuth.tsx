@@ -15,9 +15,9 @@ import { PublicRoutes } from '../models';
 import { loginUser, registerUser } from '../services';
 import { loginUserAction } from '../redux/states';
 import { ErrorMessage } from '@hookform/error-message';
-import useFetchAndLoad from '../hooks/useFetchAndLoad';
-import PasswordToggleIcon from './PasswordToggleIcon';
-import isAuth from '../guards/isAuth';
+import { useFetchAndLoad } from '../hooks/';
+import { isAuth } from '../guards/';
+import { PasswordToggleIcon } from './index';
 
 type FormValues = {
   email: string;
@@ -28,7 +28,7 @@ type FormValues = {
 interface FormAuthProps {
   isRegister?: boolean;
 }
-const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
+export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   useSelector((store: AppStore) => store.user);
@@ -308,5 +308,3 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
     </div>
   );
 };
-
-export default formAuth;

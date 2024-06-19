@@ -1,2 +1,2 @@
-export * from './auth.guards';
-export * from './isAuth';
+export { AuthGuard } from './auth.guards';
+export { isAuth } from './isAuth';
