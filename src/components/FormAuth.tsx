@@ -17,6 +17,7 @@ import { loginUserAction } from '../redux/states';
 import { ErrorMessage } from '@hookform/error-message';
 import useFetchAndLoad from '../hooks/useFetchAndLoad';
 import PasswordToggleIcon from './PasswordToggleIcon';
+import isAuth from '../guards/isAuth';
 
 type FormValues = {
   email: string;
@@ -66,6 +67,7 @@ const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
         const response = await callEndpoint(axiosCall);
         dispatch(loginUserAction(response?.data));
         navigate(`${PublicRoutes.HOME}`);
+        isAuth();
       }
       reset();
     } catch (error: any) {

@@ -1,9 +1,14 @@
 import Cookies from 'js-cookie';
+import { AppStore } from '../redux/store';
+import { useSelector } from 'react-redux';
 
 const isAuth = () => {
   const token = Cookies.get('token');
-
-  console.log('token', token);
+  const user = useSelector((store: AppStore) => store.user);
+  if (!token || user.id === '') {
+    return false;
+  }
+  return;
 };
 
 export default isAuth;
