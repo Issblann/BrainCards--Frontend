@@ -8,5 +8,5 @@ export const isAuth = () => {
   if (!token || user.id === '') {
     return false;
   }
-  return;
+  return true;
 };

@@ -5,7 +5,7 @@ import {
   Typography,
   Spinner,
 } from '@material-tailwind/react';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import authFormVector from '../assets/authform-vector.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +16,6 @@ import { loginUser, registerUser } from '../services';
 import { loginUserAction } from '../redux/states';
 import { ErrorMessage } from '@hookform/error-message';
 import { useFetchAndLoad } from '../hooks/';
-import { isAuth } from '../guards/';
 import { PasswordToggleIcon } from './index';
 
 type FormValues = {
@@ -67,7 +66,6 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
         const response = await callEndpoint(axiosCall);
         dispatch(loginUserAction(response?.data));
         navigate(`${PublicRoutes.HOME}`);
-        isAuth();
       }
       reset();
     } catch (error: any) {

@@ -7,15 +7,34 @@ import {
   MenuList,
   Typography,
 } from '@material-tailwind/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { HiUserCircle, HiSupport, HiLogout, HiCog } from 'react-icons/hi';
-
+import { useFetchAndLoad } from '../hooks';
+import { LogoutUser } from '../services';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../redux/states';
+import { AppStore } from '../redux/store';
+import ProfileIcon from '../assets/profile_icon.svg';
 export const Profile = () => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { callEndpoint } = useFetchAndLoad();
+  const user = useSelector((store: AppStore) => store.user);
+  const dispatch = useDispatch();
   const closeMenu = () => setIsMenuOpen(false);
 
-  const profileMenuItems = [
+  interface ProfileMenuItemProps {
+    label: string;
+    icon: any;
+    action?: () => void;
+  }
+
+  const handleLogout = () => {
+    const axiosCall = LogoutUser();
+    callEndpoint(axiosCall);
+    dispatch(logoutUser());
+    closeMenu();
+  };
+  const profileMenuItems: ProfileMenuItemProps[] = [
     {
       label: 'My Profile',
       icon: HiUserCircle,
@@ -31,8 +50,10 @@ export const Profile = () => {
     {
       label: 'Sign Out',
       icon: HiLogout,
+      action: handleLogout,
     },
   ];
+
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
@@ -44,21 +65,21 @@ export const Profile = () => {
           <Avatar
             variant="circular"
             size="md"
-            alt="tania andrew"
+            alt={user.username}
             withBorder={true}
             color="blue-gray"
             className=" p-0.5"
-            src="https://docs.material-tailwind.com/img/face-2.jpg"
+            src={ProfileIcon}
           />
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
-        {profileMenuItems.map(({ label, icon }, key) => {
+        {profileMenuItems.map(({ label, icon, action }, key) => {
           const isLastItem = key === profileMenuItems.length - 1;
           return (
             <MenuItem
               key={label}
-              onClick={closeMenu}
+              onClick={action}
               className={`flex items-center gap-2 rounded ${
                 isLastItem
                   ? 'hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10'

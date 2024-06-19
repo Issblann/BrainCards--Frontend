@@ -1,25 +1,33 @@
 import { Button } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { PublicRoutes } from '../models';
-// import { Profile } from './Profile';
+import { isAuth } from '../guards';
+import { Profile } from './Profile';
+import { useEffect } from 'react';
+import { AppStore } from '../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const Header = () => {
+  const user = useSelector((store: AppStore) => store.user);
+  useEffect(() => {}, [user]);
   return (
     <div className="w-full flex justify-between items-center fixed top-0 h-[80px] bg-primary max-w-7xl p-4">
       <h1 className="text-black font-medium">BRAIN CARDS</h1>
 
-      <div className="flex gap-3 items-center">
-        <Link to={PublicRoutes.REGISTER}>
-          <Button className="font-semibold">Sign IN</Button>
-        </Link>
-        <Link to={PublicRoutes.LOGIN}>
-          <Button variant="text" className="text-sm font-medium normal-case">
-            Log In
-          </Button>
-        </Link>
-      </div>
-
-      {/* <Profile /> */}
+      {isAuth() ? (
+        <Profile />
+      ) : (
+        <div className="flex gap-3 items-center">
+          <Link to={PublicRoutes.REGISTER}>
+            <Button className="font-semibold">Sign IN</Button>
+          </Link>
+          <Link to={PublicRoutes.LOGIN}>
+            <Button variant="text" className="text-sm font-medium normal-case">
+              Log In
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

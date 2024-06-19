@@ -48,3 +48,11 @@ export const registerUser: RegisterUser = (
     controller,
   };
 };
+
+export const LogoutUser = () => {
+  const controller = loadAbort();
+  return {
+    call: axios.post(`${BASE_URL}/logout`, { signal: controller.signal }),
+    controller,
+  };
+};
