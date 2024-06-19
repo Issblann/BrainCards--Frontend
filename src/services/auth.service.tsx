@@ -11,6 +11,7 @@ interface RegisterUser {
   (email: string, username: string, password: string): AxiosCall<User>;
 }
 
+axios.defaults.withCredentials = true;
 const BASE_URL = 'http://localhost:3000/auth';
 
 export const loginUser: LoginUser = (
