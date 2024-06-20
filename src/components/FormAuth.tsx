@@ -16,7 +16,7 @@ import { loginUser, registerUser } from '../services';
 import { loginUserAction } from '../redux/states';
 import { ErrorMessage } from '@hookform/error-message';
 import { useFetchAndLoad } from '../hooks/';
-import { PasswordToggleIcon } from './index';
+import { GoogleButton, PasswordToggleIcon } from './index';
 
 type FormValues = {
   email: string;
@@ -103,19 +103,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
               Create your favorites decks
             </Typography>
 
-            <div className="w-full flex justify-center mt-5">
-              <Button
-                variant="outlined"
-                className="flex items-center justify-center normal-case w-10/12 gap-2 p-3 rounded-md shadow-sm"
-              >
-                <img
-                  src="https://docs.material-tailwind.com/icons/google.svg"
-                  alt="metamask"
-                  className="h-5 w-5"
-                />
-                Continue with google
-              </Button>
-            </div>
+            <GoogleButton />
             <div className="flex justify-center gap-4 mt-5">
               <span className="w-1/5 bg-[#D9D9D9] block h-[1px] mt-3"></span>
               <span className="text-black text-sm">or</span>

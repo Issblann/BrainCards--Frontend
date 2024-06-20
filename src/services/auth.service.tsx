@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { AxiosCall, UserLogged } from '../models';
 import User from '../models/User';
 import { loadAbort } from '../utilities';
@@ -44,6 +44,27 @@ export const registerUser: RegisterUser = (
         password,
       },
       { signal: controller.signal }
+    ),
+    controller,
+  };
+};
+
+export const GetUserGoogle = (token: any) => {
+  const controller = loadAbort();
+  const headers: AxiosRequestConfig['headers'] = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  };
+
+  const config: AxiosRequestConfig = {
+    withCredentials: false,
+    headers,
+    signal: controller.signal,
+  };
+  return {
+    call: axios.get(
+      `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`,
+      config
     ),
     controller,
   };

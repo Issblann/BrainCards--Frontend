@@ -5,10 +5,10 @@ interface User {
   createdAt: string;
   updatedAt: string;
   message: string;
+  picture?: string;
 }
 
 export interface UserLogged extends User {
-  token: string;
   id: string;
 }
 export default User;

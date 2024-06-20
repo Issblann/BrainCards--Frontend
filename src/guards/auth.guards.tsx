@@ -1,7 +1,12 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { PublicRoutes } from '../models';
-import { isAuth } from './index';
+import { useIsAuth } from './index';
 
 export const AuthGuard = () => {
-  return isAuth() ? <Outlet /> : <Navigate replace to={PublicRoutes.HOME} />;
+  const isAuthenticated = useIsAuth();
+  return isAuthenticated ? (
+    <Outlet />
+  ) : (
+    <Navigate replace to={PublicRoutes.HOME} />
+  );
 };
