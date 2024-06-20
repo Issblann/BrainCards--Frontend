@@ -8,7 +8,6 @@ import { AppStore } from '../redux/store';
 import { useIsAuth } from '../guards';
 
 export const Header = () => {
-  // console.log(isAuth());
   const user = useSelector((store: AppStore) => store.user);
   const usernameSplitted = user?.username.split(' ');
   const isAuth = useIsAuth();

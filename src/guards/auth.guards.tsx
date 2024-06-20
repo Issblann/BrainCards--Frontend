@@ -4,7 +4,6 @@ import { useIsAuth } from './index';
 
 export const AuthGuard = () => {
   const isAuthenticated = useIsAuth();
-  console.log(isAuthenticated);
   return isAuthenticated ? (
     <Outlet />
   ) : (
