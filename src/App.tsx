@@ -1,10 +1,14 @@
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Router as RouterComponent } from './routes/index.tsx';
+import { Router as RouterComponent } from './routes';
+import { Header } from './components';
 function App() {
   return (
-    <Router>
-      <RouterComponent />
-    </Router>
+    <div className="mx-auto max-w-7xl flex bg-primary h-screen flex-col justify-center items-center">
+      <Router>
+        <Header />
+        <RouterComponent />
+      </Router>
+    </div>
   );
 }
 
