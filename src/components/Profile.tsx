@@ -17,35 +17,42 @@ import { AppStore } from '../redux/store';
 import ProfileIcon from '../assets/profile_icon.svg';
 import { googleLogout } from '@react-oauth/google';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import { PrivateRoutes } from '../models';
 export const Profile = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { callEndpoint } = useFetchAndLoad();
   const user = useSelector((store: AppStore) => store.user);
   const dispatch = useDispatch();
   const closeMenu = () => setIsMenuOpen(false);
-
+  const navigate = useNavigate();
   interface ProfileMenuItemProps {
     label: string;
     icon: any;
     action?: () => void;
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     const tokenAuth = Cookies.get('token');
-    if (tokenAuth) {
-      const axiosCall = LogoutUser();
-      callEndpoint(axiosCall);
+    const tokenGoogle = Cookies.get('tokenGoogle');
+    if (tokenAuth && user.id) {
+      const axiosCall = await LogoutUser();
+      await callEndpoint(axiosCall);
       dispatch(logoutUser());
-    } else if (!tokenAuth && user.id) {
+      Cookies.remove('token');
+    } else if (tokenGoogle && user.id) {
       googleLogout();
       dispatch(logoutUser());
+      Cookies.remove('tokenGoogle');
     }
     closeMenu();
   };
+
   const profileMenuItems: ProfileMenuItemProps[] = [
     {
       label: 'My Profile',
       icon: HiUserCircle,
+      action: () => navigate(`/private/${PrivateRoutes.PROFILE}`),
     },
     {
       label: 'Edit Profile',

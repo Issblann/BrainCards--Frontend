@@ -7,7 +7,7 @@ import { useFetchAndLoad } from '../hooks';
 import { GetUserGoogle } from '../services';
 import { useNavigate } from 'react-router-dom';
 import { PublicRoutes } from '../models';
-
+import Cookies from 'js-cookie';
 export const GoogleButton = () => {
   const { callEndpoint } = useFetchAndLoad();
   useSelector((store: AppStore) => store.user);
@@ -27,6 +27,8 @@ export const GoogleButton = () => {
         picture: responseUserGoogle.data.picture,
       })
     );
+    Cookies.set('tokenGoogle', responseUserGoogle.data.sub);
+    console.log(responseUserGoogle.data.sub);
     navigate(PublicRoutes.HOME);
   };
   const errorMessage = () => {
