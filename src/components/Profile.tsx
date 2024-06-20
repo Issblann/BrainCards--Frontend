@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/states';
 import { AppStore } from '../redux/store';
 import ProfileIcon from '../assets/profile_icon.svg';
+import { googleLogout } from '@react-oauth/google';
+import Cookies from 'js-cookie';
 export const Profile = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { callEndpoint } = useFetchAndLoad();
@@ -29,9 +31,15 @@ export const Profile = () => {
   }
 
   const handleLogout = () => {
-    const axiosCall = LogoutUser();
-    callEndpoint(axiosCall);
-    dispatch(logoutUser());
+    const tokenAuth = Cookies.get('token');
+    if (tokenAuth) {
+      const axiosCall = LogoutUser();
+      callEndpoint(axiosCall);
+      dispatch(logoutUser());
+    } else if (!tokenAuth && user.id) {
+      googleLogout();
+      dispatch(logoutUser());
+    }
     closeMenu();
   };
   const profileMenuItems: ProfileMenuItemProps[] = [
@@ -69,7 +77,7 @@ export const Profile = () => {
             withBorder={true}
             color="blue-gray"
             className=" p-0.5"
-            src={ProfileIcon}
+            src={user?.picture || ProfileIcon}
           />
         </Button>
       </MenuHandler>

@@ -1,2 +1,2 @@
 export { AuthGuard } from './auth.guards';
-export { isAuth } from './isAuth';
+export { useIsAuth } from './isAuth';
