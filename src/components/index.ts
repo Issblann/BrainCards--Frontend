@@ -1,5 +1,5 @@
 export { formAuth as FormAuth } from './FormAuth';
 export { Header } from './Header';
 export { PasswordToggleIcon } from './PasswordToggleIcon';
-export { Profile } from './Profile';
+export { ProfileHeader } from './ProfileHeader';
 export { GoogleButton } from './GoogleButton';

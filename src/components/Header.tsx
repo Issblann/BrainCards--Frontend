@@ -2,7 +2,7 @@ import { Button, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { PublicRoutes } from '../models';
 
-import { Profile } from './Profile';
+import { ProfileHeader } from './ProfileHeader';
 import { useSelector } from 'react-redux';
 import { AppStore } from '../redux/store';
 import { useIsAuth } from '../guards';
@@ -12,7 +12,7 @@ export const Header = () => {
   const usernameSplitted = user?.username.split(' ');
   const isAuth = useIsAuth();
   return (
-    <div className="w-full flex justify-between items-center fixed top-0 h-[80px] bg-primary max-w-7xl p-4">
+    <div className="w-full flex justify-between items-center fixed top-0 h-[80px] bg-primary max-w-[1480px] p-4">
       <h1 className="text-black font-medium">BRAIN CARDS</h1>
 
       {isAuth ? (
@@ -20,7 +20,7 @@ export const Header = () => {
           <Typography className="text-black" variant="h6">
             Hi {usernameSplitted[0] || undefined}
           </Typography>
-          <Profile />
+          <ProfileHeader />
         </div>
       ) : (
         <div className="flex gap-3 items-center">
