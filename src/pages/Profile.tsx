@@ -2,15 +2,40 @@ import {
   Avatar,
   Button,
   Input,
+  Spinner,
   Textarea,
   Typography,
 } from '@material-tailwind/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HiMail } from 'react-icons/hi';
+import { useFetchAndLoad } from '../hooks';
+import { getProfile } from '../services/profile.service';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppStore } from '../redux/store';
+import { getProfileAction } from '../redux/states';
 
 export const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
+  const { callEndpoint, loading } = useFetchAndLoad();
+  const { id } = useParams();
+  const profile = useSelector((store: AppStore) => store.profile);
 
+  const dispatch = useDispatch();
+
+  const profileData = async () => {
+    try {
+      const axiosCall = getProfile(id);
+      const response = await callEndpoint(axiosCall);
+      dispatch(getProfileAction(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    profileData();
+  }, [id]);
+  console.log(profile);
   return (
     <section className="w-full text-black flex max-w-7xl flex-col gap-6 outline outline-1 rounded-xl outline-[#8B8B8B]">
       <span className="h-[100px] w-full bg-gradient-to-r from-[#E2EAF7] to-[#4182F9] rounded-t-lg border-b border-[#8B8B8B] border-1 "></span>
@@ -22,11 +47,21 @@ export const Profile = () => {
           />
           <div className="flex justify-between w-full">
             <div className="flex flex-col">
-              <h1 className="font-bold text-2xl ">Alexa Rawles</h1>
+              <h1 className="font-bold text-2xl ">
+                {profile.name} <span></span> {profile.lastName}
+              </h1>
               <p className="font-normal text-gray-500 mb-3">
                 alexarawles@gmail.com
               </p>
-              <p className="font-light">I love cats</p>
+              <p className="font-light">
+                {loading ? (
+                  <Spinner className="h-4 w-4" />
+                ) : profile.bio === '' ? (
+                  'No bio'
+                ) : (
+                  profile.bio
+                )}
+              </p>
             </div>
 
             {!isEdit && (

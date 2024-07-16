@@ -13,7 +13,6 @@ export const userEmptyState: UserLogged = {
   createdAt: '',
   updatedAt: '',
   message: '',
-  token: '',
 };
 export const UserKey = 'user';
 

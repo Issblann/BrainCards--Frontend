@@ -20,7 +20,7 @@ export const Header = () => {
           <Typography className="text-black" variant="h6">
             Hi {usernameSplitted[0] || undefined}
           </Typography>
-          <ProfileHeader />
+          <ProfileHeader userId={user.id} />
         </div>
       ) : (
         <div className="flex gap-3 items-center">

@@ -6,7 +6,7 @@ import { Profile } from '../pages';
 export const Private = () => {
   return (
     <RoutesWithNoFound>
-      <Route path={PrivateRoutes.PROFILE} element={<Profile />} />
+      <Route path={`${PrivateRoutes.PROFILE}/:id`} element={<Profile />} />
     </RoutesWithNoFound>
   );
 };
