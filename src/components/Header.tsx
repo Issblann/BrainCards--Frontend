@@ -9,7 +9,8 @@ import { useIsAuth } from '../guards';
 
 export const Header = () => {
   const user = useSelector((store: AppStore) => store.user);
-  const usernameSplitted = user?.username.split(' ');
+  const profile = useSelector((store: AppStore) => store.profile);
+  const usernameSplitted = profile?.name ? profile.name.split(' ')[0] : '';
   const isAuth = useIsAuth();
   return (
     <div className="w-full flex justify-between items-center fixed top-0 h-[80px] bg-primary max-w-[1480px] p-4">
@@ -18,7 +19,7 @@ export const Header = () => {
       {isAuth ? (
         <div className="flex items-center gap-4">
           <Typography className="text-black" variant="h6">
-            Hi {usernameSplitted[0] || undefined}
+            Hi {usernameSplitted || undefined}
           </Typography>
           <ProfileHeader userId={user.id} />
         </div>
