@@ -7,8 +7,8 @@ import {
   MenuList,
   Typography,
 } from '@material-tailwind/react';
-import React, { useState } from 'react';
-import { HiUserCircle, HiSupport, HiLogout, HiCog } from 'react-icons/hi';
+import React, { FC, useState } from 'react';
+import { HiUserCircle, HiSupport, HiLogout } from 'react-icons/hi';
 import { useFetchAndLoad } from '../hooks';
 import { LogoutUser } from '../services';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,7 +19,7 @@ import { googleLogout } from '@react-oauth/google';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { PrivateRoutes } from '../models';
-export const Profile = () => {
+export const ProfileHeader: FC<{ userId: string }> = ({ userId }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { callEndpoint } = useFetchAndLoad();
   const user = useSelector((store: AppStore) => store.user);
@@ -52,11 +52,7 @@ export const Profile = () => {
     {
       label: 'My Profile',
       icon: HiUserCircle,
-      action: () => navigate(`/private/${PrivateRoutes.PROFILE}`),
-    },
-    {
-      label: 'Edit Profile',
-      icon: HiCog,
+      action: () => navigate(`/private/${PrivateRoutes.PROFILE}/${userId}`),
     },
     {
       label: 'Help',
