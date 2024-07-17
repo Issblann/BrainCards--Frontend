@@ -9,7 +9,6 @@ export const profileEmptyState: Profile = {
   lastName: '',
   username: '',
   bio: '',
-  // email: string; // fix email on backend
   image: '',
   updatedAt: '',
 };
