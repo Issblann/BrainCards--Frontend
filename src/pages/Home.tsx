@@ -1,7 +1,9 @@
+import { TabBoxes } from '../components';
+
 export const Home = () => {
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <h1 className="text-black">Home aquí</h1>
+    <div className="w-full h-full flex  justify-center">
+      <TabBoxes />
     </div>
   );
 };
