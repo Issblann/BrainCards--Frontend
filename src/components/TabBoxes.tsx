@@ -4,12 +4,11 @@ import { useFetchAndLoad } from '../hooks';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppStore } from '../redux/store';
-import Deck from '../models/Deck';
 import { getBoxesByUserId } from '../services/boxes.service';
 import Box from '../models/Box';
 
 export const TabBoxes = () => {
-  const { loading, callEndpoint } = useFetchAndLoad();
+  const { callEndpoint } = useFetchAndLoad();
   const [boxes, setBoxes] = useState<Box[]>([]);
   const user = useSelector((store: AppStore) => store.user);
   const getBoxesWithDecks = async () => {
@@ -19,7 +18,7 @@ export const TabBoxes = () => {
       const response = await callEndpoint(axiosCall);
       console.log(response.data, 'response.data');
       setBoxes(response.data);
-      console.log(response.data[0].decks, 'decks');
+      console.log(response.data);
     } catch (error) {
       console.error(error);
       throw new Error(error as string);
@@ -35,27 +34,9 @@ export const TabBoxes = () => {
     desc: box.decks.map((deck: any) => ({
       id: deck.id,
       title: deck.title,
+      description: deck.description,
     })),
   }));
-  // {
-  //   label: 'All',
-  //   value: 'All',
-  //   desc: decks.map((deck) => ({
-  //     id: deck.id,
-  //     title: deck.title,
-  //   })),
-  // },
-  // {
-  //   label: 'Countries ',
-  //   value: 'countries',
-  //   desc: [
-  //     {
-  //       id: 1,
-  //       boxName: 'countries',
-  //       title: '10 facts about countries',
-  //     },
-  //   ],
-  // },
 
   console.log(data);
   const defaultDeck = [
@@ -63,6 +44,7 @@ export const TabBoxes = () => {
       id: 1,
       boxName: 'All',
       title: 'Sample Deck',
+      description: 'This is a sample deck',
     },
   ];
   return (
@@ -75,18 +57,29 @@ export const TabBoxes = () => {
             </Tab>
           ) : (
             data.map(({ label, value }) => (
-              <Tab className="max-w-72" key={value} value={value}>
+              <Tab
+                className="max-w-72"
+                key={value}
+                value={value}
+                defaultValue="All"
+              >
                 {label}
               </Tab>
             ))
           )}
         </TabsHeader>
-        <TabsBody>
+        <TabsBody
+          animate={{
+            initial: { y: -250 },
+            mount: { y: 0 },
+            unmount: { y: 350 },
+          }}
+        >
           {!user.id ? (
             <CardDeck key="All" value="All" desc={defaultDeck} />
           ) : (
-            data.map(({ value, desc }) => (
-              <CardDeck key={value} value={value} desc={desc} />
+            data.map(({ label, value, desc }) => (
+              <CardDeck label={label} key={value} value={value} desc={desc} />
             ))
           )}
         </TabsBody>
