@@ -28,9 +28,13 @@ export const profileSlice = createSlice({
       persistLocalStorage<Profile>(ProfileKey, action.payload);
       return action.payload;
     },
+    cleanProfileAction: () => {
+      return profileEmptyState;
+    },
   },
 });
 
-export const { getProfileAction, editProfileAction } = profileSlice.actions;
+export const { getProfileAction, editProfileAction, cleanProfileAction } =
+  profileSlice.actions;
 
 export default profileSlice.reducer;

@@ -7,12 +7,12 @@ import {
   MenuList,
   Typography,
 } from '@material-tailwind/react';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { HiUserCircle, HiSupport, HiLogout } from 'react-icons/hi';
 import { useFetchAndLoad } from '../hooks';
 import { LogoutUser } from '../services';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser } from '../redux/states';
+import { cleanProfileAction, logoutUser } from '../redux/states';
 import { AppStore } from '../redux/store';
 import ProfileIcon from '../assets/profile_icon.svg';
 import { googleLogout } from '@react-oauth/google';
@@ -45,6 +45,7 @@ export const ProfileHeader: FC<{ userId: string }> = ({ userId }) => {
       dispatch(logoutUser());
       Cookies.remove('tokenGoogle');
     }
+    dispatch(cleanProfileAction());
     closeMenu();
   };
 

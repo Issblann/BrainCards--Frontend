@@ -8,7 +8,7 @@ interface GetDecks {
 }
 const BASE_URL = 'http://localhost:3000/api/decks';
 
-export const getDecks: GetDecks = (userId): AxiosCall<Deck> => {
+export const getDecksByUserId: GetDecks = (userId): AxiosCall<Deck> => {
   const controller = loadAbort();
   return {
     call: axios.get(`${BASE_URL}/getDecksByUserId/${userId}`, {
