@@ -156,14 +156,12 @@ export const Profile = () => {
         )}
         <div className="flex flex-col">
           <p className="font-semibold text-xl mb-5">My email Address</p>
-          <div className="flex gap-6 w-full">
+          <div className="flex gap-6 w-full items-center">
             <span className="bg-[#e2eaf7] w-[48px] h-[48px] flex justify-center items-center rounded-full">
               <HiMail size={23} color="#4182F9" />
             </span>
-            <div className="flex flex-col">
-              <p>{user.email}</p>
-              <p>{user.createdAt}</p>
-            </div>
+
+            <p className="text-center">{user.email}</p>
           </div>
         </div>
       </div>
