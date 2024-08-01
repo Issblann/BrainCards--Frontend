@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { AxiosCall } from '../models';
 import Profile from '../models/Profile';
 import { loadAbort } from '../utilities';
@@ -9,7 +9,7 @@ export interface EditProfile {
   name: string;
   lastName: string;
   bio: string;
-  // image: string;
+  image?: File | string | null;
 }
 interface GetProfile {
   (id: string | undefined): AxiosCall<Profile>;
@@ -24,9 +24,16 @@ export const getProfile: GetProfile = (id): AxiosCall<Profile> => {
 };
 
 export const editProfile = (id: string | undefined, data: EditProfile) => {
+  const headers: AxiosRequestConfig['headers'] = {
+    'Content-Type': 'multipart/form-data',
+  };
   const controller = loadAbort();
+  const config: AxiosRequestConfig = {
+    headers,
+    signal: controller.signal,
+  };
   return {
-    call: axios.put(`${BASE_URL}/${id}`, data, { signal: controller.signal }),
+    call: axios.put(`${BASE_URL}/${id}`, data, config),
     controller,
   };
 };

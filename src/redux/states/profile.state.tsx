@@ -22,13 +22,14 @@ export const profileSlice = createSlice({
   reducers: {
     getProfileAction: (state, action) => {
       persistLocalStorage<Profile>(ProfileKey, action.payload);
-      return action.payload;
+      return { ...state, ...action.payload };
     },
     editProfileAction: (state, action) => {
       persistLocalStorage<Profile>(ProfileKey, action.payload);
-      return action.payload;
+      return { ...state, ...action.payload };
     },
     cleanProfileAction: () => {
+      localStorage.removeItem(ProfileKey);
       return profileEmptyState;
     },
   },

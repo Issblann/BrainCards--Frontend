@@ -19,10 +19,13 @@ import { googleLogout } from '@react-oauth/google';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { PrivateRoutes } from '../models';
-export const ProfileHeader: FC<{ userId: string }> = ({ userId }) => {
+export const ProfileHeader: FC<{
+  userId: string;
+}> = ({ userId }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { callEndpoint } = useFetchAndLoad();
   const user = useSelector((store: AppStore) => store.user);
+  const profile = useSelector((store: AppStore) => store.profile);
   const dispatch = useDispatch();
   const closeMenu = () => setIsMenuOpen(false);
   const navigate = useNavigate();
@@ -81,7 +84,11 @@ export const ProfileHeader: FC<{ userId: string }> = ({ userId }) => {
             withBorder={true}
             color="blue-gray"
             className=" p-0.5"
-            src={user?.picture || ProfileIcon}
+            src={
+              profile.image
+                ? `http://localhost:3000/${profile.image}`
+                : user?.picture || ProfileIcon
+            }
           />
         </Button>
       </MenuHandler>
