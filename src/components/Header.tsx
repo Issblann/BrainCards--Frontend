@@ -60,7 +60,7 @@ export const Header = () => {
         !isAuthPage && (
           <div className="flex gap-3 items-center">
             <Link to={PublicRoutes.REGISTER}>
-              <Button className="font-semibold">Sign IN</Button>
+              <Button className="font-semibold bg-lavender-700">Sign IN</Button>
             </Link>
             <Link to={PublicRoutes.LOGIN}>
               <Button

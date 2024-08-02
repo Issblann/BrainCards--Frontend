@@ -26,7 +26,7 @@ export const profileSlice = createSlice({
     },
     editProfileAction: (state, action) => {
       persistLocalStorage<Profile>(ProfileKey, action.payload);
-      return { ...state, ...action.payload };
+      return state;
     },
     cleanProfileAction: () => {
       localStorage.removeItem(ProfileKey);

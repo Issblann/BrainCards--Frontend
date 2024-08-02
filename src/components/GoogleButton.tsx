@@ -51,7 +51,7 @@ export const GoogleButton = () => {
       <Button
         onClick={() => login()}
         variant="outlined"
-        className="flex items-center justify-center normal-case w-10/12 gap-2 p-3 rounded-md shadow-sm"
+        className="flex items-center justify-center normal-case border-lavender-400 w-10/12 gap-2 p-3 rounded-md shadow-md"
       >
         <img
           src="https://docs.material-tailwind.com/icons/google.svg"

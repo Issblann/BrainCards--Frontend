@@ -7,7 +7,7 @@ import {
   MenuList,
   Typography,
 } from '@material-tailwind/react';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { HiUserCircle, HiSupport, HiLogout } from 'react-icons/hi';
 import { useFetchAndLoad } from '../hooks';
 import { LogoutUser } from '../services';
@@ -83,7 +83,7 @@ export const ProfileHeader: FC<{
             alt={user.username}
             withBorder={true}
             color="blue-gray"
-            className=" p-0.5"
+            className="border-lavender-900 p-0.5"
             src={
               profile.image
                 ? `http://localhost:3000/${profile.image}`

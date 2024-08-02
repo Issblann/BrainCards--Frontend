@@ -5,7 +5,7 @@ interface Profile {
   lastName: string;
   username: string;
   bio: string;
-  image?: string;
+  image?: string | File | Blob;
   updatedAt: string;
 }
 

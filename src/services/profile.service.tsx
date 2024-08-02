@@ -9,7 +9,7 @@ export interface EditProfile {
   name: string;
   lastName: string;
   bio: string;
-  image?: File | string | null;
+  image?: File | Blob | string | null;
 }
 interface GetProfile {
   (id: string | undefined): AxiosCall<Profile>;
