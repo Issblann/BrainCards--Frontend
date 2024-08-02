@@ -25,6 +25,7 @@ export const Header = () => {
     }
 
     try {
+      if (!isAuth) return;
       const axiosCall = getProfile(user.id);
       const response = await callEndpoint(axiosCall);
       await dispatch(getProfileAction(response.data));

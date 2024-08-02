@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Deck from '../models/Deck';
 import { Button, TabPanel } from '@material-tailwind/react';
 
@@ -13,9 +14,12 @@ export const CardDeck = ({ label, value, desc }: CardDeckProps) => {
       key={value}
       value={value}
     >
+      {!desc.length && (
+        <div className="flex justify-center mx-auto h-[300px] items-center">
+          <h1 className="text-black"> No decks</h1>
+        </div>
+      )}
       {desc.map(({ id, title, description }: Deck) => {
-        // Encuentra el nombre de la caja correspondiente al `boxId` del deck actual
-
         return (
           <div
             className="bg-white rounded-xl w-full flex flex-col justify-between border-2 md:w-[300px] h-[160px] md:h-[240px] p-4"
