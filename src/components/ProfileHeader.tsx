@@ -18,7 +18,7 @@ import ProfileIcon from '../assets/profile_icon.svg';
 import { googleLogout } from '@react-oauth/google';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import { PrivateRoutes } from '../models';
+import { PrivateRoutes, PublicRoutes } from '../models';
 export const ProfileHeader: FC<{
   userId: string;
 }> = ({ userId }) => {
@@ -50,6 +50,8 @@ export const ProfileHeader: FC<{
     }
     dispatch(cleanProfileAction());
     closeMenu();
+    navigate(PublicRoutes.HOME);
+    await window.location.reload();
   };
 
   const profileMenuItems: ProfileMenuItemProps[] = [

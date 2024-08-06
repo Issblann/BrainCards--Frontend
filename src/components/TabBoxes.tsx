@@ -8,7 +8,7 @@ import { getBoxesByUserId } from '../services/boxes.service';
 import Box from '../models/Box';
 
 export const TabBoxes = () => {
-  const { callEndpoint } = useFetchAndLoad();
+  const { loading, callEndpoint } = useFetchAndLoad();
   const [boxes, setBoxes] = useState<Box[]>([]);
   const user = useSelector((store: AppStore) => store.user);
   const getBoxesWithDecks = async () => {
@@ -47,16 +47,16 @@ export const TabBoxes = () => {
       description: 'This is a sample deck',
     },
   ];
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="w-full">
-      <Tabs value="html">
-        <TabsHeader className="w-full">
-          {!user.id ? (
-            <Tab className="max-w-72" key="All" value="All">
-              All
-            </Tab>
-          ) : (
-            data.map(({ label, value }) => (
+      {data && data.length > 0 ? (
+        <Tabs value={data?.[0]?.value}>
+          <TabsHeader className="w-full">
+            {data.map(({ label, value }) => (
               <Tab
                 className="max-w-72"
                 key={value}
@@ -65,25 +65,38 @@ export const TabBoxes = () => {
               >
                 {label}
               </Tab>
-            ))
-          )}
-        </TabsHeader>
-        <TabsBody
-          animate={{
-            initial: { y: -250 },
-            mount: { y: 0 },
-            unmount: { y: 350 },
-          }}
-        >
-          {!user.id ? (
-            <CardDeck key="All" value="All" desc={defaultDeck} />
-          ) : (
-            data.map(({ label, value, desc }) => (
+            ))}
+          </TabsHeader>
+          <TabsBody
+            animate={{
+              initial: { y: -250 },
+              mount: { y: 0 },
+              unmount: { y: 350 },
+            }}
+          >
+            {data.map(({ label, value, desc }) => (
               <CardDeck label={label} key={value} value={value} desc={desc} />
-            ))
-          )}
-        </TabsBody>
-      </Tabs>
+            ))}
+          </TabsBody>
+        </Tabs>
+      ) : (
+        <Tabs value="All">
+          <TabsHeader className="w-full">
+            <Tab className="max-w-72" key="All" value="All">
+              All
+            </Tab>
+          </TabsHeader>
+          <TabsBody
+            animate={{
+              initial: { y: -250 },
+              mount: { y: 0 },
+              unmount: { y: 350 },
+            }}
+          >
+            <CardDeck key="All" value="All" desc={defaultDeck} />
+          </TabsBody>
+        </Tabs>
+      )}
     </div>
   );
 };
