@@ -16,7 +16,6 @@ export const TabBoxes = () => {
       if (!user.id) return;
       const axiosCall = getBoxesByUserId(user.id);
       const response = await callEndpoint(axiosCall);
-      console.log(response.data, 'response.data');
       setBoxes(response.data);
       console.log(response.data);
     } catch (error) {
@@ -38,7 +37,6 @@ export const TabBoxes = () => {
     })),
   }));
 
-  console.log(data);
   const defaultDeck = [
     {
       id: 1,
