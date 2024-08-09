@@ -4,7 +4,7 @@ import User from '../models/User';
 import { loadAbort } from '../utilities';
 
 interface LoginUser {
-  (email: string, password: string): AxiosCall<UserLogged>;
+  (email: string, password?: string): AxiosCall<UserLogged>;
 }
 
 interface RegisterUser {
@@ -74,6 +74,21 @@ export const LogoutUser = () => {
   const controller = loadAbort();
   return {
     call: axios.post(`${BASE_URL}/logout`, { signal: controller.signal }),
+    controller,
+  };
+};
+
+export const loginWithGoogle = (
+  email: string,
+  username: string
+): AxiosCall<UserLogged> => {
+  const controller = loadAbort();
+  return {
+    call: axios.post(
+      `${BASE_URL}/loginWithGoogle`,
+      { email, username },
+      { signal: controller.signal }
+    ),
     controller,
   };
 };

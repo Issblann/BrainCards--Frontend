@@ -93,7 +93,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
   return (
     <div className="flex w-full ">
       <div className="bg-primary lg:w-5/12 w-full flex justify-center p-5">
-        <div className="border border-[#878787] w-full md:w-auto p-4 rounded-[10px]">
+        <div className="border border-lavender-primary shadow-md w-full md:w-auto p-4 rounded-[10px]">
           <Card color="transparent" shadow={false}>
             <Typography className="text-black font-light">Welcome !</Typography>
             <Typography className="text-black" variant="h4">
@@ -121,7 +121,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                 <Input
                   size="lg"
                   placeholder="name@mail.com"
-                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  className=" !border-t-blue-gray-200 focus:!border-lavender-600"
                   labelProps={{
                     className: 'before:content-none after:content-none',
                   }}
@@ -152,7 +152,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                     <Input
                       size="lg"
                       placeholder="John Doe"
-                      className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                      className=" !border-t-blue-gray-200 focus:!border-lavender-600"
                       labelProps={{
                         className: 'before:content-none after:content-none',
                       }}
@@ -179,7 +179,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                   type={showPassword ? 'text' : 'password'}
                   size="lg"
                   placeholder="********"
-                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  className=" !border-t-blue-gray-200 focus:!border-lavender-600"
                   labelProps={{
                     className: 'before:content-none after:content-none',
                   }}
@@ -214,7 +214,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                       type={showConfirmPassword ? 'text' : 'password'}
                       size="lg"
                       placeholder="********"
-                      className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                      className=" !border-t-blue-gray-200 focus:!border-lavender-600"
                       labelProps={{
                         className: 'before:content-none after:content-none',
                       }}
@@ -252,7 +252,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
               </div>
               <Button
                 type="submit"
-                className="mt-6 flex justify-center items-center"
+                className="mt-6 flex bg-lavender-600 hover:bg-lavender-700 justify-center items-center"
                 fullWidth
               >
                 {loading ? <Spinner className="h-4 w-4" /> : buttonTitle}
@@ -267,13 +267,16 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                   : "Don't have account?"}
                 <span> </span>
                 {isRegister ? (
-                  <Link to={`/${PublicRoutes.LOGIN}`} className="text-blue-500">
+                  <Link
+                    to={`/${PublicRoutes.LOGIN}`}
+                    className="text-lavender-primary"
+                  >
                     Login
                   </Link>
                 ) : (
                   <Link
                     to={`/${PublicRoutes.REGISTER}`}
-                    className="text-blue-500"
+                    className="text-lavender-primary"
                   >
                     Sign Up
                   </Link>
