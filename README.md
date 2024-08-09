@@ -31,6 +31,7 @@ export default {
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
 
 Project photos: 
+
 ![image](https://github.com/user-attachments/assets/9a8fa00e-68c6-4b61-beab-65f63d292ae4)
 ![image](https://github.com/user-attachments/assets/b8914ddf-e05f-4044-9366-bb447e462e8b)
 ![image](https://github.com/user-attachments/assets/64c7f86e-e542-4a8d-8035-6960a002c057)
