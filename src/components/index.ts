@@ -5,3 +5,4 @@ export { ProfileHeader } from './ProfileHeader';
 export { GoogleButton } from './GoogleButton';
 export { TabBoxes } from './TabBoxes';
 export { CardDeck } from './CardDeck';
+export { SpeedDialButton } from './SpeedDialButton';

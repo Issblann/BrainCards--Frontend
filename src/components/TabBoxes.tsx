@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { AppStore } from '../redux/store';
 import { getBoxesByUserId } from '../services/boxes.service';
 import Box from '../models/Box';
+import { SpeedDialButton } from './SpeedDialButton';
 
 export const TabBoxes = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
@@ -50,7 +51,9 @@ export const TabBoxes = () => {
     return <div>Loading...</div>;
   }
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-4">
+      <SpeedDialButton />
+
       {data && data.length > 0 ? (
         <Tabs value={data?.[0]?.value}>
           <TabsHeader className="w-full">
