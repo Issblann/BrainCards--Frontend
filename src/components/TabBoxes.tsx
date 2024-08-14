@@ -7,10 +7,13 @@ import { AppStore } from '../redux/store';
 import { getBoxesByUserId } from '../services/boxes.service';
 import Box from '../models/Box';
 import { SpeedDialButton } from './SpeedDialButton';
+import { CreateDeckModal } from './CreateDeckModal';
 
 export const TabBoxes = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
   const [boxes, setBoxes] = useState<Box[]>([]);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const handleOpenDialog = () => setOpenDialog((cur) => !cur);
   const user = useSelector((store: AppStore) => store.user);
   const getBoxesWithDecks = async () => {
     try {
@@ -52,8 +55,8 @@ export const TabBoxes = () => {
   }
   return (
     <div className="w-full flex flex-col gap-4">
-      <SpeedDialButton />
-
+      <SpeedDialButton onOpenDialog={handleOpenDialog} />
+      <CreateDeckModal open={openDialog} handleClose={handleOpenDialog} />
       {data && data.length > 0 ? (
         <Tabs value={data?.[0]?.value}>
           <TabsHeader className="w-full">

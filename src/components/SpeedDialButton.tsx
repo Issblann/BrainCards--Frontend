@@ -6,19 +6,26 @@ import {
   SpeedDialHandler,
   Typography,
 } from '@material-tailwind/react';
+import { FC } from 'react';
 
 import {
   HiOutlineArchive,
   HiOutlineFolder,
   HiOutlinePlusSm,
 } from 'react-icons/hi';
-export const SpeedDialButton = () => {
+
+interface SpeedDialButtonProps {
+  onOpenDialog: () => void;
+}
+
+export const SpeedDialButton: FC<SpeedDialButtonProps> = ({ onOpenDialog }) => {
   const labelProps = {
     variant: 'small',
     color: 'blue-gray',
     className:
       'absolute top-2/4 -left-2/4 -translate-y-2/4 -translate-x-3/4 font-normal',
   };
+
   return (
     <div className="relative mt-20">
       <div className="absolute bottom-0 right-0">
@@ -33,7 +40,7 @@ export const SpeedDialButton = () => {
               <HiOutlineArchive className="h-5 w-5" color="#607D8B" />
               <Typography {...(labelProps as {})}>New Box</Typography>
             </SpeedDialAction>
-            <SpeedDialAction className="relative">
+            <SpeedDialAction className="relative" onClick={onOpenDialog}>
               <HiOutlineFolder className="h-5 w-5" color="#607D8B" />
               <Typography {...(labelProps as {})}>New Deck</Typography>
             </SpeedDialAction>
