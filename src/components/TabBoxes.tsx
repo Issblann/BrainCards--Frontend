@@ -4,23 +4,46 @@ import { useFetchAndLoad } from '../hooks';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppStore } from '../redux/store';
-import { getBoxesByUserId } from '../services/boxes.service';
+import { createBox, getBoxesByUserId } from '../services/boxes.service';
 import Box from '../models/Box';
 import { SpeedDialButton } from './SpeedDialButton';
 import { CreateDeckModal } from './CreateDeckModal';
+import { CreateBoxModal } from './CreateBoxModal';
+
+export type FormValuesBox = {
+  boxName: string;
+};
 
 export const TabBoxes = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
   const [boxes, setBoxes] = useState<Box[]>([]);
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const handleOpenDialog = () => setOpenDialog((cur) => !cur);
+  const [openDialogDeck, setOpenDialogDeck] = useState<boolean>(false);
+  const [openDialogBox, setOpenDialogBox] = useState<boolean>(false);
+  const handleOpenDialogDeck = () => setOpenDialogDeck((cur) => !cur);
+  const handleOpenDialogBox = () => setOpenDialogBox((cur) => !cur);
   const user = useSelector((store: AppStore) => store.user);
+
   const getBoxesWithDecks = async () => {
     try {
       if (!user.id) return;
       const axiosCall = getBoxesByUserId(user.id);
       const response = await callEndpoint(axiosCall);
       setBoxes(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+      throw new Error(error as string);
+    }
+  };
+
+  const handleCreateBox = async (data: FormValuesBox) => {
+    console.log(data);
+    try {
+      if (!user.id) return;
+      const axiosCall = createBox(user.id, data.boxName);
+      const response = await callEndpoint(axiosCall);
+      handleOpenDialogBox();
+      setBoxes((prevBoxes) => [...prevBoxes, response.data]);
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -53,10 +76,22 @@ export const TabBoxes = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+  console.log(boxes);
   return (
     <div className="w-full flex flex-col gap-4">
-      <SpeedDialButton onOpenDialog={handleOpenDialog} />
-      <CreateDeckModal open={openDialog} handleClose={handleOpenDialog} />
+      <SpeedDialButton
+        onOpenDialogDeck={handleOpenDialogDeck}
+        onOpenDialogBox={handleOpenDialogBox}
+      />
+      <CreateDeckModal
+        open={openDialogDeck}
+        handleClose={handleOpenDialogDeck}
+      />
+      <CreateBoxModal
+        open={openDialogBox}
+        handleClose={handleOpenDialogBox}
+        submitForm={handleCreateBox}
+      />
       {data && data.length > 0 ? (
         <Tabs value={data?.[0]?.value}>
           <TabsHeader className="w-full">

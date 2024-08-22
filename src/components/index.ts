@@ -7,3 +7,4 @@ export { TabBoxes } from './TabBoxes';
 export { CardDeck } from './CardDeck';
 export { SpeedDialButton } from './SpeedDialButton';
 export { DialogWithForm } from './Dialog';
+export { CreateDeckModal } from './CreateDeckModal';

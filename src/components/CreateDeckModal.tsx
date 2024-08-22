@@ -14,7 +14,6 @@ interface CreateDeckModalProps {
   open: boolean;
   handleClose: () => void;
 }
-
 import { HiArrowLongRight } from 'react-icons/hi2';
 export const CreateDeckModal: FC<CreateDeckModalProps> = ({
   open,
@@ -37,7 +36,7 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
             </Typography>
 
             <Typography className="-mb-2" variant="h6">
-              Title
+              Title <span className="text-red-400">*</span>
             </Typography>
             <Input
               labelProps={{
@@ -59,14 +58,24 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
               className=" !border-t-blue-gray-200 focus:!border-lavender-600"
             />
             <div className="-ml-2.5 -mt-3">
-              <Checkbox label="create withing an existing box" />
+              <Checkbox
+                ripple={true}
+                label={
+                  <Typography className="text-xs md:text-sm" color="gray">
+                    Create withing an existing box
+                  </Typography>
+                }
+              />
             </div>
 
-            <Typography className="-mb-2" variant="h6">
+            <Typography className="-mb-2 font-semibold" variant="paragraph">
               FlashCards
             </Typography>
 
-            <Button className="flex w-full justify-center text-base items-center gap-3 bg-white border border-black text-black">
+            <Button
+              type="submit"
+              className="flex w-full justify-center text-base items-center gap-3 bg-white border border-black text-black"
+            >
               Create
               <HiArrowLongRight className="size-6" />
             </Button>
