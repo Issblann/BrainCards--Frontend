@@ -9,9 +9,15 @@ import Box from '../models/Box';
 import { SpeedDialButton } from './SpeedDialButton';
 import { CreateDeckModal } from './CreateDeckModal';
 import { CreateBoxModal } from './CreateBoxModal';
+import { createDeck } from '../services/decks.service';
 
 export type FormValuesBox = {
   boxName: string;
+};
+export type FormValuesDeck = {
+  title: string;
+  description?: string;
+  boxId?: string;
 };
 
 export const TabBoxes = () => {
@@ -22,7 +28,7 @@ export const TabBoxes = () => {
   const handleOpenDialogDeck = () => setOpenDialogDeck((cur) => !cur);
   const handleOpenDialogBox = () => setOpenDialogBox((cur) => !cur);
   const user = useSelector((store: AppStore) => store.user);
-
+  const [trigger, setTrigger] = useState(false);
   const getBoxesWithDecks = async () => {
     try {
       if (!user.id) return;
@@ -51,9 +57,24 @@ export const TabBoxes = () => {
     }
   };
 
+  const handleCreateDeck = async (data: FormValuesDeck) => {
+    console.log(data);
+    try {
+      if (!user.id) return;
+      const axiosCall = createDeck(user.id, data);
+      const response = await callEndpoint(axiosCall);
+      handleOpenDialogDeck();
+      setTrigger((prev) => !prev);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+      throw new Error(error as string);
+    }
+  };
+
   useEffect(() => {
     getBoxesWithDecks();
-  }, [user.id]);
+  }, [user.id, trigger]);
   const data = boxes.map((box) => ({
     label: box.boxName,
     value: box.id,
@@ -86,6 +107,8 @@ export const TabBoxes = () => {
       <CreateDeckModal
         open={openDialogDeck}
         handleClose={handleOpenDialogDeck}
+        boxes={boxes}
+        submitForm={handleCreateDeck}
       />
       <CreateBoxModal
         open={openDialogBox}

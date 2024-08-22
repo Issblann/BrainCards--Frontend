@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { DialogWithForm } from './Dialog';
 import {
   Button,
@@ -7,23 +7,45 @@ import {
   CardFooter,
   Checkbox,
   Input,
+  Option,
+  Select,
   Typography,
 } from '@material-tailwind/react';
 
 interface CreateDeckModalProps {
   open: boolean;
   handleClose: () => void;
+  boxes: Box[];
+  submitForm: (data: FormValuesDeck) => void;
 }
 import { HiArrowLongRight } from 'react-icons/hi2';
+import Box from '../models/Box';
+import { useForm } from 'react-hook-form';
+import { FormValuesDeck } from './TabBoxes';
 export const CreateDeckModal: FC<CreateDeckModalProps> = ({
   open,
   handleClose,
+  boxes,
+  submitForm,
 }) => {
+  const [isWithinBox, setIsWithinBox] = useState<boolean>(false);
+  const allBox = boxes.find((box) => box.boxName === 'All');
+  const boxesWithoutAllBox = boxes.filter((box) => box.boxName !== 'All');
+  const { register, handleSubmit, setValue } = useForm<FormValuesDeck>({
+    defaultValues: {
+      boxId: allBox?.id,
+    },
+  });
+
+  const handleBoxChange = (value: string) => {
+    setValue('boxId', value);
+    console.log(value);
+  };
   return (
     <DialogWithForm open={open} handler={handleClose}>
       <Card className="mx-auto w-full max-w-[30rem]">
-        <form>
-          <CardBody className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit(submitForm)}>
+          <CardBody className="flex px-6 pt-6 pb-2 flex-col gap-4">
             <Typography variant="h4" color="blue-gray">
               New Deck
             </Typography>
@@ -45,6 +67,7 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
               placeholder="Insert a title for your deck"
               size="lg"
               className=" !border-t-blue-gray-200 focus:!border-lavender-600"
+              {...register('title')}
             />
             <Typography className="-mb-2" variant="h6">
               Description
@@ -56,9 +79,12 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
               placeholder="Insert a description"
               size="lg"
               className=" !border-t-blue-gray-200 focus:!border-lavender-600"
+              {...register('description')}
             />
             <div className="-ml-2.5 -mt-3">
               <Checkbox
+                onChange={() => setIsWithinBox(!isWithinBox)}
+                defaultChecked={isWithinBox}
                 ripple={true}
                 label={
                   <Typography className="text-xs md:text-sm" color="gray">
@@ -67,21 +93,38 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
                 }
               />
             </div>
-
+            {isWithinBox && (
+              <Select
+                label="Select a box"
+                color="purple"
+                placeholder="Select an existing box"
+                size="lg"
+                onChange={(e) => {
+                  handleBoxChange(e as string);
+                }}
+              >
+                {boxesWithoutAllBox.map((box) => (
+                  <Option key={box.id} value={box.id}>
+                    <Typography variant="small">{box.boxName}</Typography>
+                  </Option>
+                ))}
+              </Select>
+            )}
             <Typography className="-mb-2 font-semibold" variant="paragraph">
               FlashCards
             </Typography>
 
             <Button
-              type="submit"
-              className="flex w-full justify-center text-base items-center gap-3 bg-white border border-black text-black"
+              size="sm"
+              className="flex w-full justify-center text-sm p-2 normal-case items-center gap-3 bg-white border border-black text-black"
             >
-              Create
+              Create flashcards automatically
               <HiArrowLongRight className="size-6" />
             </Button>
           </CardBody>
-          <CardFooter className="pt-0">
-            <Button variant="text" onClick={handleClose} fullWidth>
+          <CardFooter className="pt-0 flex flex-col text-center">
+            <span className="pb-2">--- or ---</span>
+            <Button type="submit" size="lg" variant="filled" fullWidth>
               Continue without flashcards
             </Button>
           </CardFooter>
