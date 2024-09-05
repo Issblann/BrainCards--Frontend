@@ -31,16 +31,18 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
   const [isWithinBox, setIsWithinBox] = useState<boolean>(false);
   const allBox = boxes.find((box) => box.boxName === 'All');
   const boxesWithoutAllBox = boxes.filter((box) => box.boxName !== 'All');
-  const { register, handleSubmit, setValue } = useForm<FormValuesDeck>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<FormValuesDeck>({
     defaultValues: {
       boxId: allBox?.id,
     },
   });
 
-  const handleBoxChange = (value: string) => {
-    setValue('boxId', value);
-    console.log(value);
-  };
+  const handleBoxChange = (value: string) => setValue('boxId', value);
   return (
     <DialogWithForm open={open} handler={handleClose}>
       <Card className="mx-auto w-full max-w-[30rem]">
@@ -67,8 +69,14 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
               placeholder="Insert a title for your deck"
               size="lg"
               className=" !border-t-blue-gray-200 focus:!border-lavender-600"
-              {...register('title')}
+              {...register('title', { required: 'Title is required' })}
             />
+
+            {errors.title && (
+              <Typography variant="small" color="red">
+                {errors.title.message}
+              </Typography>
+            )}
             <Typography className="-mb-2" variant="h6">
               Description
             </Typography>

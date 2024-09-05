@@ -10,7 +10,7 @@ import { SpeedDialButton } from './SpeedDialButton';
 import { CreateDeckModal } from './CreateDeckModal';
 import { CreateBoxModal } from './CreateBoxModal';
 import { createDeck } from '../services/decks.service';
-
+import '../styles/global.css';
 export type FormValuesBox = {
   boxName: string;
 };
@@ -117,10 +117,10 @@ export const TabBoxes = () => {
       />
       {data && data.length > 0 ? (
         <Tabs value={data?.[0]?.value}>
-          <TabsHeader className="w-full overflow-x-auto">
+          <TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
             {data.map(({ label, value }) => (
               <Tab
-                className=" max-w-[50%] md:max-w-72 flex-shrink-0 md:flex-shrink"
+                className="max-w-[50%] md:max-w-72 md:w-72 flex-shrink-0"
                 key={value}
                 value={value}
                 defaultValue="All"
@@ -143,8 +143,12 @@ export const TabBoxes = () => {
         </Tabs>
       ) : (
         <Tabs value="All">
-          <TabsHeader className="w-full">
-            <Tab className="max-w-72" key="All" value="All">
+          <TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
+            <Tab
+              className="max-w-[50%] md:max-w-72 md:w-72 flex-shrink-0 "
+              key="All"
+              value="All"
+            >
               All
             </Tab>
           </TabsHeader>

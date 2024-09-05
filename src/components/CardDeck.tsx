@@ -9,19 +9,19 @@ interface CardDeckProps {
 export const CardDeck = ({ label, value, desc }: CardDeckProps) => {
   return (
     <TabPanel
-      className="flex flex-col py-4 px-0 gap-3 w-full md:flex-row"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 px-0"
       key={value}
       value={value}
     >
       {!desc.length && (
-        <div className="flex justify-center mx-auto h-[300px] items-center">
+        <div className="col-span-full flex justify-center items-center h-[300px]">
           <h1 className="text-black"> No decks in {label}</h1>
         </div>
       )}
       {desc.map(({ id, title, description }: Deck) => {
         return (
           <div
-            className="bg-lavender-background rounded-xl w-full flex flex-col justify-between border-2 md:w-[300px] h-[160px] md:h-[240px] p-4"
+            className="bg-lavender-background rounded-xl w-full flex flex-col justify-between border-2  h-[160px] md:h-[240px] p-4"
             key={id}
           >
             <div className="flex flex-col">

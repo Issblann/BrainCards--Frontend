@@ -22,7 +22,11 @@ export const CreateBoxModal: FC<CreateBoxModalProps> = ({
   handleClose,
   submitForm,
 }) => {
-  const { register, handleSubmit } = useForm<FormValuesBox>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValuesBox>();
 
   return (
     <DialogWithForm open={open} handler={handleClose}>
@@ -50,9 +54,13 @@ export const CreateBoxModal: FC<CreateBoxModalProps> = ({
               placeholder="Insert a title for your box"
               size="lg"
               className=" !border-t-blue-gray-200 focus:!border-lavender-600"
-              {...(register('boxName'),
-              { required: 'This field is required' as any })}
+              {...register('boxName', { required: 'Title is required' })}
             />
+            {errors.boxName && (
+              <Typography variant="small" color="red">
+                {errors.boxName.message}
+              </Typography>
+            )}
           </CardBody>
           <CardFooter className="pt-0">
             <Button type="submit" fullWidth>
