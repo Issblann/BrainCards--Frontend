@@ -128,6 +128,8 @@ export const Profile = () => {
                     ? (previewImage as string)
                     : profile.image
                     ? `http://localhost:3000/${profile.image}`
+                    : user.picture
+                    ? user.picture
                     : ProfileIcon
                 }
                 size="xxl"
