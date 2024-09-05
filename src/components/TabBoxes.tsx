@@ -117,10 +117,10 @@ export const TabBoxes = () => {
       />
       {data && data.length > 0 ? (
         <Tabs value={data?.[0]?.value}>
-          <TabsHeader className="w-full">
+          <TabsHeader className="w-full overflow-x-auto">
             {data.map(({ label, value }) => (
               <Tab
-                className="max-w-72"
+                className=" max-w-[50%] md:max-w-72 flex-shrink-0 md:flex-shrink"
                 key={value}
                 value={value}
                 defaultValue="All"
