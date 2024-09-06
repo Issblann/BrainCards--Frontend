@@ -15,13 +15,13 @@ import {
 } from 'react-icons/hi';
 
 interface SpeedDialButtonProps {
-  onOpenDialogDeck: () => void;
-  onOpenDialogBox: () => void;
+  handleDialogDeck: () => void;
+  handleDialogBox: () => void;
 }
 
 export const SpeedDialButton: FC<SpeedDialButtonProps> = ({
-  onOpenDialogDeck,
-  onOpenDialogBox,
+  handleDialogDeck,
+  handleDialogBox,
 }) => {
   const labelProps = {
     variant: 'small',
@@ -40,11 +40,11 @@ export const SpeedDialButton: FC<SpeedDialButtonProps> = ({
             </IconButton>
           </SpeedDialHandler>
           <SpeedDialContent className="z-50">
-            <SpeedDialAction className="relative" onClick={onOpenDialogBox}>
+            <SpeedDialAction className="relative" onClick={handleDialogBox}>
               <HiOutlineArchive className="h-5 w-5" color="#607D8B" />
               <Typography {...(labelProps as {})}>New Box</Typography>
             </SpeedDialAction>
-            <SpeedDialAction className="relative" onClick={onOpenDialogDeck}>
+            <SpeedDialAction className="relative" onClick={handleDialogDeck}>
               <HiOutlineFolder className="h-5 w-5" color="#607D8B" />
               <Typography {...(labelProps as {})}>New Deck</Typography>
             </SpeedDialAction>

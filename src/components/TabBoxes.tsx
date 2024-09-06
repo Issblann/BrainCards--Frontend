@@ -25,17 +25,19 @@ export const TabBoxes = () => {
   const [boxes, setBoxes] = useState<Box[]>([]);
   const [openDialogDeck, setOpenDialogDeck] = useState<boolean>(false);
   const [openDialogBox, setOpenDialogBox] = useState<boolean>(false);
-  const handleOpenDialogDeck = () => setOpenDialogDeck((cur) => !cur);
-  const handleOpenDialogBox = () => setOpenDialogBox((cur) => !cur);
-  const user = useSelector((store: AppStore) => store.user);
   const [trigger, setTrigger] = useState(false);
+
+  const handleDialogDeck = () => setOpenDialogDeck((cur) => !cur);
+  const handleDialogBox = () => setOpenDialogBox((cur) => !cur);
+
+  const user = useSelector((store: AppStore) => store.user);
+
   const getBoxesWithDecks = async () => {
     try {
       if (!user.id) return;
       const axiosCall = getBoxesByUserId(user.id);
       const response = await callEndpoint(axiosCall);
       setBoxes(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
       throw new Error(error as string);
@@ -48,9 +50,8 @@ export const TabBoxes = () => {
       if (!user.id) return;
       const axiosCall = createBox(user.id, data.boxName);
       const response = await callEndpoint(axiosCall);
-      handleOpenDialogBox();
+      handleDialogBox();
       setBoxes((prevBoxes) => [...prevBoxes, response.data]);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
       throw new Error(error as string);
@@ -63,7 +64,7 @@ export const TabBoxes = () => {
       if (!user.id) return;
       const axiosCall = createDeck(user.id, data);
       const response = await callEndpoint(axiosCall);
-      handleOpenDialogDeck();
+      handleDialogDeck();
       setTrigger((prev) => !prev);
       console.log(response.data);
     } catch (error) {
@@ -75,6 +76,7 @@ export const TabBoxes = () => {
   useEffect(() => {
     getBoxesWithDecks();
   }, [user.id, trigger]);
+
   const data = boxes.map((box) => ({
     label: box.boxName,
     value: box.id,
@@ -97,22 +99,21 @@ export const TabBoxes = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-  console.log(boxes);
   return (
     <div className="w-full flex flex-col gap-4">
       <SpeedDialButton
-        onOpenDialogDeck={handleOpenDialogDeck}
-        onOpenDialogBox={handleOpenDialogBox}
+        handleDialogDeck={handleDialogDeck}
+        handleDialogBox={handleDialogBox}
       />
       <CreateDeckModal
         open={openDialogDeck}
-        handleClose={handleOpenDialogDeck}
+        handleClose={handleDialogDeck}
         boxes={boxes}
         submitForm={handleCreateDeck}
       />
       <CreateBoxModal
         open={openDialogBox}
-        handleClose={handleOpenDialogBox}
+        handleClose={handleDialogBox}
         submitForm={handleCreateBox}
       />
       {data && data.length > 0 ? (

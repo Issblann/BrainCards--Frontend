@@ -8,3 +8,4 @@ export { CardDeck } from './CardDeck';
 export { SpeedDialButton } from './SpeedDialButton';
 export { DialogWithForm } from './Dialog';
 export { CreateDeckModal } from './CreateDeckModal';
+export { CreateFlashcardsModal } from './CreateFlashcardsModal';
