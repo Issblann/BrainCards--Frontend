@@ -1,7 +1,3 @@
-interface FlashcardQuantity {
-  number: number;
-}
-
 export const generateFlashcardQuantities = (
   min: number,
   max: number
