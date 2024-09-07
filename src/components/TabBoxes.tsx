@@ -4,31 +4,38 @@ import { useFetchAndLoad } from '../hooks';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppStore } from '../redux/store';
-import { createBox, getBoxesByUserId } from '../services/boxes.service';
+import {
+  createBox,
+  FormValuesBox,
+  getBoxesByUserId,
+} from '../services/boxes.service';
 import Box from '../models/Box';
 import { SpeedDialButton } from './SpeedDialButton';
 import { CreateDeckModal } from './CreateDeckModal';
 import { CreateBoxModal } from './CreateBoxModal';
-import { createDeck } from '../services/decks.service';
+import { createDeck, FormValuesDeck } from '../services/decks.service';
 import '../styles/global.css';
-export type FormValuesBox = {
-  boxName: string;
-};
-export type FormValuesDeck = {
-  title: string;
-  description?: string;
-  boxId?: string;
-};
+import { CreateFlashcardsModal } from './CreateFlashcardsModal';
+import {
+  createFlashcards,
+  FormValuesFlashcards,
+} from '../services/flashcards.service';
+import Deck from '../models/Deck';
 
 export const TabBoxes = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
   const [boxes, setBoxes] = useState<Box[]>([]);
-  const [openDialogDeck, setOpenDialogDeck] = useState<boolean>(false);
+  const [createdDeck, setCreatedDeck] = useState<Deck>();
   const [openDialogBox, setOpenDialogBox] = useState<boolean>(false);
+  const [openDialogDeck, setOpenDialogDeck] = useState<boolean>(false);
+  const [openDialogFlashcards, setOpenDialogFlashcards] =
+    useState<boolean>(false);
+
   const [trigger, setTrigger] = useState(false);
 
-  const handleDialogDeck = () => setOpenDialogDeck((cur) => !cur);
   const handleDialogBox = () => setOpenDialogBox((cur) => !cur);
+  const handleDialogDeck = () => setOpenDialogDeck((cur) => !cur);
+  const handleDialogFlashcards = () => setOpenDialogFlashcards((cur) => !cur);
 
   const user = useSelector((store: AppStore) => store.user);
 
@@ -48,7 +55,7 @@ export const TabBoxes = () => {
     console.log(data);
     try {
       if (!user.id) return;
-      const axiosCall = createBox(user.id, data.boxName);
+      const axiosCall = createBox(user.id, data);
       const response = await callEndpoint(axiosCall);
       handleDialogBox();
       setBoxes((prevBoxes) => [...prevBoxes, response.data]);
@@ -66,13 +73,30 @@ export const TabBoxes = () => {
       const response = await callEndpoint(axiosCall);
       handleDialogDeck();
       setTrigger((prev) => !prev);
+      setCreatedDeck(response.data);
+      setOpenDialogFlashcards(true);
       console.log(response.data);
     } catch (error) {
       console.error(error);
       throw new Error(error as string);
     }
   };
+  console.log(boxes);
 
+  const handleCreateFlashcards = async (data: FormValuesFlashcards) => {
+    console.log(data);
+    try {
+      if (!user.id) return;
+      const axiosCall = createFlashcards(createdDeck?.id, data);
+      const response = await callEndpoint(axiosCall);
+      handleDialogFlashcards();
+      setTrigger((prev) => !prev);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+      throw new Error(error as string);
+    }
+  };
   useEffect(() => {
     getBoxesWithDecks();
   }, [user.id, trigger]);
@@ -105,16 +129,24 @@ export const TabBoxes = () => {
         handleDialogDeck={handleDialogDeck}
         handleDialogBox={handleDialogBox}
       />
+
+      <CreateBoxModal
+        open={openDialogBox}
+        handleClose={handleDialogBox}
+        submitForm={handleCreateBox}
+      />
       <CreateDeckModal
         open={openDialogDeck}
         handleClose={handleDialogDeck}
         boxes={boxes}
         submitForm={handleCreateDeck}
       />
-      <CreateBoxModal
-        open={openDialogBox}
-        handleClose={handleDialogBox}
-        submitForm={handleCreateBox}
+
+      <CreateFlashcardsModal
+        open={openDialogFlashcards}
+        handleClose={handleDialogFlashcards}
+        submitForm={handleCreateFlashcards}
+        deck={createdDeck}
       />
       {data && data.length > 0 ? (
         <Tabs value={data?.[0]?.value}>

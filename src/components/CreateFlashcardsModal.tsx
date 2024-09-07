@@ -6,7 +6,6 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Input,
   Option,
   Select,
   Typography,
@@ -15,33 +14,62 @@ import {
 interface CreateFlashcardsModalProps {
   open: boolean;
   handleClose: () => void;
-  //   deckId: string;
-  //   submitForm: (data: FormValuesDeck) => void;
+  submitForm: (data: FormValuesFlashcards) => void;
+  deck: Deck | undefined;
 }
 import { useForm } from 'react-hook-form';
-import { FormValuesDeck } from './TabBoxes';
+import { FormValuesFlashcards } from '../services/flashcards.service';
+import { generateFlashcardQuantities } from '../utilities/generateFlashcardQuantities';
+import { DifficultyLevelEnum } from '../models/Flashcards';
+import Deck from '../models/Deck';
+
 export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
   open,
   handleClose,
-  //   deckId,
-  //   submitForm,
+  submitForm,
+  deck,
 }) => {
   const {
     register,
     handleSubmit,
     setValue,
+    trigger,
     formState: { errors },
-  } = useForm<FormValuesDeck>({
+  } = useForm<FormValuesFlashcards>({
     defaultValues: {
-      //   boxId: allBox?.id,
+      topic: deck?.title,
+      description: deck?.description,
     },
   });
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(
+    null
+  );
 
-  //   const handleBoxChange = (value: string) => setValue('boxId', value);
+  const quantityFlashcards = generateFlashcardQuantities(1, 10);
+
+  const handleQuantity = (value: string) =>
+    setValue('quantityFlashcards', parseInt(value));
+
+  const handleDifficultySelect = (value: DifficultyLevelEnum) => {
+    setSelectedDifficulty(value);
+    setValue('difficultyLevel', value);
+  };
+
+  console.log(selectedDifficulty);
+  console.log(errors);
+  const difficultyLevels = [
+    {
+      label: 'Easy',
+      value: DifficultyLevelEnum.EASY,
+      color: 'green',
+    },
+    { label: 'Medium', value: DifficultyLevelEnum.MEDIUM, color: 'orange' },
+    { label: 'Hard', value: DifficultyLevelEnum.HARD, color: 'red' },
+  ];
   return (
     <DialogWithForm open={open} handler={handleClose}>
       <Card className="mx-auto w-full max-w-[30rem]">
-        <form>
+        <form onSubmit={handleSubmit(submitForm)}>
           <CardBody className="flex px-6 pt-6 pb-2 flex-col gap-5">
             <div>
               <Typography variant="h4" color="blue-gray">
@@ -55,53 +83,14 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
                 Create yours flashcards automatically
               </Typography>
             </div>
-            <Typography className="-mb-2" variant="h6">
-              Subject <span className="text-red-400">*</span>
-            </Typography>
-            <Typography className="-mb-2" variant="small">
-              Enter the main subject or theme for your flashcards. Make sure it
-              is related to your deck.
-            </Typography>
-            <Input
-              labelProps={{
-                className: 'before:content-none after:content-none',
-              }}
-              placeholder="e.g., Industrial revolution"
-              size="lg"
-              className=" !border-t-blue-gray-200 focus:!border-lavender-600"
-              //   {...register('title', { required: 'Subject is required' })}
-            />
-
-            {errors.title && (
-              <Typography variant="small" color="red">
-                {errors.title.message}
-              </Typography>
-            )}
-            <Typography className="-mb-2" variant="h6">
-              Description
-            </Typography>
-
-            <Typography className="-mb-2" variant="small">
-              Provide a detailed description of the topic. The more specific you
-              are, the more accurately the flashcards will be generated.
-            </Typography>
-
-            <Input
-              labelProps={{
-                className: 'before:content-none after:content-none',
-              }}
-              placeholder="e.g., A historical period of major industrialization between the 18th and 19th centuries."
-              size="lg"
-              className=" !border-t-blue-gray-200 focus:!border-lavender-600"
-              //   {...register('description')}
-            />
 
             <Typography className="-mb-2" variant="h6">
               Number of Flashcards <span className="text-red-400">*</span>
             </Typography>
 
             <Typography className="-mb-2" variant="small">
-              Specify how many flashcards you'd like to generate for this topic.
+              Specify how many flashcards you'd like to generate for this
+              subject.
             </Typography>
 
             <Select
@@ -109,12 +98,29 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
               color="purple"
               placeholder="Select the number of flashcards"
               size="lg"
+              {...register('quantityFlashcards', {
+                required: 'The number of flashcards is required',
+              })}
+              onChange={(e) => {
+                handleQuantity(e as string);
+                trigger('quantityFlashcards');
+              }}
             >
-              <Option>
-                <Typography variant="small">1</Typography>
-              </Option>
+              {quantityFlashcards.map((quantity) => (
+                <Option
+                  className="bg-none"
+                  key={quantity}
+                  value={quantity.toString()}
+                >
+                  <Typography variant="small">{quantity}</Typography>
+                </Option>
+              ))}
             </Select>
-
+            {errors.quantityFlashcards && (
+              <Typography variant="small" color="red">
+                {errors.quantityFlashcards.message}
+              </Typography>
+            )}
             <Typography className="-mb-2" variant="h6">
               Difficult level <span className="text-red-400">*</span>
             </Typography>
@@ -124,11 +130,34 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
               audience.
             </Typography>
 
-            <ButtonGroup ripple={true} size="sm" className="gap-1 divide-none">
-              <Button className="rounded-md bg-green-800">Easy</Button>
-              <Button className="rounded-md bg-orange-800">Medium</Button>
-              <Button className="rounded-md bg-red-800">Hard</Button>
+            <ButtonGroup
+              ripple={true}
+              size="sm"
+              className="gap-1 divide-none"
+              {...register('difficultyLevel', {
+                required: 'The difficulty level is required',
+              })}
+            >
+              {difficultyLevels.map((level) => (
+                <Button
+                  onClick={() => {
+                    handleDifficultySelect(level.value);
+                    trigger('difficultyLevel');
+                  }}
+                  key={level.value}
+                  type="button"
+                  className={`rounded-md bg-${level.color}-700 focus:opacity-[0.65] focus:bg-${level.color} focus:shadow-none`}
+                >
+                  {level.label}
+                </Button>
+              ))}
             </ButtonGroup>
+
+            {errors.difficultyLevel && (
+              <Typography variant="small" color="red">
+                {errors.difficultyLevel.message}
+              </Typography>
+            )}
           </CardBody>
           <CardFooter className="flex flex-col text-center">
             <Button

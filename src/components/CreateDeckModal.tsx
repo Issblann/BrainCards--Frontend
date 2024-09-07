@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { DialogWithForm } from './Dialog';
 import {
   Button,
@@ -20,9 +20,9 @@ interface CreateDeckModalProps {
 }
 import { HiArrowLongRight } from 'react-icons/hi2';
 import Box from '../models/Box';
-import { set, useForm } from 'react-hook-form';
-import { FormValuesDeck } from './TabBoxes';
-import { CreateFlashcardsModal } from './CreateFlashcardsModal';
+import { useForm } from 'react-hook-form';
+import { FormValuesDeck } from '../services/decks.service';
+
 export const CreateDeckModal: FC<CreateDeckModalProps> = ({
   open,
   handleClose,
@@ -30,12 +30,9 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
   submitForm,
 }) => {
   const [isWithinBox, setIsWithinBox] = useState<boolean>(false);
-  const [openDialogFlashcards, setOpenDialogFlashcards] =
-    useState<boolean>(false);
 
   const allBox = boxes.find((box) => box.boxName === 'All');
   const boxesWithoutAllBox = boxes.filter((box) => box.boxName !== 'All');
-  const handleDialogFlashcards = () => setOpenDialogFlashcards((cur) => !cur);
 
   const {
     register,
@@ -49,7 +46,6 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
   });
 
   const handleBoxChange = (value: string) => setValue('boxId', value);
-
   return (
     <>
       <DialogWithForm open={open} handler={handleClose}>
@@ -70,6 +66,10 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
               <Typography className="-mb-2" variant="h6">
                 Title <span className="text-red-400">*</span>
               </Typography>
+
+              <Typography className="-mb-2" variant="small">
+                Enter the main subject or theme for your flashcards.
+              </Typography>
               <Input
                 labelProps={{
                   className: 'before:content-none after:content-none',
@@ -87,6 +87,11 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
               )}
               <Typography className="-mb-2" variant="h6">
                 Description
+              </Typography>
+
+              <Typography className="-mb-2" variant="small">
+                Provide a detailed description of the subject. The more specific
+                you are, the more accurately the flashcards will be generated.
               </Typography>
               <Input
                 labelProps={{
@@ -126,41 +131,20 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
                   ))}
                 </Select>
               )}
-              <Typography className="-mb-2 font-semibold" variant="paragraph">
-                FlashCards
-              </Typography>
-
+            </CardBody>
+            <CardFooter className="pt-0 flex flex-col text-center">
               <Button
-                onClick={() => {
-                  handleClose();
-                  setOpenDialogFlashcards(true);
-                }}
+                type="submit"
                 size="sm"
                 className="flex w-full justify-center text-sm p-2 normal-case items-center gap-3 bg-white border border-black hover:bg-lavender-background text-black"
               >
                 Create flashcards automatically
                 <HiArrowLongRight className="size-6" />
               </Button>
-            </CardBody>
-            <CardFooter className="pt-0 flex flex-col text-center">
-              <span className="pb-2">--- or ---</span>
-              <Button
-                className="normal-case"
-                type="submit"
-                size="lg"
-                variant="text"
-                fullWidth
-              >
-                Continue without flashcards
-              </Button>
             </CardFooter>
           </form>
         </Card>
       </DialogWithForm>
-      <CreateFlashcardsModal
-        open={openDialogFlashcards}
-        handleClose={handleDialogFlashcards}
-      />
     </>
   );
 };

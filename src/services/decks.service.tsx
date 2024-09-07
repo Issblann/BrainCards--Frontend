@@ -3,17 +3,18 @@ import { AxiosCall } from '../models';
 import Deck from '../models/Deck';
 import { loadAbort } from '../utilities';
 
-type DeckPost = {
+export type FormValuesDeck = {
   title: string;
   description?: string;
-  boxId?: string;
+  boxId: string;
 };
+
 interface GetDecks {
   (userId: string | undefined): AxiosCall<Deck>;
 }
 
 interface CreateDeck {
-  (userId: string, Deck: DeckPost): AxiosCall<Deck>;
+  (userId: string, Deck: FormValuesDeck): AxiosCall<Deck>;
 }
 const BASE_URL = 'http://localhost:3000/api/decks';
 
