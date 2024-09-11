@@ -17,6 +17,13 @@ import {
 import { createDeck, FormValuesDeck } from '../../services/decks.service';
 import Box from '../../models/Box';
 import Deck from '../../models/Deck';
+import {
+  Tabs,
+  TabsBody,
+  TabsHeader,
+  Tab as TabMT,
+} from '@material-tailwind/react';
+import { CardsDeck } from '../CardsCore/CardsDeck';
 
 interface TabProps {
   boxes: Box[];
@@ -137,6 +144,54 @@ export const Tab: FC<TabProps> = ({
         createdDeck={createdDeck}
         boxes={boxes}
       />
+
+      {data && data.length > 0 ? (
+        <Tabs value={data?.[0]?.value}>
+          <TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
+            {data.map(({ label, value }) => (
+              <TabMT
+                className="max-w-[50%] md:max-w-72 md:w-72 flex-shrink-0"
+                key={value}
+                value={value}
+                defaultValue="All"
+              >
+                {label}
+              </TabMT>
+            ))}
+          </TabsHeader>
+          <TabsBody
+            animate={{
+              initial: { y: -250 },
+              mount: { y: 0 },
+              unmount: { y: 350 },
+            }}
+          >
+            {' '}
+            <CardsDeck data={data} />
+          </TabsBody>
+        </Tabs>
+      ) : (
+        <Tabs value="All">
+          <TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
+            <TabMT
+              className="max-w-[50%] md:max-w-72 md:w-72 flex-shrink-0 "
+              key="All"
+              value="All"
+            >
+              All
+            </TabMT>
+          </TabsHeader>
+          <TabsBody
+            animate={{
+              initial: { y: -250 },
+              mount: { y: 0 },
+              unmount: { y: 350 },
+            }}
+          >
+            <CardsDeck />
+          </TabsBody>
+        </Tabs>
+      )}
     </>
   );
 };

@@ -1,5 +1,3 @@
-import { TabsBody } from '@material-tailwind/react';
-import React from 'react';
 import { CardDeck } from './CardDeck';
 
 export const CardsDeck = ({ data }: any) => {
