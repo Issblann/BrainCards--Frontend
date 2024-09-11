@@ -1,4 +1,4 @@
-import Deck from '../models/Deck';
+import Deck from '../../models/Deck';
 import { Button, TabPanel } from '@material-tailwind/react';
 
 interface CardDeckProps {

@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { DialogWithForm } from './Dialog';
+
 import {
   Button,
   ButtonGroup,
@@ -18,10 +18,12 @@ interface CreateFlashcardsModalProps {
   deck: Deck | undefined;
 }
 import { useForm } from 'react-hook-form';
-import { FormValuesFlashcards } from '../services/flashcards.service';
-import { generateFlashcardQuantities } from '../utilities/generateFlashcardQuantities';
-import { DifficultyLevelEnum } from '../models/Flashcards';
-import Deck from '../models/Deck';
+
+import { FormValuesFlashcards } from '../../services/flashcards.service';
+import Deck from '../../models/Deck';
+import { DialogWithForm } from '../Dialog';
+import { DifficultyLevelEnum } from '../../models/Flashcards';
+import { generateFlashcardQuantities } from '../../utilities/generateFlashcardQuantities';
 
 export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
   open,

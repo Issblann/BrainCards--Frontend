@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { DialogWithForm } from './Dialog';
+import { DialogWithForm } from './../Dialog';
 import {
   Button,
   Card,
@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@material-tailwind/react';
 import { useForm } from 'react-hook-form';
-import { FormValuesBox } from './TabBoxes';
+import { FormValuesBox } from '../../services/boxes.service';
 
 interface CreateBoxModalProps {
   open: boolean;
