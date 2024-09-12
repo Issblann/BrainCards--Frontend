@@ -11,6 +11,11 @@ interface TabBoxesProps {
   openDialogBox: boolean;
   handleCreateBox: (data: FormValuesBox) => void;
 }
+
+interface DataItem {
+  label: string;
+  value: string;
+}
 export const TabBoxes: FC<TabBoxesProps> = ({
   data,
   handleDialogBox,
@@ -25,53 +30,52 @@ export const TabBoxes: FC<TabBoxesProps> = ({
         submitForm={handleCreateBox}
       />
 
-      {data && data.length > 0 ? (
-        <Tabs value={data?.[0]?.value}>
-          <TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
-            {data.map(({ label, value }) => (
-              <Tab
-                className="max-w-[50%] md:max-w-72 md:w-72 flex-shrink-0"
-                key={value}
-                value={value}
-                defaultValue="All"
-              >
-                {label}
-              </Tab>
-            ))}
-          </TabsHeader>
-          <TabsBody
-            animate={{
-              initial: { y: -250 },
-              mount: { y: 0 },
-              unmount: { y: 350 },
-            }}
-          >
-            {' '}
-            <CardsDeck data={data} />
-          </TabsBody>
-        </Tabs>
-      ) : (
-        <Tabs value="All">
-          <TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
+      <Tabs value={data?.[0]?.value}>
+        <TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
+          {data.map(({ label, value }: DataItem) => (
             <Tab
-              className="max-w-[50%] md:max-w-72 md:w-72 flex-shrink-0 "
-              key="All"
-              value="All"
+              className="max-w-[50%] md:max-w-72 md:w-72 flex-shrink-0"
+              key={value}
+              value={value}
+              defaultValue="All"
             >
-              All
+              {label}
             </Tab>
-          </TabsHeader>
-          <TabsBody
-            animate={{
-              initial: { y: -250 },
-              mount: { y: 0 },
-              unmount: { y: 350 },
-            }}
-          >
-            <CardsDeck />
-          </TabsBody>
-        </Tabs>
-      )}
+          ))}
+        </TabsHeader>
+        <TabsBody
+          animate={{
+            initial: { y: -250 },
+            mount: { y: 0 },
+            unmount: { y: 350 },
+          }}
+        >
+          <CardsDeck data={data} />
+        </TabsBody>
+      </Tabs>
     </div>
   );
 };
+
+{
+  /* <Tabs value="All">
+<TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
+  <Tab
+    className="max-w-[50%] md:max-w-72 md:w-72 flex-shrink-0 "
+    key="All"
+    value="All"
+  >
+    All
+  </Tab>
+</TabsHeader>
+<TabsBody
+  animate={{
+    initial: { y: -250 },
+    mount: { y: 0 },
+    unmount: { y: 350 },
+  }}
+>
+  <CardsDeck />
+</TabsBody>
+</Tabs> */
+}

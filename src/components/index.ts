@@ -10,5 +10,4 @@ export { DialogWithForm } from './Dialog';
 export { CreateDeckModal } from './TabCore/CreateDeckModal';
 export { CreateFlashcardsModal } from './TabCore/CreateFlashcardsModal';
 export { CardsDeck } from './CardsCore/CardsDeck';
-export { Tab } from './TabCore/Tab';
 export { TabDecks } from './TabCore/TabDecks';
