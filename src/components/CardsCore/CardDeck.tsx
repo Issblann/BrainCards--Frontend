@@ -25,7 +25,6 @@ export const CardDeck = ({ label, value, desc }: CardDeckProps) => {
             key={id}
           >
             <div className="flex flex-col">
-              {/* Muestra el nombre de la caja correspondiente */}
               <p className="font-normal text-lavender-950 text-xs">{label}</p>
               <h1 className="text-black font-semibold ">{title}</h1>
               <p className="text-xs font-normal">{description}</p>

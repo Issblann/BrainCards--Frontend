@@ -56,26 +56,3 @@ export const TabBoxes: FC<TabBoxesProps> = ({
     </div>
   );
 };
-
-{
-  /* <Tabs value="All">
-<TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
-  <Tab
-    className="max-w-[50%] md:max-w-72 md:w-72 flex-shrink-0 "
-    key="All"
-    value="All"
-  >
-    All
-  </Tab>
-</TabsHeader>
-<TabsBody
-  animate={{
-    initial: { y: -250 },
-    mount: { y: 0 },
-    unmount: { y: 350 },
-  }}
->
-  <CardsDeck />
-</TabsBody>
-</Tabs> */
-}
