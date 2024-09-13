@@ -63,10 +63,14 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
     {
       label: 'Easy',
       value: DifficultyLevelEnum.EASY,
-      color: 'green',
+      color: 'bg-green-700',
     },
-    { label: 'Medium', value: DifficultyLevelEnum.MEDIUM, color: 'orange' },
-    { label: 'Hard', value: DifficultyLevelEnum.HARD, color: 'red' },
+    {
+      label: 'Medium',
+      value: DifficultyLevelEnum.MEDIUM,
+      color: 'bg-orange-700',
+    },
+    { label: 'Hard', value: DifficultyLevelEnum.HARD, color: 'bg-red-700' },
   ];
   return (
     <DialogWithForm open={open} handler={handleClose}>
@@ -148,7 +152,7 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
                   }}
                   key={level.value}
                   type="button"
-                  className={`rounded-md bg-${level.color}-700 focus:opacity-[0.65] focus:bg-${level.color} focus:shadow-none`}
+                  className={`rounded-md ${level.color} focus:opacity-[0.50]  focus:shadow-none`}
                 >
                   {level.label}
                 </Button>

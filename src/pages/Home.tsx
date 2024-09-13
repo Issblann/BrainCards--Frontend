@@ -118,9 +118,6 @@ export const Home = () => {
   }));
 
   console.log(data);
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="w-full h-full flex justify-center flex-col gap-4">
@@ -136,16 +133,30 @@ export const Home = () => {
             openDialogBox={openDialogBox}
             handleCreateBox={handleCreateBox}
           />
-          <TabDecks
-            openDialogDeck={openDialogDeck}
-            openDialogFlashcards={openDialogFlashcards}
-            handleDialogDeck={handleDialogDeck}
-            handleCreateDeck={handleCreateDeck}
-            handleDialogFlashcards={handleDialogFlashcards}
-            handleCreateFlashcards={handleCreateFlashcards}
-            createdDeck={createdDeck}
-            boxes={boxes}
-          />
+          {!loading && (
+            <TabDecks
+              openDialogDeck={openDialogDeck}
+              openDialogFlashcards={openDialogFlashcards}
+              handleDialogDeck={handleDialogDeck}
+              handleCreateDeck={handleCreateDeck}
+              handleDialogFlashcards={handleDialogFlashcards}
+              handleCreateFlashcards={handleCreateFlashcards}
+              createdDeck={createdDeck}
+              boxes={boxes}
+              loading={loading}
+            />
+          )}
+
+          {loading && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+              <div className="text-center flex flex-col justify-center items-center">
+                <span className="w-16 h-16 border-4 border-t-transparent border-white border-solid rounded-full animate-spin"></span>
+                <p className="mt-4 text-white text-lg">
+                  Generando flashcards...
+                </p>
+              </div>
+            </div>
+          )}
         </>
       ) : (
         <Tabs value="All">
