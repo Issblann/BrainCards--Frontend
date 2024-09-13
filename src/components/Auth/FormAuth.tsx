@@ -6,17 +6,18 @@ import {
   Spinner,
 } from '@material-tailwind/react';
 import { FC, useState } from 'react';
-import authFormVector from '../assets/authform-vector.png';
+import authFormVector from '../../assets/authform-vector.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../redux/store';
+import { AppStore } from '../../redux/store';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { PublicRoutes } from '../models';
-import { loginUser, registerUser } from '../services';
-import { loginUserAction } from '../redux/states';
+import { PublicRoutes } from '../../models';
+import { loginUser, registerUser } from '../../services';
+import { loginUserAction } from '../../redux/states';
 import { ErrorMessage } from '@hookform/error-message';
-import { useFetchAndLoad } from '../hooks/';
-import { GoogleButton, PasswordToggleIcon } from './index';
+import { useFetchAndLoad } from '../../hooks/';
+import { GoogleButton } from './GoogleButton';
+import { PasswordToggleIcon } from './PasswordToggleIcon';
 
 type FormValues = {
   email: string;

@@ -1,14 +1,14 @@
 import { Button, Typography } from '@material-tailwind/react';
 import { Link, useLocation } from 'react-router-dom';
-import { PublicRoutes } from '../models';
+import { PublicRoutes } from '../../models';
 
 import { ProfileHeader } from './ProfileHeader';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../redux/store';
-import { useIsAuth } from '../guards';
-import { useFetchAndLoad } from '../hooks';
-import { getProfile } from '../services/profile.service';
-import { getProfileAction } from '../redux/states';
+import { AppStore } from '../../redux/store';
+import { useIsAuth } from '../../guards';
+import { useFetchAndLoad } from '../../hooks';
+import { getProfile } from '../../services/profile.service';
+import { getProfileAction } from '../../redux/states';
 import { useEffect } from 'react';
 
 export const Header = () => {

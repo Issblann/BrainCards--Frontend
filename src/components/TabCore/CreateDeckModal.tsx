@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { DialogWithForm } from './Dialog';
+import { DialogWithForm } from '../Dialog';
 import {
   Button,
   Card,
@@ -19,9 +19,11 @@ interface CreateDeckModalProps {
   submitForm: (data: FormValuesDeck) => void;
 }
 import { HiArrowLongRight } from 'react-icons/hi2';
-import Box from '../models/Box';
+
 import { useForm } from 'react-hook-form';
-import { FormValuesDeck } from '../services/decks.service';
+
+import Box from '../../models/Box';
+import { FormValuesDeck } from '../../services/decks.service';
 
 export const CreateDeckModal: FC<CreateDeckModalProps> = ({
   open,
