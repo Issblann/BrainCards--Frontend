@@ -11,3 +11,4 @@ export { CreateDeckModal } from './TabCore/CreateDeckModal';
 export { CreateFlashcardsModal } from './TabCore/CreateFlashcardsModal';
 export { CardsDeck } from './CardsCore/CardsDeck';
 export { TabDecks } from './TabCore/TabDecks';
+export { Flashcards } from './FlashcardsCore/Flashcards';

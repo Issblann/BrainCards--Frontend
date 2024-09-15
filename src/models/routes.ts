@@ -7,4 +7,5 @@ export const PublicRoutes = {
 export const PrivateRoutes = {
   PROFILE: 'profile',
   PRIVATE: 'private',
+  FLASHCARDS: 'flashcards',
 };

@@ -16,6 +16,8 @@ import {
   createFlashcards,
   FormValuesFlashcards,
 } from '../services/flashcards.service';
+import { useNavigate } from 'react-router-dom';
+import { PrivateRoutes } from '../models';
 
 export const Home = () => {
   const user = useSelector((store: AppStore) => store.user);
@@ -33,6 +35,7 @@ export const Home = () => {
   const handleDialogDeck = () => setOpenDialogDeck((cur) => !cur);
   const handleDialogFlashcards = () => setOpenDialogFlashcards((cur) => !cur);
 
+  const navigate = useNavigate();
   const defaultDeck = [
     {
       value: 'All',
@@ -86,6 +89,7 @@ export const Home = () => {
       handleDialogFlashcards();
       setTrigger(!trigger);
       console.log(response.data);
+      navigate(`${PrivateRoutes.FLASHCARDS}/${createdDeck?.id}`);
     } catch (error) {
       console.error(error);
       throw new Error(error as string);
