@@ -30,3 +30,15 @@ export const createFlashcards: CreateFlashcards = (
     controller,
   };
 };
+
+export const getFlashcardsByDeckId = (
+  deckId: string
+): AxiosCall<Flashcard[]> => {
+  const controller = loadAbort();
+  return {
+    call: axios.get(`${BASE_URL}/getFlashcardsByDeckId/${deckId}`, {
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
