@@ -2,8 +2,8 @@ swiper-container {
   width: 70%;
   height: 100%;
   display: flex;
-  border-radius: 16px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 swiper-slide {
   width: 80%;

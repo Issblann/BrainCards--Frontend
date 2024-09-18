@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFetchAndLoad } from '../../hooks';
 import { HiArrowNarrowLeft, HiArrowNarrowRight } from 'react-icons/hi';
@@ -10,7 +10,6 @@ import { getDeckById } from '../../services/decks.service';
 import Deck from '../../models/Deck';
 import Flashcard from '../../models/Flashcards';
 import { Button } from '@material-tailwind/react';
-import { set } from 'react-hook-form';
 
 export const Flashcards = () => {
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
