@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { AxiosCall } from '../models';
 
-export const useFetchAndLoad = () => {
+export const useFetchAndLoad = <T>() => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<T | null>(null);
   const [controller, setController] = useState<AbortController | null>(null);
 
   const callEndpoint = async (axiosCall: AxiosCall<any>) => {

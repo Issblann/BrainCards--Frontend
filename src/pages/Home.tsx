@@ -121,7 +121,7 @@ export const Home = () => {
     })),
   }));
 
-  console.log(data);
+  console.log(createdDeck);
 
   return (
     <div className="w-full h-full flex justify-center flex-col gap-4">
