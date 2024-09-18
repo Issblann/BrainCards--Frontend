@@ -18,6 +18,15 @@ interface CreateDeck {
 }
 const BASE_URL = 'http://localhost:3000/api/decks';
 
+export const getDeckById = (deckId: string): AxiosCall<Deck> => {
+  const controller = loadAbort();
+  return {
+    call: axios.get(`${BASE_URL}/getDeckById/${deckId}`, {
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
 export const getDecksByUserId: GetDecks = (userId): AxiosCall<Deck> => {
   const controller = loadAbort();
   return {
