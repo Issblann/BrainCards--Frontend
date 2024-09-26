@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFetchAndLoad } from '../../hooks';
 import { getDeckById } from '../../services/decks.service';
