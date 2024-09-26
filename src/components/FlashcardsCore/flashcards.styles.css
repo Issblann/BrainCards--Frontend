@@ -2,13 +2,13 @@ swiper-container {
   width: 70%;
   height: 100%;
   display: flex;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  overflow: hidden;
+  position: relative;
 }
 swiper-slide {
-  width: 80%;
+  width: 100%;
   border-radius: 16px;
   cursor: pointer;
+  background: transparent;
 }
 .flip-card {
   width: 100%;
@@ -23,6 +23,7 @@ swiper-slide {
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
+  border-radius: 16px;
 }
 
 .flip-card-front,
@@ -43,6 +44,7 @@ swiper-slide {
 .flip-card-front {
   background-color: #fbf8fc;
   color: #171618;
+  border: 1px solid #171618;
 }
 
 .flip-card-back {
@@ -76,6 +78,11 @@ swiper-slide {
 
 @media (max-width: 768px) {
   swiper-container {
-    width: 100%;
+    width: 80%;
+  }
+}
+@media (max-width: 468px) {
+  swiper-container {
+    width: 60%;
   }
 }

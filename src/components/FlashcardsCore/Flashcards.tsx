@@ -4,9 +4,9 @@ import { useFetchAndLoad } from '../../hooks';
 import { getDeckById } from '../../services/decks.service';
 import Deck from '../../models/Deck';
 import { Carousel } from './Carousel';
-import './flashcards.styles.css';
+
 export const Flashcards = () => {
-  const [isFlipped, setIsFlipped] = useState<boolean>(false);
+  const [flippedCard, setFlippedCard] = useState<Record<string, boolean>>({});
   const [currentCard, setCurrentCard] = useState<number>(1);
   const { deckId } = useParams();
   const { data, loading, callEndpoint } = useFetchAndLoad<Deck>();
@@ -25,25 +25,21 @@ export const Flashcards = () => {
     }
   };
 
-  const handleFlipCard = () => {
-    setIsFlipped(!isFlipped);
+  const handleFlipCard = (flashcardId: string) => {
+    setFlippedCard((prev) => ({ ...prev, [flashcardId]: !prev[flashcardId] }));
   };
 
   const handleCards = () => {
-    if (isFlipped) {
-      setIsFlipped(false);
-    }
+    setFlippedCard({});
   };
 
   const handleNextCard = () => {
     handleCards();
-
     setCurrentCard((prev) => prev + 1);
   };
 
   const handlePrevCard = () => {
     handleCards();
-
     setCurrentCard((prev) => prev - 1);
   };
 
@@ -61,7 +57,7 @@ export const Flashcards = () => {
         ) : (
           <Carousel
             flashcards={data?.flashCards}
-            isFlipped={isFlipped}
+            flippedCard={flippedCard}
             currentCard={currentCard}
             handleFlipCard={handleFlipCard}
             handleNextCard={handleNextCard}
