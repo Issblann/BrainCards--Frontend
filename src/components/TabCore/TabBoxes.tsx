@@ -4,6 +4,7 @@ import { CreateBoxModal } from './CreateBoxModal';
 import { CardsDeck } from '../CardsCore/CardsDeck';
 import { FC } from 'react';
 import { FormValuesBox } from '../../services/boxes.service';
+import { useSelector } from 'react-redux';
 
 interface TabBoxesProps {
   data?: any;
@@ -17,11 +18,21 @@ interface DataItem {
   value: string;
 }
 export const TabBoxes: FC<TabBoxesProps> = ({
-  data,
   handleDialogBox,
   openDialogBox,
   handleCreateBox,
 }) => {
+  const boxes = useSelector((store: any) => store.boxes);
+
+  const data = boxes.map((box: any) => ({
+    label: box.boxName,
+    value: box.id,
+    desc: box.decks.map((deck: any) => ({
+      id: deck.id,
+      title: deck.title,
+      description: deck.description,
+    })),
+  }));
   return (
     <div className="w-full flex flex-col gap-4">
       <CreateBoxModal

@@ -51,7 +51,6 @@ export const Profile = () => {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      console.log(file, 'file');
       setValue('image', file);
 
       const objectURL = URL.createObjectURL(file);
@@ -89,8 +88,6 @@ export const Profile = () => {
     };
   }, [previewImage]);
   const handleEditForm = async (data: EditProfile) => {
-    console.log(data, 'data');
-    console.log(data.image, 'image');
     try {
       const formData = new FormData();
       formData.append('name', data.name);
@@ -108,7 +105,6 @@ export const Profile = () => {
         image: formData.get('image'),
       });
       const response = await callEndpoint(axiosCall);
-      console.log(response, 'data sent  ');
       dispatch(editProfileAction(response.data));
       setIsEdit(false);
       navigate(PublicRoutes.HOME);

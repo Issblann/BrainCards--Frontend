@@ -15,7 +15,6 @@ import {
 interface CreateDeckModalProps {
   open: boolean;
   handleClose: () => void;
-  boxes: Box[];
   submitForm: (data: FormValuesDeck) => void;
 }
 import { HiArrowLongRight } from 'react-icons/hi2';
@@ -24,17 +23,18 @@ import { useForm } from 'react-hook-form';
 
 import Box from '../../models/Box';
 import { FormValuesDeck } from '../../services/decks.service';
+import { useSelector } from 'react-redux';
 
 export const CreateDeckModal: FC<CreateDeckModalProps> = ({
   open,
   handleClose,
-  boxes,
   submitForm,
 }) => {
   const [isWithinBox, setIsWithinBox] = useState<boolean>(false);
+  const boxes = useSelector((store: any) => store.boxes);
 
-  const allBox = boxes.find((box) => box.boxName === 'All');
-  const boxesWithoutAllBox = boxes.filter((box) => box.boxName !== 'All');
+  const allBox = boxes.find((box: Box) => box.boxName === 'All');
+  const boxesWithoutAllBox = boxes.filter((box: Box) => box.boxName !== 'All');
 
   const {
     register,
@@ -79,6 +79,7 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
                 placeholder="Insert a title for your deck"
                 size="lg"
                 className=" !border-t-blue-gray-200 focus:!border-lavender-600"
+                crossOrigin={'true'}
                 {...register('title', { required: 'Title is required' })}
               />
 
@@ -102,6 +103,7 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
                 placeholder="Insert a description"
                 size="lg"
                 className=" !border-t-blue-gray-200 focus:!border-lavender-600"
+                crossOrigin={'true'}
                 {...register('description')}
               />
               <div className="-ml-2.5 -mt-3">
@@ -114,6 +116,7 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
                       Create withing an existing box
                     </Typography>
                   }
+                  crossOrigin={'true'}
                 />
               </div>
               {isWithinBox && (
@@ -126,7 +129,7 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
                     handleBoxChange(e as string);
                   }}
                 >
-                  {boxesWithoutAllBox.map((box) => (
+                  {boxesWithoutAllBox.map((box: Box) => (
                     <Option key={box.id} value={box.id}>
                       <Typography variant="small">{box.boxName}</Typography>
                     </Option>

@@ -43,9 +43,7 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
       description: deck?.description,
     },
   });
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(
-    null
-  );
+  const [_, setSelectedDifficulty] = useState<string | null>(null);
 
   const quantityFlashcards = generateFlashcardQuantities(1, 10);
 
@@ -57,8 +55,6 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
     setValue('difficultyLevel', value);
   };
 
-  console.log(selectedDifficulty);
-  console.log(errors);
   const difficultyLevels = [
     {
       label: 'Easy',

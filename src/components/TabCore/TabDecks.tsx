@@ -14,7 +14,6 @@ interface TabDecksProps {
   handleDialogFlashcards: () => void;
   handleCreateFlashcards: (data: FormValuesFlashcards) => void;
   createdDeck?: Deck;
-  boxes: Box[];
   loading: boolean;
 }
 export const TabDecks: FC<TabDecksProps> = ({
@@ -25,7 +24,6 @@ export const TabDecks: FC<TabDecksProps> = ({
   handleDialogFlashcards,
   handleCreateFlashcards,
   createdDeck,
-  boxes,
   loading,
 }) => {
   return (
@@ -34,7 +32,6 @@ export const TabDecks: FC<TabDecksProps> = ({
         <CreateDeckModal
           open={openDialogDeck}
           handleClose={handleDialogDeck}
-          boxes={boxes}
           submitForm={handleCreateDeck}
         />
         <CreateFlashcardsModal

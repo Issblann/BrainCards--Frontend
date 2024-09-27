@@ -25,7 +25,6 @@ export const GoogleButton = () => {
     );
     const responsePostUser = await callEndpoint(axiosCallPostUser);
 
-    console.log(responsePostUser.data);
     dispatch(
       loginUserAction({
         id: responsePostUser.data.user.id,

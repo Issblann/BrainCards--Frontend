@@ -1,7 +1,6 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CardsDeck, SpeedDialButton, TabBoxes, TabDecks } from '../components';
 import { useEffect, useState } from 'react';
-import Box from '../models/Box';
 import Deck from '../models/Deck';
 import { AppStore } from '../redux/store';
 import { useFetchAndLoad } from '../hooks';
@@ -18,10 +17,14 @@ import {
 } from '../services/flashcards.service';
 import { useNavigate } from 'react-router-dom';
 import { PrivateRoutes } from '../models';
+import { clearDecksAction, getBoxesAction } from '../redux/states';
 
 export const Home = () => {
   const user = useSelector((store: AppStore) => store.user);
-  const [boxes, setBoxes] = useState<Box[]>([]);
+  const boxes = useSelector((store: AppStore) => store.boxes);
+  const decks = useSelector((store: AppStore) => store.decks);
+
+  const dispatch = useDispatch();
   const { loading, callEndpoint } = useFetchAndLoad();
   const [createdDeck, setCreatedDeck] = useState<Deck>();
   const [trigger, setTrigger] = useState<boolean>(false);
@@ -49,14 +52,14 @@ export const Home = () => {
       ],
     },
   ];
+
   const handleCreateBox = async (data: FormValuesBox) => {
-    console.log(data);
     try {
       if (!user.id) return;
       const axiosCall = createBox(user.id, data);
       const response = await callEndpoint(axiosCall);
       handleDialogBox();
-      setBoxes((prevBoxes: any) => [...prevBoxes, response.data]);
+      dispatch(getBoxesAction([...boxes, response.data]));
     } catch (error) {
       console.error(error);
       throw new Error(error as string);
@@ -64,7 +67,6 @@ export const Home = () => {
   };
 
   const handleCreateDeck = async (data: FormValuesDeck) => {
-    console.log(data);
     try {
       if (!user.id) return;
       const axiosCall = createDeck(user.id, data);
@@ -73,7 +75,6 @@ export const Home = () => {
       setTrigger(!trigger);
       setCreatedDeck(response.data);
       setOpenDialogFlashcards(true);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
       throw new Error(error as string);
@@ -81,15 +82,13 @@ export const Home = () => {
   };
 
   const handleCreateFlashcards = async (data: FormValuesFlashcards) => {
-    console.log(data);
     try {
       if (!user.id) return;
       const axiosCall = createFlashcards(createdDeck?.id, data);
-      const response = await callEndpoint(axiosCall);
+      await callEndpoint(axiosCall);
       handleDialogFlashcards();
       setTrigger(!trigger);
-      console.log(response.data);
-      navigate(`${PrivateRoutes.FLASHCARDS}/${createdDeck?.id}`);
+      navigate(`private/${PrivateRoutes.FLASHCARDS}/${createdDeck?.id}`);
     } catch (error) {
       console.error(error);
       throw new Error(error as string);
@@ -100,7 +99,7 @@ export const Home = () => {
       if (!user.id) return;
       const axiosCall = getBoxesByUserId(user.id);
       const response = await callEndpoint(axiosCall);
-      setBoxes(response.data);
+      dispatch(getBoxesAction(response.data));
     } catch (error) {
       console.error(error);
       throw new Error(error as string);
@@ -111,28 +110,16 @@ export const Home = () => {
     getBoxesWithDecks();
   }, [user.id, trigger]);
 
-  const data = boxes.map((box) => ({
-    label: box.boxName,
-    value: box.id,
-    desc: box.decks.map((deck: any) => ({
-      id: deck.id,
-      title: deck.title,
-      description: deck.description,
-    })),
-  }));
-
-  console.log(createdDeck);
-
+  //  console.log(createdDeck);
   return (
     <div className="w-full h-full flex justify-center flex-col gap-4">
-      {data.length > 0 && user ? (
+      {boxes.length > 0 && user ? (
         <>
           <SpeedDialButton
             handleDialogDeck={handleDialogDeck}
             handleDialogBox={handleDialogBox}
           />
           <TabBoxes
-            data={data}
             handleDialogBox={handleDialogBox}
             openDialogBox={openDialogBox}
             handleCreateBox={handleCreateBox}
@@ -146,7 +133,6 @@ export const Home = () => {
               handleDialogFlashcards={handleDialogFlashcards}
               handleCreateFlashcards={handleCreateFlashcards}
               createdDeck={createdDeck}
-              boxes={boxes}
               loading={loading}
             />
           )}
