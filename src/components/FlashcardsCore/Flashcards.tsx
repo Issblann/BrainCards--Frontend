@@ -5,6 +5,9 @@ import { getDeckById } from '../../services/decks.service';
 import Deck from '../../models/Deck';
 import { Carousel } from './Carousel';
 
+import { HiArrowNarrowLeft } from 'react-icons/hi';
+import { BackButton } from '../BackButton';
+
 export const Flashcards = () => {
   const [flippedCard, setFlippedCard] = useState<Record<string, boolean>>({});
   const [currentCard, setCurrentCard] = useState<number>(1);
@@ -45,6 +48,11 @@ export const Flashcards = () => {
 
   return (
     <section className="flex flex-col gap-4 w-full">
+      <BackButton
+        title={'Back'}
+        className="w-[130px]"
+        icon={<HiArrowNarrowLeft />}
+      />
       <h1 className="text-4xl text-center mb-10 font-semibold">
         Aprende con BrainCards
       </h1>

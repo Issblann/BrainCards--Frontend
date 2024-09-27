@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { Button } from '@material-tailwind/react';
 import Flashcard from '../../models/Flashcards';
 import { HiArrowNarrowLeft, HiArrowNarrowRight } from 'react-icons/hi';
 
 import 'swiper/swiper-bundle.css';
 import './flashcards.styles.css';
+
 interface CarouselProps {
   flashcards: Flashcard[] | undefined;
   flippedCard: Record<string, boolean>;
@@ -33,7 +34,7 @@ export const Carousel: FC<CarouselProps> = ({
         slides-per-view={1}
         navigation={true}
         pagination={false}
-        draggable={false}
+        draggable={true}
         effect="cards"
         grabCursor={true}
         centeredSlides={true}
@@ -55,9 +56,9 @@ export const Carousel: FC<CarouselProps> = ({
                 <div className="flip-card-front">
                   <div className="flex justify-between p-2 items-center w-full">
                     <p> Question</p>
-                    <small>
+                    {/* <small>
                       {currentCard}/{flashcardsLength}
-                    </small>
+                    </small> */}
                   </div>
                   <p className="text-md md:text-3xl text-center w-11/12 mx-auto">
                     {flashCard.question}
@@ -77,9 +78,9 @@ export const Carousel: FC<CarouselProps> = ({
                 <div className="flip-card-back">
                   <div className=" flex justify-between p-2 items-center w-full">
                     <p> Answer</p>
-                    <small>
+                    {/* <small>
                       {currentCard}/{flashcardsLength}
-                    </small>
+                    </small> */}
                   </div>
                   <p className="text-md md:text-3xl text-center w-11/12 mx-auto">
                     {flashCard.answer}

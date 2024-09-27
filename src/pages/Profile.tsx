@@ -21,6 +21,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppStore } from '../redux/store';
 import { editProfileAction, getProfileAction } from '../redux/states';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { PublicRoutes } from '../models';
 
 type FormValues = {
   name: string;
@@ -45,7 +47,7 @@ export const Profile = () => {
     // setError,
     // formState: { errors },
   } = useForm<FormValues>();
-
+  const navigate = useNavigate();
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -109,6 +111,7 @@ export const Profile = () => {
       console.log(response, 'data sent  ');
       dispatch(editProfileAction(response.data));
       setIsEdit(false);
+      navigate(PublicRoutes.HOME);
     } catch (error) {
       console.log(error);
     }
@@ -193,6 +196,7 @@ export const Profile = () => {
                     className="w-[380px]"
                     label="Your name"
                     {...register('name')}
+                    crossOrigin={'true'}
                   />
                 </div>
                 <div>
@@ -204,6 +208,7 @@ export const Profile = () => {
                     className="w-[380px]"
                     label="Your last name"
                     {...register('lastName')}
+                    crossOrigin={'true'}
                   />
                 </div>
               </div>
