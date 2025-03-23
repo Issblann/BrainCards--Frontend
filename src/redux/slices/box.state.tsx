@@ -13,7 +13,6 @@ export const boxSlice = createSlice({
   reducers: {
     getBoxesAction: (_, action) => {
       const newBoxes = action.payload;
-      //   const updatedBoxes = [...state, ...newBoxes];
       persistLocalStorage<Box[]>(BoxKey, newBoxes);
       return newBoxes;
     },

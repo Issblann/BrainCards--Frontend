@@ -4,11 +4,11 @@ import { PublicRoutes } from '../../models';
 
 import { ProfileHeader } from './ProfileHeader';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../../redux/store';
+import { AppStore } from '../../redux/store/store';
 import { useIsAuth } from '../../guards';
 import { useFetchAndLoad } from '../../hooks';
 import { getProfile } from '../../services/profile.service';
-import { getProfileAction } from '../../redux/states';
+import { getProfileAction } from '../../redux/slices';
 import { useEffect } from 'react';
 
 export const Header = () => {

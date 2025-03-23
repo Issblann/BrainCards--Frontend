@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CardsDeck, SpeedDialButton, TabBoxes, TabDecks } from '../components';
 import { useEffect, useState } from 'react';
 import Deck from '../models/Deck';
-import { AppStore } from '../redux/store';
+import { AppDispatch, RootState } from '../redux/store/store';
 import { useFetchAndLoad } from '../hooks';
 import {
   createBox,
@@ -17,14 +17,19 @@ import {
 } from '../services/flashcards.service';
 import { useNavigate } from 'react-router-dom';
 import { PrivateRoutes } from '../models';
-import { clearDecksAction, getBoxesAction } from '../redux/states';
+import {
+  clearBoxesAction,
+  clearDecksAction,
+  getBoxesAction,
+  userEmptyState,
+} from '../redux/slices';
 
 export const Home = () => {
-  const user = useSelector((store: AppStore) => store.user);
-  const boxes = useSelector((store: AppStore) => store.boxes);
-  const decks = useSelector((store: AppStore) => store.decks);
+  const user = useSelector((store: RootState) => store.user);
+  const {boxes} = useSelector((store: RootState) => store.boxes);
+  const decks = useSelector((store: RootState) => store.decks);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { loading, callEndpoint } = useFetchAndLoad();
   const [createdDeck, setCreatedDeck] = useState<Deck>();
   const [trigger, setTrigger] = useState<boolean>(false);
@@ -110,7 +115,6 @@ export const Home = () => {
     getBoxesWithDecks();
   }, [user.id, trigger]);
 
-  //  console.log(createdDeck);
   return (
     <div className="w-full h-full flex justify-center flex-col gap-4">
       {boxes.length > 0 && user ? (
@@ -141,9 +145,7 @@ export const Home = () => {
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <div className="text-center flex flex-col justify-center items-center">
                 <span className="w-16 h-16 border-4 border-t-transparent border-white border-solid rounded-full animate-spin"></span>
-                <p className="mt-4 text-white text-lg">
-                  Generando flashcards...
-                </p>
+                <p className="mt-4 text-white text-lg">Cargando..</p>
               </div>
             </div>
           )}

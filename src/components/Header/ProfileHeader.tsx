@@ -12,8 +12,12 @@ import { HiUserCircle, HiSupport, HiLogout } from 'react-icons/hi';
 import { useFetchAndLoad } from '../../hooks';
 import { LogoutUser } from '../../services';
 import { useDispatch, useSelector } from 'react-redux';
-import { cleanProfileAction, logoutUser } from '../../redux/states';
-import { AppStore } from '../../redux/store';
+import {
+  cleanProfileAction,
+  clearBoxesAction,
+  logoutUser,
+} from '../../redux/slices';
+import { AppStore } from '../../redux/store/store';
 import ProfileIcon from '../../assets/profile_icon.svg';
 import { googleLogout } from '@react-oauth/google';
 import Cookies from 'js-cookie';
@@ -49,6 +53,7 @@ export const ProfileHeader: FC<{
       Cookies.remove('tokenGoogle');
     }
     dispatch(cleanProfileAction());
+    dispatch(clearBoxesAction());
     closeMenu();
     navigate(PublicRoutes.HOME);
     await window.location.reload();

@@ -18,8 +18,8 @@ import {
 import ProfileIcon from '../assets/profile_icon.svg';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../redux/store';
-import { editProfileAction, getProfileAction } from '../redux/states';
+import { AppStore } from '../redux/store/store';
+import { editProfileAction, getProfileAction } from '../redux/slices';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { PublicRoutes } from '../models';

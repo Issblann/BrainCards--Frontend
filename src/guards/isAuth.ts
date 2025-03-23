@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { AppStore } from '../redux/store';
+import { AppStore } from '../redux/store/store';
 import { useSelector } from 'react-redux';
 
 export const useIsAuth = () => {
