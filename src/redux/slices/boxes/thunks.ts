@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { api, BASE_URL } from '../../../services/axios';
+import { api } from '../../../services/axios';
+import { boxRoutes } from '../../../services/routes/boxRoutes';
 
 interface BoxPayload {
     title: string;
@@ -8,9 +9,9 @@ interface BoxPayload {
 }
 
 export const thunks = {
-    getDecksByUser: createAsyncThunk('boxes/getDecksByUser', async (userId: string, { rejectWithValue }) => {
+    getBoxesByUser: createAsyncThunk('boxes/getBoxesByUser', async (userId: string, { rejectWithValue }) => {
         try {
-            const response = await api.get(`${BASE_URL}/getDecksByUserId/${userId}`);
+            const response = await api.get(boxRoutes.getBoxesByUserId(userId));
             return {
                 boxes: response.data,
             };
@@ -19,11 +20,11 @@ export const thunks = {
         }
     }),
 
-    createADeck: createAsyncThunk(
-        'boxes/createDeck',
+    createABox: createAsyncThunk(
+        'boxes/createBox',
         async ({ data, userId }: { data: Partial<BoxPayload>; userId: string }, { rejectWithValue }) => {
             try {
-                const response = await api.post(`${BASE_URL}/createDeck/${userId}`, data);
+                const response = await api.post(boxRoutes.createBox(userId), data);
                 return {
                     boxes: response.data,
                 };
