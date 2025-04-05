@@ -1,11 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { userSlice, profileSlice, deckSlice } from '../slices';
+import { userSlice, profileSlice } from '../slices';
+import deckSlice from '../slices/decks/slice'
+import boxSlice from '../slices/boxes/slice';
 import { UserLogged } from '../../models';
 import Profile from '../../models/Profile';
-import Deck from '../../models/Deck';
-import Box from '../../models/Box';
-import boxSlice from '../slices/boxes/slice';
 // export interface AppStore {
 //   user: UserLogged;
 //   profile: Profile;
@@ -17,7 +16,7 @@ const store = configureStore({
   reducer: {
     user: userSlice.reducer,
     profile: profileSlice.reducer,
-    decks: deckSlice.reducer,
+    decks: deckSlice,
     boxes: boxSlice,
   },
 });
