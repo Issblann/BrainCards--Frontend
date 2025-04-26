@@ -1,7 +1,7 @@
 import { Button } from '@material-tailwind/react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../../redux/store/store';
+import { RootState } from '../../redux/store/store';
 import { loginUserAction } from '../../redux/slices';
 import { useFetchAndLoad } from '../../hooks';
 import { GetUserGoogle, loginWithGoogle } from '../../services';
@@ -10,7 +10,7 @@ import { PublicRoutes } from '../../models';
 import Cookies from 'js-cookie';
 export const GoogleButton = () => {
   const { callEndpoint } = useFetchAndLoad();
-  useSelector((store: AppStore) => store.user);
+  useSelector((store: RootState) => store.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

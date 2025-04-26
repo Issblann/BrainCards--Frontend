@@ -4,7 +4,7 @@ import { PublicRoutes } from '../../models';
 
 import { ProfileHeader } from './ProfileHeader';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../../redux/store/store';
+import { RootState } from '../../redux/store/store';
 import { useIsAuth } from '../../guards';
 import { useFetchAndLoad } from '../../hooks';
 import { getProfile } from '../../services/profile.service';
@@ -12,8 +12,8 @@ import { getProfileAction } from '../../redux/slices';
 import { useEffect } from 'react';
 
 export const Header = () => {
-  const user = useSelector((store: AppStore) => store.user);
-  const profile = useSelector((store: AppStore) => store.profile);
+  const user = useSelector((store: RootState) => store.user);
+  const profile = useSelector((store: RootState) => store.profile);
   const isAuth = useIsAuth();
   const location = useLocation();
   const { callEndpoint } = useFetchAndLoad();

@@ -9,7 +9,7 @@ import { FC, useState } from 'react';
 import authFormVector from '../../assets/authform-vector.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../../redux/store/store';
+import { RootState } from '../../redux/store/store';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { PublicRoutes } from '../../models';
 import { loginUser, registerUser } from '../../services';
@@ -31,7 +31,7 @@ interface FormAuthProps {
 export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  useSelector((store: AppStore) => store.user);
+  useSelector((store: RootState) => store.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, callEndpoint } = useFetchAndLoad();

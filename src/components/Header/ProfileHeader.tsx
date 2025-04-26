@@ -14,10 +14,9 @@ import { LogoutUser } from '../../services';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   cleanProfileAction,
-  clearBoxesAction,
   logoutUser,
 } from '../../redux/slices';
-import { AppStore } from '../../redux/store/store';
+import { RootState } from '../../redux/store/store';
 import ProfileIcon from '../../assets/profile_icon.svg';
 import { googleLogout } from '@react-oauth/google';
 import Cookies from 'js-cookie';
@@ -28,8 +27,8 @@ export const ProfileHeader: FC<{
 }> = ({ userId }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { callEndpoint } = useFetchAndLoad();
-  const user = useSelector((store: AppStore) => store.user);
-  const profile = useSelector((store: AppStore) => store.profile);
+  const user = useSelector((store: RootState) => store.user);
+  const profile = useSelector((store: RootState) => store.profile);
   const dispatch = useDispatch();
   const closeMenu = () => setIsMenuOpen(false);
   const navigate = useNavigate();
@@ -53,7 +52,6 @@ export const ProfileHeader: FC<{
       Cookies.remove('tokenGoogle');
     }
     dispatch(cleanProfileAction());
-    dispatch(clearBoxesAction());
     closeMenu();
     navigate(PublicRoutes.HOME);
     await window.location.reload();
