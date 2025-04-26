@@ -7,7 +7,7 @@ const extraReducers = (builder:any)  => {
         state.loading = true; 
     }).addCase(thunks.getBoxesByUser.fulfilled, (state:BoxState, action:PayloadAction<BoxState>) => {
         state.loading = false;
-        state.boxes = action.payload.boxes;
+        state.data = action.payload.data;
     }).addCase(thunks.getBoxesByUser.rejected, (state:BoxState, action:PayloadAction<string>) => {
         state.loading = false;
         state.error = action.payload;
@@ -17,7 +17,7 @@ const extraReducers = (builder:any)  => {
         state.loading = true; 
     }).addCase(thunks.createABox.fulfilled, (state:BoxState, action:PayloadAction<BoxState>) => {
         state.loading = false;
-        state.boxes =  {...state.boxes, ...action.payload.boxes};
+        state.data =  {...state.data, ...action.payload.data};
     }).addCase(thunks.createABox.rejected, (state:BoxState, action:PayloadAction<string>) => {
         state.loading = false;
         state.error = action.payload;

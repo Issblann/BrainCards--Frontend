@@ -1,12 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import initialState from "./state";
 import extraReducers from "./extraReducers";
+import boxesReducers from "./reducers";
 
-const boxesSlice = createSlice({
+export const boxesSlice = createSlice({
     name: 'boxes',
     initialState: initialState,
-    reducers: {},
+    reducers: boxesReducers,
     extraReducers
 });
 
 export default boxesSlice.reducer;
+
+export const {setDialogBoxOpen,setTriggerBox,toggleDialogBox,toggleTriggerBox} = boxesSlice.actions;

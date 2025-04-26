@@ -1,15 +1,19 @@
 import Box from "../../../models/Box";
 
 export interface BoxState {
-    boxes: Box[]
+    data: Box[]
     loading: boolean
     error: string | null;
+    trigger: boolean;
+    openDialogBox: boolean;
 }
 
 const initialState: BoxState = {
-    boxes: [],
+    data: [],
     loading: false,
-    error: null
+    error: null,
+    trigger: false,
+    openDialogBox: false,
 }
 
 export default initialState;
