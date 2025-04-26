@@ -12,10 +12,8 @@ import {
 } from '@material-tailwind/react';
 
 interface CreateFlashcardsModalProps {
-  open: boolean;
-  handleClose: () => void;
-  submitForm: (data: FormValuesFlashcards) => void;
-  deck: Deck | undefined;
+  // submitFormDeck: (data: DeckPayload) => void;
+  deck: any;
 }
 import { useForm } from 'react-hook-form';
 
@@ -24,18 +22,24 @@ import Deck from '../../models/Deck';
 import { DialogWithForm } from '../Dialog';
 import { DifficultyLevelEnum } from '../../models/Flashcards';
 import { generateFlashcardQuantities } from '../../utilities/generateFlashcardQuantities';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store/store';
+import { toggleDialogFlashcard } from '../../redux/slices';
+import { DeckPayload } from '../../redux/slices/decks/thunks';
+import { thunks } from '../../redux/slices/flashcards/thunks';
+import { thunks as deckThunks } from '../../redux/slices/decks/thunks';
+import { useNavigate } from 'react-router-dom';
+import { PrivateRoutes } from '../../models';
 
 export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
-  open,
-  handleClose,
-  submitForm,
-  deck,
+  deck
 }) => {
   const {
     register,
     handleSubmit,
     setValue,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm<FormValuesFlashcards>({
     defaultValues: {
@@ -44,9 +48,11 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
     },
   });
   const [_, setSelectedDifficulty] = useState<string | null>(null);
-
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const user = useSelector((store: RootState) => store.user);
   const quantityFlashcards = generateFlashcardQuantities(1, 10);
-
+  const openDialogFlashcard = useSelector((state: RootState) => state.flashcards.openDialogFlashcard);
   const handleQuantity = (value: string) =>
     setValue('quantityFlashcards', parseInt(value));
 
@@ -54,7 +60,28 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
     setSelectedDifficulty(value);
     setValue('difficultyLevel', value);
   };
+  
+   const closeModal = () => {
+      dispatch(toggleDialogFlashcard()); 
+    }
 
+  const handleCreateFlashcards = async (data: FormValuesFlashcards) => {
+    try {
+      if (!user.id) return;
+      const responseDeck = await dispatch(deckThunks.createADeck({ userId: user.id, data: { ...deck } as Partial<DeckPayload> })).unwrap();
+      const finalData = {
+        ...data,
+        topic: deck?.title,
+        description: deck?.description,
+      }
+      const response = await dispatch(thunks.createFlashcards({deckId: responseDeck?.id, data: finalData as Partial<DeckPayload> })).unwrap();
+      navigate(`private/${PrivateRoutes.FLASHCARDS}/${response?.id}`);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw new Error(error as string);
+    }
+  };
   const difficultyLevels = [
     {
       label: 'Easy',
@@ -69,9 +96,9 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
     { label: 'Hard', value: DifficultyLevelEnum.HARD, color: 'bg-red-700' },
   ];
   return (
-    <DialogWithForm open={open} handler={handleClose}>
+    <DialogWithForm open={openDialogFlashcard} handler={closeModal}>
       <Card className="mx-auto w-full max-w-[30rem]">
-        <form onSubmit={handleSubmit(submitForm)}>
+        <form onSubmit={handleSubmit(handleCreateFlashcards)}>
           <CardBody className="flex px-6 pt-6 pb-2 flex-col gap-5">
             <div>
               <Typography variant="h4" color="blue-gray">

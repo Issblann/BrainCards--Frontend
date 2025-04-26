@@ -18,6 +18,7 @@ import { AppDispatch } from '../../redux/store/store';
 import { toggleDialogBox, toggleDialogDeck } from '../../redux/slices';
 import { CreateBoxModal } from './CreateBoxModal';
 import { CreateDeckModal } from './CreateDeckModal';
+import { CreateFlashcardsModal } from './CreateFlashcardsModal';
 
 interface SpeedDialButtonProps {
 }

@@ -1,9 +1,7 @@
 import { Tabs, TabsHeader, TabsBody, Tab } from '@material-tailwind/react';
 import '../../styles/global.css';
-import { CreateBoxModal } from './CreateBoxModal';
 import { CardsDeck } from '../CardsCore/CardsDeck';
 import { FC, useEffect } from 'react';
-import { FormValuesBox } from '../../services/boxes.service';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store/store';
 import { thunks } from '../../redux/slices/decks/thunks';
@@ -20,7 +18,6 @@ export const TabBoxes: FC<TabBoxesProps> = () => {
   const { data } = useSelector((store: RootState) => store.boxes);
 
   const dispatch = useDispatch<AppDispatch>()
-  console.log('boxes en tab boxes', data);
 
   const boxData = data?.map((box: any) => ({
     label: box.boxName,
@@ -31,7 +28,6 @@ export const TabBoxes: FC<TabBoxesProps> = () => {
       description: deck.description,
     })),
   }));
-  console.log('boxData', boxData);
 
   useEffect(() => {
     if (user.id) {
@@ -40,9 +36,6 @@ export const TabBoxes: FC<TabBoxesProps> = () => {
   }, [user.id]);
   return (
     <div className="w-full flex flex-col gap-4">
-      {/* <CreateBoxModal
-      /> */}
-
       <Tabs value={boxData?.[0]?.value}>
         <TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
           {boxData.map(({ label, value }: DataItem) => (

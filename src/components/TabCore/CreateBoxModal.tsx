@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 import { DialogWithForm } from './../Dialog';
 import {
   Button,
@@ -15,19 +15,13 @@ import { AppDispatch, RootState } from '../../redux/store/store';
 import { BoxPayload, thunks } from '../../redux/slices/boxes/thunks';
 import { toggleDialogBox } from '../../redux/slices/boxes/slice';
 
-interface CreateBoxModalProps {
-}
 
-export const CreateBoxModal: FC<CreateBoxModalProps> = () => {
+export const CreateBoxModal = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValuesBox>();
-
-  const { data } = useSelector(
-    (state: RootState) => state.boxes
-  );
 
   const user = useSelector((store: RootState) => store.user);
   const openDialogBox = useSelector((state: RootState) => state.boxes.openDialogBox);
@@ -42,8 +36,7 @@ export const CreateBoxModal: FC<CreateBoxModalProps> = () => {
       try {
         if (!user.id) return;
         const response = dispatch(thunks.createABox({ userId: user.id, data: { ...data } as Partial<BoxPayload> })).unwrap();
-        console.log(response);
-        dispatch(toggleDialogBox());
+        return response;
       } catch (error) {
         console.error(error);
         throw new Error(error as string);
@@ -53,11 +46,10 @@ export const CreateBoxModal: FC<CreateBoxModalProps> = () => {
     const closeModal = () => {
       dispatch(toggleDialogBox());
     }
-    console.log('openDialogBox', openDialogBox);
   return (
     <DialogWithForm open={openDialogBox} handler={closeModal}>
       <Card className="mx-auto w-full max-w-[30rem]">
-        <form>
+        <form onSubmit={handleSubmit(handleCreateBox)}>
           <CardBody className="flex flex-col gap-4">
             <Typography variant="h4" color="blue-gray">
               New Box

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { DialogWithForm } from '../Dialog';
 import {
   Button,
@@ -12,22 +12,26 @@ import {
   Typography,
 } from '@material-tailwind/react';
 
-interface CreateDeckModalProps {
-}
+
 import { HiArrowLongRight } from 'react-icons/hi2';
 
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 
 import Box from '../../models/Box';
 import { FormValuesDeck } from '../../services/decks.service';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store/store';
-import { toggleDialogDeck } from '../../redux/slices';
+import { setDialogFlashcardOpen, toggleDialogDeck } from '../../redux/slices';
+import { DeckPayload, thunks } from '../../redux/slices/decks/thunks';
+import { CreateFlashcardsModal } from './CreateFlashcardsModal';
+import Deck from '../../models/Deck';
 
-export const CreateDeckModal: FC<CreateDeckModalProps> = ({
+export const CreateDeckModal = ({
 }) => {
   const [isWithinBox, setIsWithinBox] = useState<boolean>(false);
+  const [deck, setDeck] = useState<any>(null);
   const {data} = useSelector((store: RootState) => store.boxes);
+  const user = useSelector((store: RootState) => store.user);
   const openDialogDeck = useSelector((state: RootState) => state.decks.openDialogDeck);
   const allBox = data.find((box: Box) => box.boxName === 'All');
   const boxesWithoutAllBox = data.filter((box: Box) => box.boxName !== 'All');
@@ -36,22 +40,49 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    getValues,
+    formState: { errors, isValid},
   } = useForm<FormValuesDeck>({
     defaultValues: {
-      boxId: allBox?.id,
+      boxId: allBox?.id || ''
     },
+    mode: 'onChange',
   });
+
+  useEffect(() => {
+    if (allBox?.id) {
+      setValue('boxId', allBox.id);
+    }
+  }, [allBox?.id]);
 
   const handleBoxChange = (value: string) => setValue('boxId', value);
   const closeModal = () => {
     dispatch(toggleDialogDeck());
   }
+
+  const handleCreateDeck = async (data: FormValuesDeck) => {
+     try {
+       if (!user.id) return;
+      const response = await dispatch(thunks.createADeck({ userId: user.id, data: { ...data } as Partial<DeckPayload> })).unwrap();
+       dispatch(setDialogFlashcardOpen(true));
+      //  setDeck(response);
+      return response;
+     } catch (error) {
+       console.error(error);
+       throw new Error(error as string);
+     }
+   };
+
+  const handleOpenFlashcardModal = async () => {
+    setDeck(getValues());
+    closeModal();
+    dispatch(setDialogFlashcardOpen(true)); 
+  };
   return (
     <>
       <DialogWithForm open={openDialogDeck} handler={closeModal}>
         <Card className="mx-auto w-full max-w-[30rem]">
-          <form>
+          <form onSubmit={handleSubmit(handleCreateDeck)}>
             <CardBody className="flex px-6 pt-6 pb-2 flex-col gap-4">
               <Typography variant="h4" color="blue-gray">
                 New Deck
@@ -124,6 +155,7 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
                   color="purple"
                   placeholder="Select an existing box"
                   size="lg"
+                  value={getValues('boxId')}
                   onChange={(e) => {
                     handleBoxChange(e as string);
                   }}
@@ -136,19 +168,30 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
                 </Select>
               )}
             </CardBody>
-            <CardFooter className="pt-0 flex flex-col text-center">
+            <CardFooter className="pt-0 flex flex-col text-center gap-4">
               <Button
-                type="submit"
+                onClick={handleOpenFlashcardModal}
+                disabled={!isValid} 
                 size="sm"
                 className="flex w-full justify-center text-sm p-2 normal-case items-center gap-3 bg-white border border-black hover:bg-lavender-background text-black"
               >
                 Create flashcards automatically
                 <HiArrowLongRight className="size-6" />
               </Button>
+              <span>or</span>
+              <Button
+                type="submit"
+                size="sm"
+                className="flex w-full justify-center text-sm p-2 normal-case items-center gap-3 bg-lavender-600 border hover:bg-lavender-400 text-white"
+              >
+                Create Deck
+              </Button>
             </CardFooter>
           </form>
         </Card>
       </DialogWithForm>
+
+      <CreateFlashcardsModal deck={deck}/> 
     </>
   );
 };
