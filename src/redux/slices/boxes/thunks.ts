@@ -12,7 +12,6 @@ export const thunks = {
     getBoxesByUser: createAsyncThunk('boxes/getBoxesByUser', async (userId: string, { rejectWithValue }) => {
         try {
             const response = await api.get(boxRoutes.getBoxesByUserId(userId));
-            console.log('response', response.data);
             return {data: response.data};
             
         } catch (error: any) {

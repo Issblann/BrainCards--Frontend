@@ -18,11 +18,11 @@ import {
 import ProfileIcon from '../assets/profile_icon.svg';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../redux/store/store';
 import { editProfileAction, getProfileAction } from '../redux/slices';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { PublicRoutes } from '../models';
+import { RootState } from '../redux/store/store';
 
 type FormValues = {
   name: string;
@@ -37,8 +37,8 @@ export const Profile = () => {
   );
   const [isEdit, setIsEdit] = useState(false);
   const { callEndpoint, loading } = useFetchAndLoad();
-  const profile = useSelector((store: AppStore) => store.profile);
-  const user = useSelector((store: AppStore) => store.user);
+  const profile = useSelector((store: RootState) => store.profile);
+  const user = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch();
   const {
     register,
