@@ -8,6 +8,7 @@ import { thunks } from '../redux/slices/boxes/thunks';
 
 export const Home = () => {
   const user = useSelector((store: RootState) => store.user);
+  const loading = useSelector((store: RootState) => store.boxes.loading);
   const dispatch = useDispatch<AppDispatch>();
   const defaultDeck = [
     {
@@ -30,13 +31,13 @@ export const Home = () => {
     }, [user.id]);
   return (
     <div className="w-full h-full flex justify-center flex-col gap-4">
-      {user ? (
+      {user?.id ? (
         <>
           <SpeedDialButton
           />
           <TabBoxes
           />
-        {/* 
+        
           {loading && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <div className="text-center flex flex-col justify-center items-center">
@@ -44,7 +45,7 @@ export const Home = () => {
                 <p className="mt-4 text-white text-lg">Cargando..</p>
               </div>
             </div>
-          )} */}
+          )}
         </>
       ) : (
         <Tabs value="All">
@@ -65,7 +66,7 @@ export const Home = () => {
               unmount: { y: 350 },
             }}
           >
-            <CardsDeck defaultDeck={defaultDeck} />
+            <CardsDeck data={defaultDeck} />
           </TabsBody>
         </Tabs>
       )}

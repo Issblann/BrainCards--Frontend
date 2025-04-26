@@ -34,9 +34,9 @@ export const TabBoxes: FC<TabBoxesProps> = () => {
      dispatch(thunks.getDecksByUser(user.id));
     }
   }, [user.id]);
-  return (
-    <div className="w-full flex flex-col gap-4">
-      <Tabs value={boxData?.[0]?.value}>
+  return data && data?.length > 0 && (
+      <div className="w-full flex flex-col gap-4">
+      <Tabs value={boxData?.[0]?.value} defaultValue="All">
         <TabsHeader className="w-full overflow-x-scroll scrollbar-thin">
           {boxData.map(({ label, value }: DataItem) => (
             <Tab
@@ -60,5 +60,5 @@ export const TabBoxes: FC<TabBoxesProps> = () => {
         </TabsBody>
       </Tabs>
     </div>
-  );
+    )
 };
