@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store/store';
 import { setDialogFlashcardOpen, toggleDialogDeck } from '../../redux/slices';
 import { DeckPayload, thunks } from '../../redux/slices/decks/thunks';
+import { thunks as boxesThunks } from '../../redux/slices/boxes/thunks';
 import { CreateFlashcardsModal } from './CreateFlashcardsModal';
 
 export const CreateDeckModal = ({
@@ -64,7 +65,7 @@ export const CreateDeckModal = ({
      try {
        if (!user.id) return;
       const response = await dispatch(thunks.createADeck({ userId: user.id, data: { ...data } as Partial<DeckPayload> })).unwrap();
-       dispatch(setDialogFlashcardOpen(true));
+      dispatch(boxesThunks.getBoxesByUser(user.id));
       return response;
      } catch (error) {
        console.error(error);
@@ -77,6 +78,8 @@ export const CreateDeckModal = ({
     closeModal();
     dispatch(setDialogFlashcardOpen(true)); 
   };
+
+  console.log('deck', deck);
   return (
     <>
       <DialogWithForm open={openDialogDeck} handler={closeModal}>

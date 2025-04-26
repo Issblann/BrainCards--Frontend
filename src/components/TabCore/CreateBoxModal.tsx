@@ -20,6 +20,7 @@ export const CreateBoxModal = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValuesBox>();
 
@@ -36,6 +37,7 @@ export const CreateBoxModal = () => {
       try {
         if (!user.id) return;
         const response = dispatch(thunks.createABox({ userId: user.id, data: { ...data } as Partial<BoxPayload> })).unwrap();
+        reset();
         return response;
       } catch (error) {
         console.error(error);

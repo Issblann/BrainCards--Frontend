@@ -4,17 +4,33 @@ import { CardDeck } from './CardDeck';
 interface DataItem {
   label: string;
   value: string;
-  desc: Deck[];
+  decks: Deck[] | null;
 }
-export const CardsDeck = ({ data }: any) => {
-  return (
-    <>
-      {data && data?.length > 0 && (
-        data?.map(({ label, value, desc }: DataItem) => (
-          <CardDeck label={label} key={value} value={value} desc={desc} />
-        ))
-      ) 
-      }
-    </>
-  );
+export const CardsDeck = ({ data, activeTab }: any) => {
+  if (activeTab !== 'All') {
+    return (
+      <>
+        {data.map(({ label, value, decks }: DataItem) => (
+          <CardDeck
+            key={value}
+            label={label}
+            value={value}
+            decks={decks}
+          />
+        ))}
+      </>
+    );
+  } else {
+    const selectedBox = data.find((box: any) => box.label === activeTab);
+    console.log(selectedBox, 'selectedBox')
+    if (!selectedBox) return null;
+
+    return (
+      <CardDeck
+        label={selectedBox.label}
+        value={selectedBox.value}
+        decks={selectedBox.decks}
+      />
+    );
+  }
 };
