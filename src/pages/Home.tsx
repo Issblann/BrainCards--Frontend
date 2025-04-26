@@ -17,16 +17,12 @@ import {
 } from '../services/flashcards.service';
 import { useNavigate } from 'react-router-dom';
 import { PrivateRoutes } from '../models';
-import {
-  clearBoxesAction,
-  clearDecksAction,
-  getBoxesAction,
-  userEmptyState,
-} from '../redux/slices';
+import { thunks } from '../redux/slices/boxes/thunks';
+
 
 export const Home = () => {
   const user = useSelector((store: RootState) => store.user);
-  const {boxes} = useSelector((store: RootState) => store.boxes);
+  const {data} = useSelector((store: RootState) => store.boxes);
   const decks = useSelector((store: RootState) => store.decks);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -58,19 +54,6 @@ export const Home = () => {
     },
   ];
 
-  const handleCreateBox = async (data: FormValuesBox) => {
-    try {
-      if (!user.id) return;
-      const axiosCall = createBox(user.id, data);
-      const response = await callEndpoint(axiosCall);
-      handleDialogBox();
-      dispatch(getBoxesAction([...boxes, response.data]));
-    } catch (error) {
-      console.error(error);
-      throw new Error(error as string);
-    }
-  };
-
   const handleCreateDeck = async (data: FormValuesDeck) => {
     try {
       if (!user.id) return;
@@ -99,36 +82,37 @@ export const Home = () => {
       throw new Error(error as string);
     }
   };
-  const getBoxesWithDecks = async () => {
-    try {
-      if (!user.id) return;
-      const axiosCall = getBoxesByUserId(user.id);
-      const response = await callEndpoint(axiosCall);
-      dispatch(getBoxesAction(response.data));
-    } catch (error) {
-      console.error(error);
-      throw new Error(error as string);
-    }
-  };
 
-  useEffect(() => {
-    getBoxesWithDecks();
-  }, [user.id, trigger]);
+    useEffect(() => {
+      if (user.id) {
+       dispatch(thunks.getBoxesByUser(user.id));
+      }
+    }, [user.id]);
+  // const getBoxesWithDecks = async () => {
+  //   try {
+  //     if (!user.id) return;
+  //     const axiosCall = getBoxesByUserId(user.id);
+  //     const response = await callEndpoint(axiosCall);
+  //     dispatch(getBoxesAction(response.data));
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw new Error(error as string);
+  //   }
+  // };
 
+  // useEffect(() => {
+  //   getBoxesWithDecks();
+  // }, [user.id, trigger]);
+  console.log('USER', user);
   return (
     <div className="w-full h-full flex justify-center flex-col gap-4">
-      {boxes.length > 0 && user ? (
+      {user ? (
         <>
           <SpeedDialButton
-            handleDialogDeck={handleDialogDeck}
-            handleDialogBox={handleDialogBox}
           />
           <TabBoxes
-            handleDialogBox={handleDialogBox}
-            openDialogBox={openDialogBox}
-            handleCreateBox={handleCreateBox}
           />
-          {!loading && (
+          {/* {!loading && (
             <TabDecks
               openDialogDeck={openDialogDeck}
               openDialogFlashcards={openDialogFlashcards}
@@ -139,8 +123,8 @@ export const Home = () => {
               createdDeck={createdDeck}
               loading={loading}
             />
-          )}
-
+          )} */}
+{/* 
           {loading && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <div className="text-center flex flex-col justify-center items-center">
@@ -148,7 +132,7 @@ export const Home = () => {
                 <p className="mt-4 text-white text-lg">Cargando..</p>
               </div>
             </div>
-          )}
+          )} */}
         </>
       ) : (
         <Tabs value="All">
