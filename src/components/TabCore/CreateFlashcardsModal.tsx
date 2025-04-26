@@ -14,11 +14,12 @@ import {
 interface CreateFlashcardsModalProps {
   // submitFormDeck: (data: DeckPayload) => void;
   deck: any;
+  setDeck: (deck: any) => void;
+  resetFormDeck: () => void;
 }
 import { useForm } from 'react-hook-form';
 
 import { FormValuesFlashcards } from '../../services/flashcards.service';
-import Deck from '../../models/Deck';
 import { DialogWithForm } from '../Dialog';
 import { DifficultyLevelEnum } from '../../models/Flashcards';
 import { generateFlashcardQuantities } from '../../utilities/generateFlashcardQuantities';
@@ -32,14 +33,15 @@ import { useNavigate } from 'react-router-dom';
 import { PrivateRoutes } from '../../models';
 
 export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
-  deck
+  deck,
+  setDeck,
+  resetFormDeck
 }) => {
   const {
     register,
     handleSubmit,
     setValue,
     trigger,
-    getValues,
     formState: { errors },
   } = useForm<FormValuesFlashcards>({
     defaultValues: {
@@ -55,7 +57,6 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
   const openDialogFlashcard = useSelector((state: RootState) => state.flashcards.openDialogFlashcard);
   const handleQuantity = (value: string) =>
     setValue('quantityFlashcards', parseInt(value));
-
   const handleDifficultySelect = (value: DifficultyLevelEnum) => {
     setSelectedDifficulty(value);
     setValue('difficultyLevel', value);
@@ -63,6 +64,8 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
   
    const closeModal = () => {
       dispatch(toggleDialogFlashcard()); 
+      setDeck(null);
+      resetFormDeck();
     }
 
   const handleCreateFlashcards = async (data: FormValuesFlashcards) => {

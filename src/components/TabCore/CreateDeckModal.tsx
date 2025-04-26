@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DialogWithForm } from '../Dialog';
 import {
   Button,
@@ -15,7 +15,7 @@ import {
 
 import { HiArrowLongRight } from 'react-icons/hi2';
 
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import Box from '../../models/Box';
 import { FormValuesDeck } from '../../services/decks.service';
@@ -24,7 +24,6 @@ import { AppDispatch, RootState } from '../../redux/store/store';
 import { setDialogFlashcardOpen, toggleDialogDeck } from '../../redux/slices';
 import { DeckPayload, thunks } from '../../redux/slices/decks/thunks';
 import { CreateFlashcardsModal } from './CreateFlashcardsModal';
-import Deck from '../../models/Deck';
 
 export const CreateDeckModal = ({
 }) => {
@@ -41,6 +40,7 @@ export const CreateDeckModal = ({
     handleSubmit,
     setValue,
     getValues,
+    reset,
     formState: { errors, isValid},
   } = useForm<FormValuesDeck>({
     defaultValues: {
@@ -65,7 +65,6 @@ export const CreateDeckModal = ({
        if (!user.id) return;
       const response = await dispatch(thunks.createADeck({ userId: user.id, data: { ...data } as Partial<DeckPayload> })).unwrap();
        dispatch(setDialogFlashcardOpen(true));
-      //  setDeck(response);
       return response;
      } catch (error) {
        console.error(error);
@@ -138,7 +137,15 @@ export const CreateDeckModal = ({
               />
               <div className="-ml-2.5 -mt-3">
                 <Checkbox
-                  onChange={() => setIsWithinBox(!isWithinBox)}
+                   onChange={() => {
+                    setIsWithinBox((prev) => {
+                      const newValue = !prev;
+                      if (!newValue && allBox?.id) {
+                        setValue('boxId', allBox.id);
+                      }
+                      return newValue;
+                    });
+                  }}
                   defaultChecked={isWithinBox}
                   ripple={true}
                   label={
@@ -191,7 +198,7 @@ export const CreateDeckModal = ({
         </Card>
       </DialogWithForm>
 
-      <CreateFlashcardsModal deck={deck}/> 
+      <CreateFlashcardsModal deck={deck} setDeck={setDeck} resetFormDeck={reset}/> 
     </>
   );
 };
