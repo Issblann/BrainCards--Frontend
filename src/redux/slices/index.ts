@@ -1,4 +1,4 @@
 export * from './user.state';
 export * from './profile.state';
-export * from './deck.state';
-export * from './box.state';
+export * from './boxes/slice';
+export * from './decks/slice';
