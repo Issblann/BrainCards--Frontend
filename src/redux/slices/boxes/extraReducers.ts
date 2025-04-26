@@ -1,6 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { BoxState } from "./state";
 import { thunks } from "./thunks"
+import Box from "../../../models/Box";
 
 const extraReducers = (builder:any)  => {
     builder.addCase(thunks.getBoxesByUser.pending, (state:BoxState) => {
@@ -15,9 +16,10 @@ const extraReducers = (builder:any)  => {
 
     builder.addCase(thunks.createABox.pending, (state:BoxState) => {
         state.loading = true; 
-    }).addCase(thunks.createABox.fulfilled, (state:BoxState, action:PayloadAction<BoxState>) => {
+    }).addCase(thunks.createABox.fulfilled, (state:BoxState, action:PayloadAction<Box>) => {
         state.loading = false;
-        state.data =  {...state.data, ...action.payload.data};
+        state.data =  [...state.data, action.payload];
+        state.openDialogBox = false;
     }).addCase(thunks.createABox.rejected, (state:BoxState, action:PayloadAction<string>) => {
         state.loading = false;
         state.error = action.payload;

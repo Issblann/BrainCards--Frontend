@@ -2,10 +2,10 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { DeckState } from "./state";
 
 const decksReducers = {
-    toggleTrigger(state: DeckState) {
+      toggleTriggerDeck(state: DeckState) {
         state.trigger = !state.trigger;
       },
-      setTrigger(state: DeckState, action: PayloadAction<boolean>) {
+      setTriggerDeck(state: DeckState, action: PayloadAction<boolean>) {
         state.trigger = action.payload;
       },
       toggleDialogDeck(state: DeckState) {

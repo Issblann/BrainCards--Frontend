@@ -2,6 +2,7 @@ import Deck from "../../../models/Deck";
 
 export interface DeckState {
     data: Deck[];
+    deck: Deck | null;
     loading: boolean;
     error: string | null;
     trigger: boolean;
@@ -10,6 +11,7 @@ export interface DeckState {
 
 const initialState: DeckState = {
     data: [],
+    deck: null,
     loading: false,
     error: null,
     trigger: false,

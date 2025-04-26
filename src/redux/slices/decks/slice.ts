@@ -12,4 +12,4 @@ export const deckSlice = createSlice({
 
 export default deckSlice.reducer;
 
-export const {setDialogDeckOpen,setTrigger,toggleDialogDeck,toggleTrigger} = deckSlice.actions;
+export const {setDialogDeckOpen,setTriggerDeck,toggleDialogDeck,toggleTriggerDeck} = deckSlice.actions;
