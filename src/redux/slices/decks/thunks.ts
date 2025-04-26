@@ -12,9 +12,8 @@ export const thunks = {
     getDecksByUser: createAsyncThunk('boxes/getDecksByUser', async (userId: string, { rejectWithValue }) => {
         try {
             const response = await api.get(deckRoutes.getDecksByUserId(userId));
-            return {
-                boxes: response.data,
-            };
+            return {data: response.data}
+
         } catch (error: any) {
             return rejectWithValue(error.message || 'error desconocido');
         }

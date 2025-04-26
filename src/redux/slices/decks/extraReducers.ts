@@ -7,7 +7,7 @@ const extraReducers = (builder:any)  => {
         state.loading = true; 
     }).addCase(thunks.getDecksByUser.fulfilled, (state:DeckState, action:PayloadAction<DeckState>) => {
         state.loading = false;
-        state.decks = action.payload.decks;
+        state.data = action.payload.data;
     }).addCase(thunks.getDecksByUser.rejected, (state:DeckState, action:PayloadAction<string>) => {
         state.loading = false;
         state.error = action.payload;
@@ -17,7 +17,7 @@ const extraReducers = (builder:any)  => {
         state.loading = true; 
     }).addCase(thunks.createADeck.fulfilled, (state:DeckState, action:PayloadAction<DeckState>) => {
         state.loading = false;
-        state.decks =  {...state.decks, ...action.payload.decks};
+        state.data =  {...state.data, ...action.payload.data};
     }).addCase(thunks.createADeck.rejected, (state:DeckState, action:PayloadAction<string>) => {
         state.loading = false;
         state.error = action.payload;

@@ -1,15 +1,19 @@
 import Deck from "../../../models/Deck";
 
 export interface DeckState {
-    decks: Deck[];
+    data: Deck[];
     loading: boolean;
     error: string | null;
+    trigger: boolean;
+    openDialogDeck: boolean;
 }
 
 const initialState: DeckState = {
-    decks: [],
+    data: [],
     loading: false,
-    error: null
+    error: null,
+    trigger: false,
+    openDialogDeck: false,
 }
 
 export default initialState;
