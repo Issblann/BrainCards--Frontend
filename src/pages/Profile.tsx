@@ -18,9 +18,11 @@ import {
 import ProfileIcon from '../assets/profile_icon.svg';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../redux/store';
-import { editProfileAction, getProfileAction } from '../redux/states';
+import { editProfileAction, getProfileAction } from '../redux/slices';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { PublicRoutes } from '../models';
+import { RootState } from '../redux/store/store';
 
 type FormValues = {
   name: string;
@@ -35,8 +37,8 @@ export const Profile = () => {
   );
   const [isEdit, setIsEdit] = useState(false);
   const { callEndpoint, loading } = useFetchAndLoad();
-  const profile = useSelector((store: AppStore) => store.profile);
-  const user = useSelector((store: AppStore) => store.user);
+  const profile = useSelector((store: RootState) => store.profile);
+  const user = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch();
   const {
     register,
@@ -45,11 +47,10 @@ export const Profile = () => {
     // setError,
     // formState: { errors },
   } = useForm<FormValues>();
-
+  const navigate = useNavigate();
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      console.log(file, 'file');
       setValue('image', file);
 
       const objectURL = URL.createObjectURL(file);
@@ -87,8 +88,6 @@ export const Profile = () => {
     };
   }, [previewImage]);
   const handleEditForm = async (data: EditProfile) => {
-    console.log(data, 'data');
-    console.log(data.image, 'image');
     try {
       const formData = new FormData();
       formData.append('name', data.name);
@@ -106,9 +105,9 @@ export const Profile = () => {
         image: formData.get('image'),
       });
       const response = await callEndpoint(axiosCall);
-      console.log(response, 'data sent  ');
       dispatch(editProfileAction(response.data));
       setIsEdit(false);
+      navigate(PublicRoutes.HOME);
     } catch (error) {
       console.log(error);
     }
@@ -128,6 +127,8 @@ export const Profile = () => {
                     ? (previewImage as string)
                     : profile.image
                     ? `http://localhost:3000/${profile.image}`
+                    : user.picture
+                    ? user.picture
                     : ProfileIcon
                 }
                 size="xxl"
@@ -191,6 +192,7 @@ export const Profile = () => {
                     className="w-[380px]"
                     label="Your name"
                     {...register('name')}
+                    crossOrigin={'true'}
                   />
                 </div>
                 <div>
@@ -202,6 +204,7 @@ export const Profile = () => {
                     className="w-[380px]"
                     label="Your last name"
                     {...register('lastName')}
+                    crossOrigin={'true'}
                   />
                 </div>
               </div>

@@ -22,12 +22,12 @@ export const userSlice = createSlice({
     ? JSON.parse(localStorage.getItem('user') as string)
     : userEmptyState,
   reducers: {
-    loginUserAction: (state, action) => {
+    loginUserAction: (_, action) => {
       persistLocalStorage<UserLogged>(UserKey, action.payload);
       return action.payload;
     },
 
-    logoutUser: (state) => {
+    logoutUser: (_) => {
       clearLocalStorage(UserKey);
       return userEmptyState;
     },

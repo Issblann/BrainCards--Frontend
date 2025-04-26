@@ -9,23 +9,26 @@ import {
 } from '@material-tailwind/react';
 import React, { FC, useState } from 'react';
 import { HiUserCircle, HiSupport, HiLogout } from 'react-icons/hi';
-import { useFetchAndLoad } from '../hooks';
-import { LogoutUser } from '../services';
+import { useFetchAndLoad } from '../../hooks';
+import { LogoutUser } from '../../services';
 import { useDispatch, useSelector } from 'react-redux';
-import { cleanProfileAction, logoutUser } from '../redux/states';
-import { AppStore } from '../redux/store';
-import ProfileIcon from '../assets/profile_icon.svg';
+import {
+  cleanProfileAction,
+  logoutUser,
+} from '../../redux/slices';
+import { RootState } from '../../redux/store/store';
+import ProfileIcon from '../../assets/profile_icon.svg';
 import { googleLogout } from '@react-oauth/google';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import { PrivateRoutes, PublicRoutes } from '../models';
+import { PrivateRoutes, PublicRoutes } from '../../models';
 export const ProfileHeader: FC<{
   userId: string;
 }> = ({ userId }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { callEndpoint } = useFetchAndLoad();
-  const user = useSelector((store: AppStore) => store.user);
-  const profile = useSelector((store: AppStore) => store.profile);
+  const user = useSelector((store: RootState) => store.user);
+  const profile = useSelector((store: RootState) => store.profile);
   const dispatch = useDispatch();
   const closeMenu = () => setIsMenuOpen(false);
   const navigate = useNavigate();

@@ -6,17 +6,18 @@ import {
   Spinner,
 } from '@material-tailwind/react';
 import { FC, useState } from 'react';
-import authFormVector from '../assets/authform-vector.png';
+import authFormVector from '../../assets/authform-vector.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../redux/store';
+import { RootState } from '../../redux/store/store';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { PublicRoutes } from '../models';
-import { loginUser, registerUser } from '../services';
-import { loginUserAction } from '../redux/states';
+import { PublicRoutes } from '../../models';
+import { loginUser, registerUser } from '../../services';
+import { loginUserAction } from '../../redux/slices';
 import { ErrorMessage } from '@hookform/error-message';
-import { useFetchAndLoad } from '../hooks/';
-import { GoogleButton, PasswordToggleIcon } from './index';
+import { useFetchAndLoad } from '../../hooks/';
+import { GoogleButton } from './GoogleButton';
+import { PasswordToggleIcon } from './PasswordToggleIcon';
 
 type FormValues = {
   email: string;
@@ -30,7 +31,7 @@ interface FormAuthProps {
 export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  useSelector((store: AppStore) => store.user);
+  useSelector((store: RootState) => store.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, callEndpoint } = useFetchAndLoad();
@@ -132,6 +133,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                     },
                     pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' },
                   })}
+                  crossOrigin=""
                 />
                 <ErrorMessage
                   errors={errors}
@@ -162,6 +164,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                           message: 'This field is required',
                         },
                       })}
+                      crossOrigin=""
                     />
                     <ErrorMessage
                       errors={errors}
@@ -192,6 +195,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                       togglePasswordVisibility={togglePasswordVisibility}
                     />
                   }
+                  crossOrigin=""
                 />
                 <ErrorMessage
                   errors={errors}
@@ -227,6 +231,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
                           value === watch('password') ||
                           'Passwords do not match',
                       })}
+                      crossOrigin=""
                       icon={
                         <PasswordToggleIcon
                           showPassword={showConfirmPassword}

@@ -1,16 +1,16 @@
 import { Button } from '@material-tailwind/react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppStore } from '../redux/store';
-import { loginUserAction } from '../redux/states';
-import { useFetchAndLoad } from '../hooks';
-import { GetUserGoogle, loginWithGoogle } from '../services';
+import { RootState } from '../../redux/store/store';
+import { loginUserAction } from '../../redux/slices';
+import { useFetchAndLoad } from '../../hooks';
+import { GetUserGoogle, loginWithGoogle } from '../../services';
 import { useNavigate } from 'react-router-dom';
-import { PublicRoutes } from '../models';
+import { PublicRoutes } from '../../models';
 import Cookies from 'js-cookie';
 export const GoogleButton = () => {
   const { callEndpoint } = useFetchAndLoad();
-  useSelector((store: AppStore) => store.user);
+  useSelector((store: RootState) => store.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,7 +25,6 @@ export const GoogleButton = () => {
     );
     const responsePostUser = await callEndpoint(axiosCallPostUser);
 
-    console.log(responsePostUser.data);
     dispatch(
       loginUserAction({
         id: responsePostUser.data.user.id,
