@@ -13,16 +13,16 @@ import {
   HiOutlineFolder,
   HiOutlinePlusSm,
 } from 'react-icons/hi';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store/store';
+import { toggleDialogBox, toggleDialogDeck } from '../../redux/slices';
+import { CreateBoxModal } from './CreateBoxModal';
+import { CreateDeckModal } from './CreateDeckModal';
 
 interface SpeedDialButtonProps {
-  handleDialogDeck: () => void;
-  handleDialogBox: () => void;
 }
 
-export const SpeedDialButton: FC<SpeedDialButtonProps> = ({
-  handleDialogDeck,
-  handleDialogBox,
-}) => {
+export const SpeedDialButton: FC<SpeedDialButtonProps> = () => {
   const labelProps = {
     variant: 'small',
     color: 'blue-gray',
@@ -30,7 +30,17 @@ export const SpeedDialButton: FC<SpeedDialButtonProps> = ({
       'absolute top-2/4 -left-2/4 -translate-y-2/4 -translate-x-3/4 font-normal',
   };
 
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleDialogBox = () => {
+    dispatch(toggleDialogBox());
+  };
+
+  const handleDialogDeck = () => {
+    dispatch(toggleDialogDeck());
+  }
   return (
+  <>
     <div className="relative mt-20">
       <div className="absolute bottom-0 right-0">
         <SpeedDial placement="left-end">
@@ -52,5 +62,9 @@ export const SpeedDialButton: FC<SpeedDialButtonProps> = ({
         </SpeedDial>
       </div>
     </div>
+    
+    <CreateBoxModal/>
+    <CreateDeckModal/>
+    </>
   );
 };

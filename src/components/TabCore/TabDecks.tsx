@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import Box from '../../models/Box';
 import Deck from '../../models/Deck';
 import { FormValuesDeck } from '../../services/decks.service';
 import { FormValuesFlashcards } from '../../services/flashcards.service';
@@ -17,22 +16,15 @@ interface TabDecksProps {
   loading: boolean;
 }
 export const TabDecks: FC<TabDecksProps> = ({
-  openDialogDeck,
-  handleDialogDeck,
-  handleCreateDeck,
   openDialogFlashcards,
   handleDialogFlashcards,
   handleCreateFlashcards,
-  createdDeck,
-  loading,
+  createdDeck
 }) => {
   return (
     <>
       <>
         <CreateDeckModal
-          open={openDialogDeck}
-          handleClose={handleDialogDeck}
-          submitForm={handleCreateDeck}
         />
         <CreateFlashcardsModal
           open={openDialogFlashcards}

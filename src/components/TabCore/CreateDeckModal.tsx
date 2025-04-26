@@ -13,9 +13,6 @@ import {
 } from '@material-tailwind/react';
 
 interface CreateDeckModalProps {
-  open: boolean;
-  handleClose: () => void;
-  submitForm: (data: FormValuesDeck) => void;
 }
 import { HiArrowLongRight } from 'react-icons/hi2';
 
@@ -23,19 +20,18 @@ import { useForm } from 'react-hook-form';
 
 import Box from '../../models/Box';
 import { FormValuesDeck } from '../../services/decks.service';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store/store';
+import { toggleDialogDeck } from '../../redux/slices';
 
 export const CreateDeckModal: FC<CreateDeckModalProps> = ({
-  open,
-  handleClose,
-  submitForm,
 }) => {
   const [isWithinBox, setIsWithinBox] = useState<boolean>(false);
-  const boxes = useSelector((store: any) => store.boxes);
-
-  const allBox = boxes.find((box: Box) => box.boxName === 'All');
-  const boxesWithoutAllBox = boxes.filter((box: Box) => box.boxName !== 'All');
-
+  const {data} = useSelector((store: RootState) => store.boxes);
+  const openDialogDeck = useSelector((state: RootState) => state.decks.openDialogDeck);
+  const allBox = data.find((box: Box) => box.boxName === 'All');
+  const boxesWithoutAllBox = data.filter((box: Box) => box.boxName !== 'All');
+  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
@@ -48,11 +44,14 @@ export const CreateDeckModal: FC<CreateDeckModalProps> = ({
   });
 
   const handleBoxChange = (value: string) => setValue('boxId', value);
+  const closeModal = () => {
+    dispatch(toggleDialogDeck());
+  }
   return (
     <>
-      <DialogWithForm open={open} handler={handleClose}>
+      <DialogWithForm open={openDialogDeck} handler={closeModal}>
         <Card className="mx-auto w-full max-w-[30rem]">
-          <form onSubmit={handleSubmit(submitForm)}>
+          <form>
             <CardBody className="flex px-6 pt-6 pb-2 flex-col gap-4">
               <Typography variant="h4" color="blue-gray">
                 New Deck

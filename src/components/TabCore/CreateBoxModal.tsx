@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { DialogWithForm } from './../Dialog';
 import {
   Button,
@@ -10,28 +10,54 @@ import {
 } from '@material-tailwind/react';
 import { useForm } from 'react-hook-form';
 import { FormValuesBox } from '../../services/boxes.service';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store/store';
+import { BoxPayload, thunks } from '../../redux/slices/boxes/thunks';
+import { toggleDialogBox } from '../../redux/slices/boxes/slice';
 
 interface CreateBoxModalProps {
-  open: boolean;
-  handleClose: () => void;
-  submitForm: (data: FormValuesBox) => void;
 }
 
-export const CreateBoxModal: FC<CreateBoxModalProps> = ({
-  open,
-  handleClose,
-  submitForm,
-}) => {
+export const CreateBoxModal: FC<CreateBoxModalProps> = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValuesBox>();
 
+  const { data } = useSelector(
+    (state: RootState) => state.boxes
+  );
+
+  const user = useSelector((store: RootState) => store.user);
+  const openDialogBox = useSelector((state: RootState) => state.boxes.openDialogBox);
+  const dispatch = useDispatch<AppDispatch>()
+  useEffect(() => {
+    if (user.id) {
+      dispatch(thunks.getBoxesByUser(user.id));
+    }
+  }, [user.id]);
+
+    const handleCreateBox = async (data: FormValuesBox) => {
+      try {
+        if (!user.id) return;
+        const response = dispatch(thunks.createABox({ userId: user.id, data: { ...data } as Partial<BoxPayload> })).unwrap();
+        console.log(response);
+        dispatch(toggleDialogBox());
+      } catch (error) {
+        console.error(error);
+        throw new Error(error as string);
+      }
+    };
+  
+    const closeModal = () => {
+      dispatch(toggleDialogBox());
+    }
+    console.log('openDialogBox', openDialogBox);
   return (
-    <DialogWithForm open={open} handler={handleClose}>
+    <DialogWithForm open={openDialogBox} handler={closeModal}>
       <Card className="mx-auto w-full max-w-[30rem]">
-        <form onSubmit={handleSubmit(submitForm)}>
+        <form>
           <CardBody className="flex flex-col gap-4">
             <Typography variant="h4" color="blue-gray">
               New Box
@@ -48,6 +74,7 @@ export const CreateBoxModal: FC<CreateBoxModalProps> = ({
               Title <span className="text-red-400">*</span>
             </Typography>
             <Input
+              crossOrigin="anonymous"
               labelProps={{
                 className: 'before:content-none after:content-none hidden',
               }}
