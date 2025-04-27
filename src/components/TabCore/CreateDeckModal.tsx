@@ -79,7 +79,6 @@ export const CreateDeckModal = ({
     dispatch(setDialogFlashcardOpen(true)); 
   };
 
-  console.log('deck', deck);
   return (
     <>
       <DialogWithForm open={openDialogDeck} handler={closeModal}>

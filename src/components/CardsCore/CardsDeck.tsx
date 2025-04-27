@@ -22,7 +22,6 @@ export const CardsDeck = ({ data, activeTab }: any) => {
     );
   } else {
     const selectedBox = data.find((box: any) => box.label === activeTab);
-    console.log(selectedBox, 'selectedBox')
     if (!selectedBox) return null;
 
     return (
