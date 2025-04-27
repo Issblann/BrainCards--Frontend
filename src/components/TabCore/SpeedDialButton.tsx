@@ -13,12 +13,12 @@ import {
   HiOutlineFolder,
   HiOutlinePlusSm,
 } from 'react-icons/hi';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store/store';
 import { toggleDialogBox, toggleDialogDeck } from '../../redux/slices';
 import { CreateBoxModal } from './CreateBoxModal';
 import { CreateDeckModal } from './CreateDeckModal';
-import { CreateFlashcardsModal } from './CreateFlashcardsModal';
+import { DeleteBoxModal } from '../Boxes/DeleteBox';
 
 interface SpeedDialButtonProps {
 }
@@ -32,7 +32,7 @@ export const SpeedDialButton: FC<SpeedDialButtonProps> = () => {
   };
 
   const dispatch = useDispatch<AppDispatch>();
-
+  const { editMode } = useSelector((store: RootState) => store.boxes);
   const handleDialogBox = () => {
     dispatch(toggleDialogBox());
   };
@@ -46,8 +46,8 @@ export const SpeedDialButton: FC<SpeedDialButtonProps> = () => {
       <div className="absolute bottom-0 right-0">
         <SpeedDial placement="left-end">
           <SpeedDialHandler>
-            <IconButton size="lg" className="rounded-full">
-              <HiOutlinePlusSm className="h-5 w-5 transition-transform group-hover:rotate-45" />
+            <IconButton size="lg" className="rounded-full" disabled={editMode}>
+              <HiOutlinePlusSm className={`h-5 w-5 transition-transform ${editMode ? '' : 'group-hover:rotate-45'}`} />
             </IconButton>
           </SpeedDialHandler>
           <SpeedDialContent className="z-50">
@@ -66,6 +66,7 @@ export const SpeedDialButton: FC<SpeedDialButtonProps> = () => {
     
     <CreateBoxModal/>
     <CreateDeckModal/>
+    <DeleteBoxModal/>
     </>
   );
 };
