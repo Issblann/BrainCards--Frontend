@@ -12,4 +12,4 @@ export const boxesSlice = createSlice({
 
 export default boxesSlice.reducer;
 
-export const {setDialogBoxOpen,setTriggerBox,toggleDialogBox,toggleTriggerBox} = boxesSlice.actions;
+export const {setDialogBoxOpen,setTriggerBox,toggleDialogBox,toggleTriggerBox, setEditMode, toggleDeleteBoxDialog} = boxesSlice.actions;

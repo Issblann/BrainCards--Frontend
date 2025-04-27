@@ -14,6 +14,14 @@ const boxesReducers = {
       setDialogBoxOpen(state: BoxState, action: PayloadAction<boolean>) {
         state.openDialogBox = action.payload;
       },
+
+      setEditMode(state: BoxState) {
+        state.editMode = !state.editMode;
+      },
+
+      toggleDeleteBoxDialog(state: BoxState) {
+        state.openDeleteBoxDialog = !state.openDeleteBoxDialog;
+      }
     }
 
 export default boxesReducers;
