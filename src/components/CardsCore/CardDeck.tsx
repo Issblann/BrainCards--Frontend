@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import Deck from '../../models/Deck';
 import { Button, TabPanel } from '@material-tailwind/react';
 import { PrivateRoutes } from '../../models';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/store';
 
 interface CardDeckProps {
   value: string;
@@ -10,7 +12,7 @@ interface CardDeckProps {
 }
 export const CardDeck = ({ label, value, decks }: CardDeckProps) => {
   const navigate = useNavigate();
-  console.log(decks, 'decks en card')
+  const { editMode } = useSelector((store: RootState) => store.boxes);
   return (
     <TabPanel
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 px-0"
@@ -34,11 +36,13 @@ export const CardDeck = ({ label, value, decks }: CardDeckProps) => {
               <p className="text-xs font-normal">{description}</p>
             </div>
 
+            
             <Button
               onClick={() =>
                 navigate(`private/${PrivateRoutes.FLASHCARDS}/${id}`)
               }
               size="sm"
+              disabled={editMode}
               className="w-[120px] bg-lavender-600 hover:bg-lavender-700"
             >
               Study
