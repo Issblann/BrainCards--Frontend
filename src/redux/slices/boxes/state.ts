@@ -6,6 +6,9 @@ export interface BoxState {
     error: string | null;
     trigger: boolean;
     openDialogBox: boolean;
+    editMode: boolean;
+    boxSelected: Box | null;
+    openDeleteBoxDialog: boolean;
 }
 
 const initialState: BoxState = {
@@ -14,6 +17,9 @@ const initialState: BoxState = {
     error: null,
     trigger: false,
     openDialogBox: false,
+    editMode: false,
+    boxSelected: null,
+    openDeleteBoxDialog: false,
 }
 
 export default initialState;

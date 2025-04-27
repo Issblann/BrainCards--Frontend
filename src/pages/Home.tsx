@@ -4,17 +4,19 @@ import { useEffect } from 'react';
 import { AppDispatch, RootState } from '../redux/store/store';
 import { Tabs, TabsHeader, Tab, TabsBody } from '@material-tailwind/react';
 import { thunks } from '../redux/slices/boxes/thunks';
+import { HiOutlinePencilAlt } from 'react-icons/hi';
+import { setEditMode } from '../redux/slices';
 
 
 export const Home = () => {
   const user = useSelector((store: RootState) => store.user);
-  const loading = useSelector((store: RootState) => store.boxes.loading);
+  const {loading, editMode} = useSelector((store: RootState) => store.boxes);
   const dispatch = useDispatch<AppDispatch>();
   const defaultDeck = [
     {
       value: 'All',
       label: 'All',
-      desc: [
+      decks: [
         {
           id: 1,
           title: 'Sample Deck',
@@ -32,12 +34,17 @@ export const Home = () => {
   return (
     <div className="w-full h-full flex justify-center flex-col gap-4">
       {user?.id ? (
-        <>
-          <SpeedDialButton
-          />
+        <div className="w-full flex flex-col gap-4">
+          <div className='flex justify-end items-end gap-20'>
+          <button onClick={() => dispatch(setEditMode())}>
+            <span className="text-lavender-600 hover:text-lavender-700 font-semibold flex items-center gap-2">
+                {editMode === false ? <span className='flex gap-2 justify-center'><HiOutlinePencilAlt size={25}/>Edit Mode</span> : `Leave edit mode`}
+            </span>
+          </button>
+          <SpeedDialButton/>
+          </div>
           <TabBoxes
           />
-        
           {loading && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <div className="text-center flex flex-col justify-center items-center">
@@ -46,7 +53,7 @@ export const Home = () => {
               </div>
             </div>
           )}
-        </>
+        </div>
       ) : (
         <Tabs value="All">
           <TabsHeader className="w-full overflow-x-scroll scrollbar-thin">

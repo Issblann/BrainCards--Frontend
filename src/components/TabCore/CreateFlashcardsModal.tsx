@@ -67,7 +67,6 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
       setDeck(null);
       resetFormDeck();
     }
-
   const handleCreateFlashcards = async (data: FormValuesFlashcards) => {
     try {
       if (!user.id) return;
@@ -78,7 +77,7 @@ export const CreateFlashcardsModal: FC<CreateFlashcardsModalProps> = ({
         description: deck?.description,
       }
       const response = await dispatch(thunks.createFlashcards({deckId: responseDeck?.id, data: finalData as Partial<DeckPayload> })).unwrap();
-      navigate(`private/${PrivateRoutes.FLASHCARDS}/${response?.id}`);
+      navigate(`private/${PrivateRoutes.FLASHCARDS}/${responseDeck?.id}`);
       return response;
     } catch (error) {
       console.error(error);

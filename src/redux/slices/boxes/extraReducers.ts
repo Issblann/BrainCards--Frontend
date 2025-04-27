@@ -23,6 +23,39 @@ const extraReducers = (builder:any)  => {
     }).addCase(thunks.createABox.rejected, (state:BoxState, action:PayloadAction<string>) => {
         state.loading = false;
         state.error = action.payload;
+    }),
+
+    builder.addCase(thunks.updateBox.pending, (state:BoxState) => {
+        state.loading = true; 
+    }).addCase(thunks.updateBox.fulfilled, (state:BoxState, action:PayloadAction<Box>) => {
+        state.loading = false;
+        state.data = state.data.filter((box:Box) => box.id !== action.payload.id);
+        state.data = [...state.data, action.payload];
+        state.openDialogBox = false;
+        state.boxSelected = null;
+    }).addCase(thunks.updateBox.rejected, (state:BoxState, action:PayloadAction<string>) => {
+        state.loading = false;
+        state.error = action.payload;
+    }),
+
+    builder.addCase(thunks.deleteBox.pending, (state:BoxState) => {
+        state.loading = true; 
+    }).addCase(thunks.deleteBox.fulfilled, (state:BoxState) => {
+        state.loading = false;
+        state.boxSelected = null;
+    }).addCase(thunks.deleteBox.rejected, (state:BoxState, action:PayloadAction<string>) => {
+        state.loading = false;
+        state.error = action.payload;
+    }),
+
+    builder.addCase(thunks.getBoxById.pending, (state:BoxState) => {
+        state.loading = true; 
+    }).addCase(thunks.getBoxById.fulfilled, (state:BoxState, action:PayloadAction<Box>) => {
+        state.loading = false;
+        state.boxSelected = action.payload;
+    }).addCase(thunks.getBoxById.rejected, (state:BoxState, action:PayloadAction<string>) => {
+        state.loading = false;
+        state.error = action.payload;
     })
 }
 

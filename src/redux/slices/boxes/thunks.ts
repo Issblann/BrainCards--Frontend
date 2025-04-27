@@ -8,6 +8,11 @@ export interface BoxPayload {
     boxId: string;
 }
 
+export interface BoxEditPayload {
+    boxId: string | undefined;
+    title: string;
+}
+
 export const thunks = {
     getBoxesByUser: createAsyncThunk('boxes/getBoxesByUser', async (userId: string, { rejectWithValue }) => {
         try {
@@ -27,6 +32,42 @@ export const thunks = {
                 return response.data;
             } catch (error: any) {
                 return rejectWithValue(error.message || 'Error creando la caja');
+            }
+        }
+    ),
+
+    updateBox: createAsyncThunk(
+        'boxes/updateBox',
+        async ({ data, boxId }: { data: Partial<BoxEditPayload>; boxId: string }, { rejectWithValue }) => {
+            try {
+                const response = await api.put(boxRoutes.updateBox(boxId), data);
+                return response.data;
+            } catch (error: any) {
+                return rejectWithValue(error.message || 'Error actualizando la caja');
+            }
+        }
+    ),
+
+    deleteBox: createAsyncThunk(
+        'boxes/deleteBox',
+        async (boxId: string, { rejectWithValue }) => {
+            try {
+                const response = await api.delete(boxRoutes.deleteBox(boxId));
+                return response.data;
+            } catch (error: any) {
+                return rejectWithValue(error.message || 'Error eliminando la caja');
+            }
+        }
+    ),
+
+    getBoxById: createAsyncThunk(
+        'boxes/getBoxById',
+        async (boxId: string, { rejectWithValue }) => {
+            try {
+                const response = await api.get(boxRoutes.getBoxById(boxId));
+                return response.data;
+            } catch (error: any) {
+                return rejectWithValue(error.message || 'Error obteniendo la caja por id');
             }
         }
     ),
