@@ -46,7 +46,6 @@ export const TabBoxes: FC<TabBoxesProps> = () => {
   const handleDeleteBox = async (id: string) => {
     await dispatch(boxesThunks.getBoxById(id));
     dispatch(toggleDeleteBoxDialog())
-    // await dispatch(boxesThunks.deleteBox(id));
   }
   const currentData: any[] = activeTab === 'All'
   ? [{ label: 'All', value: data?.[0]?.id, decks: decksData || [] }] 

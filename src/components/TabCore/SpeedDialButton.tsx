@@ -19,6 +19,8 @@ import { toggleDialogBox, toggleDialogDeck } from '../../redux/slices';
 import { CreateBoxModal } from './CreateBoxModal';
 import { CreateDeckModal } from './CreateDeckModal';
 import { DeleteBoxModal } from '../Boxes/DeleteBox';
+import { EditDeckModal } from './EditDeckModal';
+import { DeleteDeckModal } from '../Decks/DeleteDeck';
 
 interface SpeedDialButtonProps {
 }
@@ -67,6 +69,8 @@ export const SpeedDialButton: FC<SpeedDialButtonProps> = () => {
     <CreateBoxModal/>
     <CreateDeckModal/>
     <DeleteBoxModal/>
+    <EditDeckModal/>
+    <DeleteDeckModal/>
     </>
   );
 };

@@ -20,8 +20,6 @@ import ProfileIcon from '../assets/profile_icon.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { editProfileAction, getProfileAction } from '../redux/slices';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { PublicRoutes } from '../models';
 import { RootState } from '../redux/store/store';
 
 type FormValues = {
@@ -47,7 +45,6 @@ export const Profile = () => {
     // setError,
     // formState: { errors },
   } = useForm<FormValues>();
-  const navigate = useNavigate();
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];

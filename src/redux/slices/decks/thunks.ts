@@ -8,6 +8,12 @@ export interface DeckPayload {
     boxId: string;
 }
 
+export interface DeckEditPayload {
+    title: string;
+    description: string;
+}
+
+
 export const thunks = {
     getDecksByUser: createAsyncThunk('decks/getDecksByUser', async (userId: string, { rejectWithValue }) => {
         try {
@@ -34,6 +40,24 @@ export const thunks = {
     getDeckById: createAsyncThunk('decks/getDeckById', async (deckId: string, { rejectWithValue }) => {
         try {
             const response = await api.get(deckRoutes.getDeckById(deckId));
+            return response.data
+        } catch (error: any) {
+            return rejectWithValue(error.message || 'error desconocido');
+        }
+    }),
+
+    updateDeck: createAsyncThunk('decks/updateDeck', async ({ deckId, data }: { deckId: string; data: Partial<DeckPayload> }, { rejectWithValue }) => {
+        try {
+            const response = await api.put(deckRoutes.updateDeck(deckId), data);
+            return {data: response.data}
+        } catch (error: any) {
+            return rejectWithValue(error.message || 'error desconocido');
+        }   
+    }),
+
+    deleteDeck: createAsyncThunk('decks/deleteDeck', async (deckId: string, { rejectWithValue }) => {
+        try {
+            const response = await api.delete(deckRoutes.deleteDeck(deckId));
             return {data: response.data}
         } catch (error: any) {
             return rejectWithValue(error.message || 'error desconocido');
