@@ -107,7 +107,6 @@ export const Profile = () => {
       const response = await callEndpoint(axiosCall);
       dispatch(editProfileAction(response.data));
       setIsEdit(false);
-      navigate(PublicRoutes.HOME);
     } catch (error) {
       console.log(error);
     }

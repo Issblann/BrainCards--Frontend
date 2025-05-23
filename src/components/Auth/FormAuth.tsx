@@ -19,6 +19,7 @@ import { useFetchAndLoad } from '../../hooks/';
 import { GoogleButton } from './GoogleButton';
 import { PasswordToggleIcon } from './PasswordToggleIcon';
 
+// Componente de autenticación, que contiene el formulario de inicio de sesión y registro
 type FormValues = {
   email: string;
   password: string;
@@ -70,7 +71,6 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
       }
       reset();
     } catch (error: any) {
-      // console.error('Error on onSubmit form', error);
       if (error?.response?.status === 400) {
         setError(
           'root',
@@ -79,7 +79,7 @@ export const formAuth: FC<FormAuthProps> = ({ isRegister }) => {
             message: isRegister
               ? 'User already exist. Try again'
               : 'Invalid credentials. Try again.',
-          } || 'Error on form submit'
+          }
         );
       } else {
         setError('root', {
