@@ -14,6 +14,18 @@ const decksReducers = {
       setDialogDeckOpen(state: DeckState, action: PayloadAction<boolean>) {
         state.openDialogDeck = action.payload;
       },
+
+      setDialogEditDeckOpen(state: DeckState, action: PayloadAction<boolean>) {
+        state.openEditDeckDialog = action.payload;
+      },
+
+      toggleDialogEditDeck(state: DeckState) {
+        state.openEditDeckDialog = !state.openEditDeckDialog;
+      },
+
+      toggleDeleteDeckDialog(state: DeckState) {
+         state.openDeleteDeckDialog = !state.openDeleteDeckDialog;
+      }
     }
 
 export default decksReducers;

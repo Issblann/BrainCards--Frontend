@@ -29,9 +29,31 @@ const extraReducers = (builder:any)  => {
         state.loading = true; 
     }).addCase(thunks.getDeckById.fulfilled, (state:DeckState, action:PayloadAction<Deck>) => {
         state.loading = false;
-        state.deck = action.payload;
-        state.openDialogDeck = false;
+        state.deckSelected = action.payload;
     }).addCase(thunks.getDeckById.rejected, (state:DeckState, action:PayloadAction<string>) => {
+        state.loading = false;
+        state.error = action.payload;
+    }),
+
+    builder.addCase(thunks.updateDeck.pending, (state:DeckState) => {
+        state.loading = true; 
+    }).addCase(thunks.updateDeck.fulfilled, (state:DeckState) => {
+        state.loading = false;
+        state.openEditDeckDialog = false;
+        state.deckSelected = null;
+    }).addCase(thunks.updateDeck.rejected, (state:DeckState, action:PayloadAction<string>) => {
+        state.loading = false;
+        state.error = action.payload;
+    }),
+
+    builder.addCase(thunks.deleteDeck.pending, (state:DeckState) => {
+        state.loading = true; 
+    }).addCase(thunks.deleteDeck.fulfilled, (state:DeckState, action:PayloadAction<Deck>) => {
+        state.loading = false;
+        state.data = state.data.filter((deck) => deck.id !== action.payload.id);
+        state.openDeleteDeckDialog = false;
+        state.deckSelected = null;
+    }).addCase(thunks.deleteDeck.rejected, (state:DeckState, action:PayloadAction<string>) => {
         state.loading = false;
         state.error = action.payload;
     })

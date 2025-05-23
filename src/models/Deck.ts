@@ -1,7 +1,7 @@
 import Flashcard from './Flashcards';
 
 interface Deck {
-  id: string | number;
+  id: string;
   boxId?: string;
   title: string;
   description?: string;

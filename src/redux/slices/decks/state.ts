@@ -7,6 +7,10 @@ export interface DeckState {
     error: string | null;
     trigger: boolean;
     openDialogDeck: boolean;
+    editMode: boolean;
+    deckSelected: Deck | null;
+    openDeleteDeckDialog: boolean;
+    openEditDeckDialog: boolean;
 }
 
 const initialState: DeckState = {
@@ -16,6 +20,10 @@ const initialState: DeckState = {
     error: null,
     trigger: false,
     openDialogDeck: false,
+    editMode: false,
+    deckSelected: null,
+    openDeleteDeckDialog: false,
+    openEditDeckDialog: false,
 }
 
 export default initialState;

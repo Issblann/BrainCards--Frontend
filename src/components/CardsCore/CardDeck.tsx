@@ -2,8 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import Deck from '../../models/Deck';
 import { Button, TabPanel } from '@material-tailwind/react';
 import { PrivateRoutes } from '../../models';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store/store';
+import { thunks } from '../../redux/slices/decks/thunks';
+import { setDialogEditDeckOpen, toggleDeleteDeckDialog } from '../../redux/slices';
 
 interface CardDeckProps {
   value: string;
@@ -12,7 +14,17 @@ interface CardDeckProps {
 }
 export const CardDeck = ({ label, value, decks }: CardDeckProps) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>()
   const { editMode } = useSelector((store: RootState) => store.boxes);
+  const handleEditDeck = async (id: string) => {
+       await dispatch(thunks.getDeckById(id));
+        dispatch(setDialogEditDeckOpen(true));
+  }
+
+  const handleDeleteDeck = async (id: string) => {
+    await dispatch(thunks.getDeckById(id));
+    dispatch(toggleDeleteDeckDialog());
+  }
   return (
     <TabPanel
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 px-0"
@@ -36,8 +48,26 @@ export const CardDeck = ({ label, value, decks }: CardDeckProps) => {
               <p className="text-xs font-normal">{description}</p>
             </div>
 
-            
-            <Button
+       
+              {editMode ? (
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => handleEditDeck(id)}
+                    size="sm"
+                    className="bg-lavender-600 hover:bg-lavender-700"
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={() => handleDeleteDeck(id) }
+                    size="sm"
+                    className="bg-red-600 hover:bg-red-700"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              ) : (
+                 <Button
               onClick={() =>
                 navigate(`private/${PrivateRoutes.FLASHCARDS}/${id}`)
               }
@@ -47,7 +77,8 @@ export const CardDeck = ({ label, value, decks }: CardDeckProps) => {
             >
               Study
             </Button>
-          </div>
+              )}
+            </div>
         );
       })}
     </TabPanel>
