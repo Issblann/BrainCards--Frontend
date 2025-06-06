@@ -11,9 +11,21 @@ const flashCardReducers = {
       toggleDialogFlashcard(state: FlashcardsState) {
         state.openDialogFlashcard = !state.openDialogFlashcard;
       },
+       setEditModeFlashcards(state: FlashcardsState) {
+              state.isEditMode = !state.isEditMode;
+            },
       setDialogFlashcardOpen(state: FlashcardsState, action: PayloadAction<boolean>) {
         state.openDialogFlashcard = action.payload;
       },
+
+      toggleDeleteFlashcard(state: FlashcardsState) {
+       state.openDialogDeleteFlashcard = !state.openDialogDeleteFlashcard;
+      },
+
+      setFlashcardId(state: FlashcardsState, action: PayloadAction<string>) {
+      state.flashcardId = action.payload;
+    },
+
     }
 
 export default flashCardReducers;

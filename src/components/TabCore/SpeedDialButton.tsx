@@ -21,6 +21,7 @@ import { CreateDeckModal } from './CreateDeckModal';
 import { DeleteBoxModal } from '../Boxes/DeleteBox';
 import { EditDeckModal } from './EditDeckModal';
 import { DeleteDeckModal } from '../Decks/DeleteDeck';
+import { DeleteFlashcardModal } from '../FlashcardsCore/DeleteFlashcard';
 
 interface SpeedDialButtonProps {
 }

@@ -7,13 +7,19 @@ import { Carousel } from './Carousel';
 
 import { HiArrowNarrowLeft } from 'react-icons/hi';
 import { BackButton } from '../BackButton';
+import { MdEdit } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store/store';
+import { setEditModeFlashcards } from '../../redux/slices';
+import { DeleteFlashcardModal } from './DeleteFlashcard';
 
 export const Flashcards = () => {
   const [flippedCard, setFlippedCard] = useState<Record<string, boolean>>({});
   const [currentCard, setCurrentCard] = useState<number>(1);
   const { deckId } = useParams();
   const { data, loading, callEndpoint } = useFetchAndLoad<Deck>();
-
+   const {isEditMode} = useSelector((store: RootState) => store.flashcards);
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     getDeckWithFlashcards();
   }, [deckId]);
@@ -57,9 +63,17 @@ export const Flashcards = () => {
         Aprende con BrainCards
       </h1>
       <div className=" flex flex-col justify-center items-center gap-5">
-        <h3 className="text-2xl text-center mb-10 first-letter:uppercase">
+           <h3 className="text-2xl text-center mb-10 first-letter:uppercase">
           {data?.title}
         </h3>
+
+          <button
+        className="text-lavender-80 hover:text-lavender-900 text-end w-[65%]"
+        onClick={() => dispatch(setEditModeFlashcards())}
+        title="Editar flashcards"
+      >
+        <span className="ml-2"> {isEditMode ? 'Salir modo edición' : 'Editar flashcards'} </span>
+      </button>
         {loading ? (
           <p>Cargando...</p>
         ) : (
@@ -73,6 +87,8 @@ export const Flashcards = () => {
           />
         )}
       </div>
+
+         <DeleteFlashcardModal/>
     </section>
   );
 };
