@@ -16,7 +16,7 @@ interface GetDecks {
 interface CreateDeck {
   (userId: string, Deck: FormValuesDeck): AxiosCall<Deck>;
 }
-const BASE_URL = 'http://localhost:3000/api/decks';
+const BASE_URL = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/decks`;
 
 export const getDeckById = (deckId: string): AxiosCall<Deck> => {
   const controller = loadAbort();

@@ -3,7 +3,7 @@ import { AxiosCall } from '../models';
 import Profile from '../models/Profile';
 import { loadAbort } from '../utilities';
 
-const BASE_URL = 'http://localhost:3000/api/profile';
+const BASE_URL = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/profile`;
 
 export interface EditProfile {
   name: string;

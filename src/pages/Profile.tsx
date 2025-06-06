@@ -122,7 +122,7 @@ export const Profile = () => {
                   previewImage
                     ? (previewImage as string)
                     : profile.image
-                    ? `http://localhost:3000/${profile.image}`
+                    ? `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/${profile.image}`
                     : user.picture
                     ? user.picture
                     : ProfileIcon
