@@ -1,0 +1,22 @@
+.scrollbar-thin::-webkit-scrollbar {
+  height: 9px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media (max-width: 768px) {
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 6px;
+  }
+}
