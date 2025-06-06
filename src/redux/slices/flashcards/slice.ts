@@ -12,4 +12,4 @@ export const flashcardSlice = createSlice({
 
 export default flashcardSlice.reducer;
 
-export const {setDialogFlashcardOpen,setTrigger,toggleDialogFlashcard,toggleTrigger} = flashcardSlice.actions;
+export const {setDialogFlashcardOpen,setTrigger,toggleDialogFlashcard,toggleTrigger, setEditModeFlashcards, toggleDeleteFlashcard, setFlashcardId } = flashcardSlice.actions;

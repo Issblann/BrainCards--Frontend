@@ -23,6 +23,16 @@ const extraReducers = (builder:any)  => {
     }).addCase(thunks.createFlashcards.rejected, (state:FlashcardsState, action:PayloadAction<string>) => {
         state.loading = false;
         state.error = action.payload;
+    }),
+
+    builder.addCase(thunks.deleteFlashcard.pending, (state:FlashcardsState) => {
+        state.loading = true; 
+    }).addCase(thunks.deleteFlashcard.fulfilled, (state:FlashcardsState, action:PayloadAction<string>) => {
+        state.loading = false;
+        state.data = state.data.filter((flashcard:Flashcard) => flashcard.id !== action.payload);
+    }).addCase(thunks.deleteFlashcard.rejected, (state:FlashcardsState, action:PayloadAction<string>) => {
+        state.loading = false;
+        state.error = action.payload;
     })
 }
 

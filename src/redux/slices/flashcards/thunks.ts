@@ -30,4 +30,13 @@ export const thunks = {
             }
         }
     ),
+
+    deleteFlashcard: createAsyncThunk('flashCards/deleteFlashcard', async (flashcardId: string, { rejectWithValue }) => {
+        try {
+            const response = await api.delete(flashcardsRoutes.deleteFlashcard(flashcardId));
+            return response.data
+        } catch (error: any) {
+            return rejectWithValue(error.message || 'error desconocido');
+        }
+    })
 };
