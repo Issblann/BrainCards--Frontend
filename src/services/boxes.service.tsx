@@ -13,7 +13,7 @@ interface GetBoxes {
 interface CreateBox {
   (userId: string, box: FormValuesBox): AxiosCall<string>;
 }
-const BASE_URL = 'http://localhost:3000/api/boxes';
+const BASE_URL =  `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/boxes`
 
 export const getBoxesByUserId: GetBoxes = (userId: string): AxiosCall<Box> => {
   const controller = loadAbort();

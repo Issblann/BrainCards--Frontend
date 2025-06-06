@@ -16,7 +16,7 @@ interface CreateFlashcards {
     flashcardData: FormValuesFlashcards
   ): AxiosCall<Flashcard[]>;
 }
-const BASE_URL = 'http://localhost:3000/api/flashcards';
+const BASE_URL = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/api/flashcards`;
 
 export const createFlashcards: CreateFlashcards = (
   deckId,

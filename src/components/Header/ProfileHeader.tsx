@@ -91,7 +91,7 @@ export const ProfileHeader: FC<{
             className="border-lavender-900 p-0.5"
             src={
               profile.image
-                ? `http://localhost:3000/${profile.image}`
+                ? `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/${profile.image}`
                 : user?.picture || ProfileIcon
             }
           />

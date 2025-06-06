@@ -12,7 +12,7 @@ interface RegisterUser {
 }
 
 axios.defaults.withCredentials = true;
-const BASE_URL = 'http://localhost:3000/auth';
+const BASE_URL = `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/auth`;
 
 export const loginUser: LoginUser = (
   email,
